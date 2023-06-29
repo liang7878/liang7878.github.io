@@ -15,13 +15,24 @@ func Optimize(ctx context.Context, sctx sessionctx.Context, node ast.Node, is in
 
 我们来看它是如何生成一个新的 plan 的。首先这里会尝试记录一个 cache miss 的 metric（当然这是很小的一个点，但是 metric 其实是生产环境中诊断系统健康状态的重要工具，我们看代码的过程中同样要学习如何打 metric），然后将读出的 `PreparedAst`进行优化。这样就又回到了 Optimize 方法里面。完成优化生成 plan 后，紧接着会尝试调用`tryCachePointPlan`来判断当前计划是否是一个`point execution plan`，并尝试将其 cache 下来。下面是 `PointGetPlan`的注释：
 
-```
+```go
 // PointGetPlan is a fast plan for simple point get.
 // When we detect that the statement has a unique equal access condition, this plan is used.
 // This plan is much faster to build and to execute because it avoid the optimization and coprocessor cost.
 ```
+
 简单来说，`PointGetPlan`就是用于执行存在唯一的 equal 条件的查询语句的查询计划。
 
 紧接着，这里会对当前计划进行判断，确认是否可以讲计划存入 cache，这里有一系列不同类型的物理计划不允许 cache。我们后面可以单独研究一下哪些计划可以放入 cache，哪些不行。判断可以放入 cache 的 plan，这里会生成对应的 key 和 value，然后放入 cache，并将对应的 plan 返回。
 
 接下来到了比较具体的优化部分，首先从 node 中提取出 `tableHints`,并对语句中的所有 hint 进行处理。完成处理后，如果这里是一个 point plan，函数会直接尝试 `PointGetPlan`来执行当前查询。接着获取 `TxnManager`，尝试`AdviseWarmup，这部分会在对 Txn 的分析里涉及到。
+
+这里接着做了一个`useBinding`的检查，我本来不知道这个是什么，后来查了一下之后发现其实就是去为特定语句绑定查询计划，比如指定索引之类的。这种操作能够人为查询过程中使用的索引，确保查询计划按照预期的方式生成。
+
+接下来最重要的`optimize`方法来了，这个方法就是执行整个优化的关键方法了。首先，语法树节点会`Accept`一个基于当前 session 的 context 生成的`hintProcessor`(这个操作我没太明白是在做什么事情，可以后面再看)，接着，我们从`planBuilderPool`里面取出一个 builder，用于生成逻辑计划，比较有意思的是这里对 builder 使用了`sync.Pool` 进行了复用和保存，`builder`在完成初始化后，会被拿来构建逻辑计划，这里用到`buildLogicalPlan`方法，这里会基于对应语句来构建执行计划。构建后逻辑计划后会执行权限检查，接着会做表锁的检查。通过上述检查后，如果当前 plan 不是逻辑计划，则会直接返回；如果是，则尝试使用瀑布计划器进行优化，找到最优的计划，并返回最佳计划。如果没有开启瀑布计划器，则会调用 `DoOptimize`方法进行优化，并返回最终计划。
+
+上面的`optimize`方法有三个方法需要进一步分析，这三个方法应该就是整个查询优化最核心部分的内容了。
+
+1. `buildLogicalPlan`：基于不同的语句类型构建初始的逻辑计划，涉及的语句比较多。以最基本的`SELECT`语句举例，在构建计划之前会做一些准备工作，比如对语句的检查、是否涉及 join 操作、是否有是`SELECT FOR UPDATE`等等，在构建计划时，先会创建一个基于 `FROM`语句的带有 data source 的 plan，这里面涉及到一些view 的检查、partition 的检查，接着会基于`FROM`的不同数据源构建，如果是一个 table，那么就会去找到一些可能可以使用的索引，作为 `IndexHints`等信息放入`DataSource`中，`DataSource`中还会有一些诸如`Column`、`PossibleAccessPath`等信息，并将其作为 planer 返回，返回后会做一些特定的处理，比如`SORT`、`LIMIT`等。里面的操作相对来说比较详细，后面可能会针对某个语句执行的整个生命周期写一篇文章，这样可能更好理解整个过程。
+2. 瀑布优化器的`FindBestPlan`：
+3. `DoOptimize`：
