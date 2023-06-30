@@ -34,5 +34,58 @@ func Optimize(ctx context.Context, sctx sessionctx.Context, node ast.Node, is in
 上面的`optimize`方法有三个方法需要进一步分析，这三个方法应该就是整个查询优化最核心部分的内容了。
 
 1. `buildLogicalPlan`：基于不同的语句类型构建初始的逻辑计划，涉及的语句比较多。以最基本的`SELECT`语句举例，在构建计划之前会做一些准备工作，比如对语句的检查、是否涉及 join 操作、是否有是`SELECT FOR UPDATE`等等，在构建计划时，先会创建一个基于 `FROM`语句的带有 data source 的 plan，这里面涉及到一些view 的检查、partition 的检查，接着会基于`FROM`的不同数据源构建，如果是一个 table，那么就会去找到一些可能可以使用的索引，作为 `IndexHints`等信息放入`DataSource`中，`DataSource`中还会有一些诸如`Column`、`PossibleAccessPath`等信息，并将其作为 planer 返回，返回后会做一些特定的处理，比如`SORT`、`LIMIT`等。里面的操作相对来说比较详细，后面可能会针对某个语句执行的整个生命周期写一篇文章，这样可能更好理解整个过程。
-2. 瀑布优化器的`FindBestPlan`：
-3. `DoOptimize`：
+2. 瀑布优化器的`FindBestPlan`：这个方法的注释非常完整，我们看起来也比较轻松。下面是注释的内容：
+
+```go
+// FindBestPlan is the optimization entrance of the cascades planner. The
+// optimization is composed of 3 phases: preprocessing, exploration and implementation.
+//
+// ------------------------------------------------------------------------------
+// Phase 1: Preprocessing
+// ------------------------------------------------------------------------------
+//
+// The target of this phase is to preprocess the plan tree by some heuristic
+// rules which should always be beneficial, for example Column Pruning.
+//
+// ------------------------------------------------------------------------------
+// Phase 2: Exploration
+// ------------------------------------------------------------------------------
+//
+// The target of this phase is to explore all the logically equivalent
+// expressions by exploring all the equivalent group expressions of each group.
+//
+// At the very beginning, there is only one group expression in a Group. After
+// applying some transformation rules on certain expressions of the Group, all
+// the equivalent expressions are found and stored in the Group. This procedure
+// can be regarded as searching for a weak connected component in a directed
+// graph, where nodes are expressions and directed edges are the transformation
+// rules.
+//
+// ------------------------------------------------------------------------------
+// Phase 3: Implementation
+// ------------------------------------------------------------------------------
+//
+// The target of this phase is to search the best physical plan for a Group
+// which satisfies a certain required physical property.
+//
+// In this phase, we need to enumerate all the applicable implementation rules
+// for each expression in each group under the required physical property. A
+// memo structure is used for a group to reduce the repeated search on the same
+// required physical property.
+```
+
+- 首先是预处理阶段。在这个阶段会对整个计划树做一个预处理，使用一些启发式规则进行优化，比如列裁剪。（我以为这里有很多优化规则，不过看方法只有一个列裁剪。。）
+- 接着是探索阶段。探索阶段会尝试对每一组表达式的所有等效表达式进行探索。在最开始的时候，一个 group 里面只有一组表达式，在执行一些转换规则之后，我们会找到所有的等效表达式并存入 Group 中。这个过程可以被当做在一个有向图里找一个弱连接组件，在这个图里，节点是表达式，边是各种转换规则。
+- 最后一个阶段是实现阶段，目标是找到一个最优的物理计划。这里会在要求的物理属性下对每一组的每一个表达式都遍历所有可用的实现规则。这里会有一个 memo 结构体，用于减少重复的搜索。
+
+3. `DoOptimize`：这个方法是为了将逻辑计划优化成一个物理计划。这里会应用很多的优化规则，优化规则存储在`optRuleList`里面，我们会在下一篇文章里谈到。
+
+```go
+在数据库领域，逻辑计划（Logical Plan）和物理计划（Physical Plan）是查询执行的两个关键阶段。它们表示了查询在执行过程中的不同层次和优化方式。
+
+逻辑计划是描述查询逻辑操作的计划，它不依赖于具体的执行环境和数据存储方式。逻辑计划通常由查询优化器根据用户提交的查询语句生成，它是对查询语句的语义解析和语义优化的结果。逻辑计划描述了查询的逻辑操作流程，包括涉及的表、连接方式、过滤条件、聚合操作等，但不关注具体的执行细节和物理存储结构。
+
+物理计划是根据逻辑计划和执行环境的具体情况生成的计划，它依赖于具体的数据库系统、存储引擎和硬件设备。物理计划是优化器根据逻辑计划和系统统计信息等综合考虑的结果，它将逻辑计划转化为实际的执行操作。物理计划考虑了具体的执行代价、数据访问路径、索引的选择、并行度等因素，以最优的方式执行查询操作。
+
+总结来说，逻辑计划关注查询的逻辑操作流程和语义，独立于具体的执行环境；而物理计划则将逻辑计划转化为可执行的操作，考虑了具体的执行细节和执行代价。逻辑计划是查询优化的一个关键阶段，它对查询进行了抽象和优化；物理计划则是执行阶段的具体操作计划，它考虑了实际的执行环境和资源情况。
+```
