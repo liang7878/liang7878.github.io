@@ -45,7 +45,7 @@ var optRuleList = []logicalOptRule{
 
 2. columnPruner。这个方法直接没有注释了，但是也很好理解，其实就是修剪语句中不使用的列。
 
-3. resultReorder。 结果重排序，对没有拍寻的结果插入一个排序操作符。（TODO）
+3. resultReorder。 结果重排序，对没有排序的结果插入一个排序操作符，用于对结果进行排序。
 
 ```go
 /*
@@ -65,7 +65,7 @@ This rule reorders results by modifying or injecting a Sort operator:
 */
 ```
 
-4. buildKeySolver。 无注释，不知道是干什么的
+4. buildKeySolver。提取索引信息为 schema 设置对应的 key。这个东西应该是之后会用来决定如何使用索引的，以后看到这个内容可以再回来研究一下。
 
 5. decorrelateSolver。用来将 `apply plan` 转换成 `join plan`
 
