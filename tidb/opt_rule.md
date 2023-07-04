@@ -43,7 +43,7 @@ var optRuleList = []logicalOptRule{
 
 简单来说，这个优化规则是将where、group by、order by或者字段子句中的表达式替换成被索引的虚拟生成列，从而能够使用索引来访问。具体例子可以看注释中的解释，或者mysql 中对[生成列索引优化](https://dev.mysql.com/doc/refman/8.0/en/generated-column-index-optimizations.html)的解释。
 
-2. columnPruner。这个方法直接没有注释了，但是也很好理解，其实就是修剪语句中不使用的列。
+2. columnPruner。这个方法直接没有注释了，但是也很好理解，其实就是列裁剪，对于一些用不到的列，优化过程中可以直接去除，避免多余的 IO 占用。
 
 3. resultReorder。 结果重排序，对没有排序的结果插入一个排序操作符，用于对结果进行排序。
 
@@ -67,7 +67,7 @@ This rule reorders results by modifying or injecting a Sort operator:
 
 4. buildKeySolver。提取索引信息为 schema 设置对应的 key。这个东西应该是之后会用来决定如何使用索引的，以后看到这个内容可以再回来研究一下。
 
-5. decorrelateSolver。用来将 `apply plan` 转换成 `join plan`
+5. decorrelateSolver。用来将 `apply plan` 转换成 `join plan`。这个应该就是关联子查询去关联，说白了就是讲一些能够转换成 join 操作的子查询重写成 join 的形式，好处是可以减少子查询重复执行次数。详细解释可以见https://docs.pingcap.com/zh/tidb/dev/correlated-subquery-optimization
 
 ```markdown
 "Apply plan" 是一个数据库查询优化和执行的概念，用于在查询执行过程中使用嵌套循环连接或半连接操作。
@@ -142,7 +142,7 @@ This rule reorders results by modifying or injecting a Sort operator:
 // If we can eliminate agg successful, we return a projection. Else we return a nil pointer.
 ```
 
-8. skewDistinctAggRewriter。重写 group distinct 聚集函数成两级聚合。可以参考下面注释中的例子来理解。这种优化是为了优化在group key数据偏移的情况下缓解数据偏移。这个规则会被应用于满足以下条件的 query：
+8. skewDistinctAggRewriter。将group distinct 聚集函数重写成两级聚合。可以参考下面注释中的例子来理解。这种优化是为了优化在group key数据偏移的情况下缓解数据偏移。这个规则会被应用于满足以下条件的 query：
     1. 至少有一个 group by的语句
     2. 有且仅有一个 distinct aggregate 函数（仅限于 count、avg 和 sum）
 
@@ -254,7 +254,7 @@ This rule reorders results by modifying or injecting a Sort operator:
 // 2. The stats condition of idx_a can't meet IsFullLoad, which means its stats was evicted previously
 ```
 
-15. aggregationPushDownSolver。聚集函数下推。下面是重要方法的注释：(TODO)
+15. aggregationPushDownSolver。聚集函数下推，下面是重要方法的注释：
 
 ```go
 // tryToPushDownAgg tries to push down an aggregate function into a join path. If all aggFuncs are first row, we won't
@@ -262,16 +262,29 @@ This rule reorders results by modifying or injecting a Sort operator:
 // If the pushed aggregation is grouped by unique key, it's no need to push it down.
 ```
 
-16. deriveTopNFromWindow。这个方法将下推 topN或者 limit操作。 
+16. deriveTopNFromWindow。 从窗口函数中推导 TopN或Limit。按照官方文档中的例子，其实就是通过改写带有窗口函数的语句，减少无意义的排序操作。从下面的例子其实很容易理解这个过程：
+```
+// 改写前
+SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t) dt WHERE rownumber <= 3
+
+// 改写后
+WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t_topN) dt WHERE rownumber <= 3
+```
+可以看出，进行改写之后，原语句中对全表的 sort 操作被简化成一个 sort + limit 操作，极大地节省了资源。
 
 17. predicateSimplification。谓词简化，其实就是对一些谓词语句进行简化。
 
-18. pushDownTopNOptimizer。
+18. pushDownTopNOptimizer。这个方法将下推 topN或者 limit操作。 
+
+上述的几个下推方法其实都是类似的思想，讲一些计算操作或者条件判断尽可能下推到距离数据源近的地方，尽早完成数据的过滤操作，从而减少数据传输和计算的开销。
 
 19. syncWaitStatsLoadPoint。同步等待数据加载。
 
 20. joinReOrderSolver。递归采集 join 组，然后对每个组执行 join 重排序算法。
 
-21. columnPruner。最后再进行一次列修剪，因为前面的列修剪可能会被`buildKeySolver`弄乱。
+21. columnPruner。最后再进行一次列裁剪，因为前面的列裁剪可能会被`buildKeySolver`弄乱。
 
 22. pushDownSequenceSolver。递归执行下推序列。
+
+## Reference
+[1] https://docs.pingcap.com/zh/tidb/dev/sql-logical-optimization

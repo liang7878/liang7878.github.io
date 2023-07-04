@@ -13,10 +13,7 @@ AD 里面存储这各种各样的数据，比如服务器、打印机、网络�
 - AD 的整体结构
 - AD 里有哪些角色
 - AD 的 schema是什么
-- AD 是如何做 replication 的
-- AD 里如何做数据搜索
-- Trust
-- AD 如何作为 DNS 服务器提供服务
+- AD 如何存储和访问数据
 
 ## AD 的整体结构
 
@@ -31,7 +28,7 @@ AD 里面存储这各种各样的数据，比如服务器、打印机、网络�
 
 在 forest 下面还有 domain，domain 可以把 forest 中的数据几家看进一步的分割，这样可以更灵活地控制数据的复制同步，这部分我们在下次可以详细讲一下。而 OU 则可以将 domain 下的资源进一步分割，便于更加灵活的管理。下面这张图是forest、domain、OU 的逻辑结构
 
-![Logical Structure Architecture](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif)
+![Logical Structure Architecture](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/image2s/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif)
 
 ## AD的角色
 通常来讲，一个安装有 AD 服务的windows 服务器就被称为一个 domain controller，简称 DC。正常来说，DC 上面存有其所在 domain下面一个 domain partition的所有数据。事实上一台 DC 可以保存一个或者多个 domain partition。其实有一些DC会扮演特殊的角色，提供一些特殊的功能，主要分两大类，一是 Global Catalog Server，另外就是各种 Operation Master。
@@ -51,12 +48,11 @@ AD 是一个多主数据库，非常灵活，我们可以在 forest 里任何一
 - Infrastructure master。这个角色主要负责更新 object 在跨 domain 对象引用中的 SID 和 DN。
 
 ## AD 的 schema 是什么
-AD 里面的数据是以对象为单位来进行存储的。这些数据都存储以 ESE 为存储引擎的底层存储中。Schema 就是这些对象的格式，我们在存储一个对象之前，需要将这个对象的格式定义在 AD 的 schema 中，每个对象由许多不同的属性组成，比如 name、guid、whenCreated、whenChanged等等。
+AD 里面的数据是以对象为单位来进行存储的。Schema 就是这些对象的格式，我们在存储一个对象之前，需要将这个对象的格式定义在 AD 的 schema 中，每个对象由许多不同的属性组成，比如 name、guid、whenCreated、whenChanged等等。这个有点类似于关系数据库里面对表结构的定义，但是又略有不同。也可以理解为一个 mongoDB，但是里面所有 object 的结构都是预先定义好的。
 
-## AD replication
+## AD 如何存储和访问数据
+AD 使用 LDAP 协议来访问数据，在执行搜索时，通过指定 search base，可以将查询范围限定在层次结构的某个对象之下，通过 LDAP filter可以指定对应的查询条件。
 
-## AD 如何做数据搜索
+AD 的数据存储在 ESE database中，ESE 全称 Extensible Storage Engine(ESE)，也叫 JET Blue。某种程度上，AD 就是一个访问 ESE 数据库的客户端，以存储计算的方式来分层的话，AD 相当于一个计算层，ESE 作为存储层。AD 还会提供 replication 的能力，将数据在一个 forest 内互相复制、同步。从数据库的架构角度来说，AD 属于 Shared Everything 的结构，不同节点之间并不共享任何计算和存储的资源。与 MySQL等其他数据库类似，ESE 底层使用 B+树组织所有的数据。
 
-## 什么是 trust
-
-## DNS 服务
+之后我会写几篇文章详细介绍AD 的复制同步和存储是如何实现的。
