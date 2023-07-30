@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+39062485f9cde0748f5800c20412c345 proto/raft.pb.h

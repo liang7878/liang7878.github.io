@@ -1,0 +1,6 @@
+/Users/liang7878/Source/repos/p10-learning/lab/raft/CMakeFiles/raft_server.dir
+/Users/liang7878/Source/repos/p10-learning/lab/raft/CMakeFiles/edit_cache.dir
+/Users/liang7878/Source/repos/p10-learning/lab/raft/CMakeFiles/rebuild_cache.dir
+/Users/liang7878/Source/repos/p10-learning/lab/raft/proto/CMakeFiles/raft_proto.dir
+/Users/liang7878/Source/repos/p10-learning/lab/raft/proto/CMakeFiles/edit_cache.dir
+/Users/liang7878/Source/repos/p10-learning/lab/raft/proto/CMakeFiles/rebuild_cache.dir
