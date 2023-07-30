@@ -83,4 +83,3 @@ OB 中有多个 Paxos 组，其中一个组负责整个集群的调度、负载�
 
 shared-nothing架构通常在大规模的分布式数据库系统、分布式文件系统和云计算平台等领域得到广泛应用。著名的shared-nothing数据库系统包括Google的Bigtable和Amazon的DynamoDB。这种设计模式对于构建高性能、高可扩展性和高可用性的分布式系统非常有益。
 ```
-
