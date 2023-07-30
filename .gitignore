@@ -10,3 +10,4 @@ package-lock.json
 coverage/
 .tmp*
 .vscode
+.deploy_git/
