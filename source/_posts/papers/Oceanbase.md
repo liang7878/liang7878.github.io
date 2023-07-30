@@ -1,4 +1,9 @@
-# (Paper Reading) Manu: A Cloud Native Vector Database Management System
+---
+title: "(Paper Reading) Manu: A Cloud Native Vector Database Management System"
+tags:
+    - 数据库
+    - Paper Reading
+---
 
 时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。
 
