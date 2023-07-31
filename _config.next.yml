@@ -43,7 +43,7 @@ scheme: Muse
 #scheme: Gemini
 
 # Dark Mode
-darkmode: false
+darkmode: true
 
 
 # ---------------------------------------------------------------
@@ -157,6 +157,7 @@ site_state: true
 social:
   GitHub: https://github.com/liang7878 || fab fa-github
   E-Mail: mailto:liang7878@hotmail.com || fa fa-envelope
+  Zhihu: https://www.zhihu.com/people/shi-cheng-liang-35 || fab fa-zhihu
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
@@ -258,7 +259,7 @@ post_meta:
 # Dependencies: https://github.com/next-theme/hexo-word-counter
 symbols_count_time:
   separated_meta: true
-  item_text_total: false
+  item_text_total: true
 
 # Use icon instead of the symbol # to indicate the tag at the bottom of the post
 tag_icon: false
