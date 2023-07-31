@@ -105,3 +105,11 @@ deploy:
   type: git
   repo: https://github.com/liang7878/liang7878.github.io
   branch: gh-pages
+
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: Trebuchet
+  awl: 4
+  wpm: 275

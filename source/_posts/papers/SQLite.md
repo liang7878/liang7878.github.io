@@ -2,6 +2,7 @@
 title: '(Paper Reading) SQLite: Past, Present, Future'
 date: 2023-07-30 10:10:33
 tags: "Paper Reading"
+categories: "论文阅读"
 ---
 
 # SQLite: Past, Present, Future

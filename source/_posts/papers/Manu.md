@@ -2,6 +2,7 @@
 title: '(Paper Reading) Manu: A Cloud Native Vector Database Management System'
 date: 2023-07-30 10:10:33
 tags: "Paper Reading"
+categories: "论文阅读"
 ---
 
 这篇文章同样是 VLDB 的一篇文章，讲的是云原生向量数据库。
