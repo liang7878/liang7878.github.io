@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
@@ -17,18 +18,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。">
+    <meta name="description" content="时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。 今天这篇文章是还是 VLDB 上的一篇文章，主要讲了 OceanBase 的整体架构和设计经验。主要包括 OceanBase 的设计目标、设计标准、整体架构、关键组件以及相关的设计经验。主要分成下面五个部分，这篇文章也主要从这五个部分来展开：  OB 的设计目标和标准、系统架构、SQL 引擎以及多租户实现 OB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="(Paper Reading) Manu: A Cloud Native Vector Database Management System">
+<meta property="og:title" content="OceanBase: A 707 Million tpmC Distributed Relational Database System">
 <meta property="og:url" content="https://liang7878.github.io/2023/07/30/papers/Oceanbase/index.html">
 <meta property="og:site_name" content="小良的分布式之路">
-<meta property="og:description" content="时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。">
+<meta property="og:description" content="时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。 今天这篇文章是还是 VLDB 上的一篇文章，主要讲了 OceanBase 的整体架构和设计经验。主要包括 OceanBase 的设计目标、设计标准、整体架构、关键组件以及相关的设计经验。主要分成下面五个部分，这篇文章也主要从这五个部分来展开：  OB 的设计目标和标准、系统架构、SQL 引擎以及多租户实现 OB">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liang7878.github.io/images/ob_arch.png">
-<meta property="article:published_time" content="2023-07-30T06:11:37.246Z">
-<meta property="article:modified_time" content="2023-07-30T07:13:12.179Z">
+<meta property="og:image" content="https://liang7878.github.io/images/ob_sql_engine.png">
+<meta property="og:image" content="https://liang7878.github.io/images/ob_replica_type.png">
+<meta property="og:image" content="https://liang7878.github.io/images/ob_paxos.png">
+<meta property="og:image" content="https://liang7878.github.io/images/ob_2pc.png">
+<meta property="article:published_time" content="2023-07-30T14:10:33.000Z">
+<meta property="article:modified_time" content="2023-07-31T17:10:58.357Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="Paper Reading">
@@ -40,10 +45,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/2023/07/30/papers/Oceanbase/","path":"2023/07/30/papers/Oceanbase/","title":"(Paper Reading) Manu: A Cloud Native Vector Database Management System"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/2023/07/30/papers/Oceanbase/","path":"2023/07/30/papers/Oceanbase/","title":"OceanBase: A 707 Million tpmC Distributed Relational Database System"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>(Paper Reading) Manu: A Cloud Native Vector Database Management System | 小良的分布式之路</title>
+<title>OceanBase: A 707 Million tpmC Distributed Relational Database System | 小良的分布式之路</title>
   
 
 
@@ -116,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">整体设计</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">整体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">2.</span> <span class="nav-text">存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%BC%95%E6%93%8E"><span class="nav-number">3.</span> <span class="nav-text">事务处理引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OB-%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">OB 的设计经验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E-NoSQL-%E5%88%B0-NewSQL"><span class="nav-number">4.1.</span> <span class="nav-text">从 NoSQL 到 NewSQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Both-cost-and-performance"><span class="nav-number">4.2.</span> <span class="nav-text">Both cost and performance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%8C%BA%E5%92%8C%E5%88%86%E7%89%87"><span class="nav-number">4.3.</span> <span class="nav-text">分区和分片</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -135,6 +140,11 @@
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
         <span class="site-state-item-count">7</span>
@@ -148,6 +158,9 @@
       </span>
       <span class="links-of-author-item">
         <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
       </span>
   </div>
 
@@ -185,12 +198,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="(Paper Reading) Manu: A Cloud Native Vector Database Management System | 小良的分布式之路">
+      <meta itemprop="name" content="OceanBase: A 707 Million tpmC Distributed Relational Database System | 小良的分布式之路">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          (Paper Reading) Manu: A Cloud Native Vector Database Management System
+          OceanBase: A 707 Million tpmC Distributed Relational Database System
         </h1>
 
         <div class="post-meta-container">
@@ -200,12 +213,42 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-07-30 14:11:37 / 修改时间：15:13:12" itemprop="dateCreated datePublished" datetime="2023-07-30T14:11:37+08:00">2023-07-30</time>
+      <time title="创建时间：2023-07-30 22:10:33" itemprop="dateCreated datePublished" datetime="2023-07-30T22:10:33+08:00">2023-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-01 01:10:58" itemprop="dateModified" datetime="2023-08-01T01:10:58+08:00">2023-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文阅读</span></a>
+        </span>
     </span>
 
   
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
 </div>
 
         </div>
@@ -215,8 +258,6 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。</p>
-<span id="more"></span>
-
 <p>今天这篇文章是还是 VLDB 上的一篇文章，主要讲了 OceanBase 的整体架构和设计经验。主要包括 OceanBase 的设计目标、设计标准、整体架构、关键组件以及相关的设计经验。主要分成下面五个部分，这篇文章也主要从这五个部分来展开：</p>
 <ul>
 <li>OB 的设计目标和标准、系统架构、SQL 引擎以及多租户实现</li>
@@ -225,6 +266,8 @@
 <li>TPC-C benchmark test。这个噱头十足，等下可以仔细看看。</li>
 <li>构建 OB 过程中的设计经验</li>
 </ul>
+<span id="more"></span>
+
 <p>从技术选型来看，OB 使用了分布式数据库系统中常用的一些技术：LSM tree、Paxos等等，当然这部分各种分布式数据库的实现都是大同小异，没有最完美的设计，只有尽可能贴近当前业务场景的Best Practice。</p>
 <p>老规矩看下 chatGPT 怎么说。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">OceanBase是由中国阿里巴巴集团开发的分布式关系型数据库系统。它是阿里巴巴公司的自主研发项目之一，旨在满足其海量数据存储和高并发访问的需求。OceanBase在设计上借鉴了Google的Spanner和F1等分布式数据库系统的一些思想。</span><br><span class="line"></span><br><span class="line">主要特点和优势：</span><br><span class="line"></span><br><span class="line">1. 分布式架构：OceanBase是一个分布式数据库系统，它将数据划分成多个分片并在多台服务器上存储，以实现数据的高可用性和可扩展性。</span><br><span class="line"></span><br><span class="line">2. ACID事务支持：OceanBase支持ACID（原子性、一致性、隔离性和持久性）事务，这意味着它可以保证数据在并发环境下的一致性和完整性。</span><br><span class="line"></span><br><span class="line">3. 高并发读写：作为用于大规模在线服务的数据库系统，OceanBase被设计为能够处理高并发读写请求，满足对海量数据的实时访问需求。</span><br><span class="line"></span><br><span class="line">4. 水平扩展：OceanBase可以通过添加更多的节点来实现水平扩展，以应对数据量和访问量的增长。</span><br><span class="line"></span><br><span class="line">5. 多租户支持：OceanBase支持多租户架构，允许将不同的应用和用户隔离在不同的数据库实例中，提供更好的安全性和资源隔离。</span><br><span class="line"></span><br><span class="line">6. 多数据模型支持：除了关系型数据模型，OceanBase还支持存储非结构化数据和半结构化数据，使其能够适应不同类型的应用场景。</span><br></pre></td></tr></table></figure>
@@ -244,13 +287,33 @@
 </ol>
 <p>为了应对这些挑战，OB 定下了以下的设计标准：原生兼容主流数据库，考虑各种大中小组织的需求。对各种主流数据库的兼容能够降低业务方的迁移成本和学习成本，适用不同规模组织能够最大成都满足各类业务场景的成本和性能要求。</p>
 <p>下面我们来看下基础架构，OB 支持 shared-nothing 架构，如下图所示，这其实是一个很标准的存算分离的架构。应用层发送请求到 proxy 层，由 proxy 层转发到对应的 db 节点，db 节点主要负责计算逻辑，由存储引擎访问底层的存储集群。</p>
-<p><img src="/../images/ob_arch.png" alt="Alt text"></p>
+<p><img src="/images/ob_arch.png" alt="Alt text"></p>
 <p>每个 OB 集群由多个不同的 zone 组成，不同的 zone 可以部署到单个 region 或者多个 region。在单个 zone 内，OB 是以 shared-nothing 的方式来部署的。Database 被切割成多个分片，这些分片是数据分布和负载均衡的基本单元。每个 partition 在每个 zone 都有一个副本，zone 与 zone 之间通过 Paxos 来同步。</p>
 <p>单个 OB 节点和传统的关系型数据库差不多，接收到 SQL语句后，会把语句编译成执行计划，本地计划直接执行，跨节点计划采用两阶段提交来实现，事务提交在 redo log 被持久化到多数的 Paxos 节点后。</p>
 <p>OB 中有多个 Paxos 组，其中一个组负责整个集群的调度、负载均衡、节点管理、失败检测等工作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&quot;Shared-nothing&quot;是一种计算机系统架构和设计模式，主要用于构建分布式系统。在shared-nothing架构中，不同的节点（计算机或服务器）之间不共享任何主要资源，如内存、存储或处理器。每个节点都是独立的、自治的单元，其操作不会影响其他节点。</span><br><span class="line"></span><br><span class="line">主要特点和优势：</span><br><span class="line"></span><br><span class="line">1. 高可伸缩性：由于每个节点都是独立的，shared-nothing架构可以轻松地通过添加更多的节点来扩展整个系统的性能和处理能力。这使得系统能够适应不断增长的数据和用户需求。</span><br><span class="line"></span><br><span class="line">2. 高可用性：由于节点之间不共享资源，一个节点的故障通常不会对其他节点产生影响。这种独立性使得shared-nothing系统具有高度的容错性和可用性。</span><br><span class="line"></span><br><span class="line">3. 简化系统管理：每个节点都是独立的，不需要复杂的资源管理和协调。这样可以降低系统管理的复杂性，简化系统维护和故障排除。</span><br><span class="line"></span><br><span class="line">4. 避免资源竞争：由于节点之间不共享资源，不会出现资源竞争的情况。这可以避免锁和同步等问题，提高系统的并发性能。</span><br><span class="line"></span><br><span class="line">5. 数据分区：在shared-nothing系统中，数据通常被分散存储在不同节点上，每个节点负责管理自己的数据。这种数据分区可以提高系统的负载均衡和查询性能。</span><br><span class="line"></span><br><span class="line">shared-nothing架构通常在大规模的分布式数据库系统、分布式文件系统和云计算平台等领域得到广泛应用。著名的shared-nothing数据库系统包括Google的Bigtable和Amazon的DynamoDB。这种设计模式对于构建高性能、高可扩展性和高可用性的分布式系统非常有益。</span><br></pre></td></tr></table></figure>
 
+<p>SQL引擎是数据库计算层的主要组成部分，SQL 请求到达时，一般会进行语法分析、语义分析、查询重写、查询优化，由执行器来负责执行。如果 SQL 语句涉及到大量的数据，OB 的查询执行引擎则会使用分布式查询执行、数据reshuffle、水平（垂直）并发执行、动态 join filter、动态分区裁剪、全局队列等优化逻辑来执行。</p>
+<p>这里提到了一个优化逻辑，在生成执行计划时，OB 会使用一个轻量框架来进行词法分析，之后会尝试匹配缓存中的执行计划（文中也提到其他数据库也有类似的逻辑），相比普通的解析器而言，这种方式会快 10 倍左右。（这里应该是 bypass 掉了语法和句法检查）下图是 SQL 引擎整体的模块结构：<br><img src="/images/ob_sql_engine.png" alt="SQL Engine"></p>
+<p>模块之间的协作是老生常谈，SQL 引擎接收到 SQL 请求之后，解析器对语句进行分词，安厚按照语法规则进行解析，Resolver 会把解析出来的 token 翻译成不同的对象，生成一个语法树；Transformer 会分析用于 SQL 语句的语义，尝试rule-based or cost-based 的语句重写，重写后交给优化器进行优化，生成最佳的执行计划。执行计划生成之后，执行器就可以开始执行。对于本地的执行计划，执行器仅仅会只会从执行计划顶部的操作者来开始执行，整个过程会在操作者自己逻辑之中完成并返回结果；对于分布式执行计划，执行器会吧执行树且分成多个可调度的 thread，然后通过 RPC 把它们发送到相关节点上来执行。</p>
+<p>接下来是多租户的部分，OB 主要有两类租户：系统租户和普通租户。系统租户主要是维护系统层面的数据表、系统函数和其他系统管理相关的资源。普通租户可以被理解成一个 MySQL 实例，能够能够创建自己的用户、按需创建数据库和数据表、维护自己的元数据、还有独立的系统变量。多租户不仅需要满足逻辑上的隔离，更重要的是资源占用的隔离，简单来说，假如同一台机器上有多个租户，则不能因为某个租户的过度资源占用影响其他租户的使用。OB 里面比较取巧地用了 Docker container，但是文中提到 OB实现了自己的租户隔离，实现了内存、CPU 和数据资源、事务管理的资源隔离。（这里我理解是在 docker 上做了魔改，其实没有什么特别大的魔法）</p>
+<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><p>OB使用的是非常流行的基于 LSM tree的存储引擎，这段的实现是一个非常标准的 LSM tree 实现，没有什么特别神奇的地方。文中提到了一个非对称读写，其实就是对读写配置不同大小的基本单元，读使用小的数据块，写使用大的数据块，这里其实我没太明白，说多个小的数据块能够合并成一个大的数据块，从而优化磁盘利用，以应对更大的写放大。接着就是 LSM tree 的compaction，这里做了一个优化就是只对写操作的数据块做 compaction，其他就是常规的 LSM tree 的 compaction，感觉没有什么特别的地方。OB 里面有多种不同的 replica，包括 full replica、data replica 和 log replica，下面是一个对比表：<br><img src="/images/ob_replica_type.png" alt="Alt text"></p>
+<h2 id="事务处理引擎"><a href="#事务处理引擎" class="headerlink" title="事务处理引擎"></a>事务处理引擎</h2><p>这一段应该说是 OB 主要的卖点了，数据分片是数据分布、负载均衡、Paxos 同步的基本单位。每个数据分片（partition）有一个 Paxos 组，如下图所示：</p>
+<p><img src="/images/ob_paxos.png" alt="Alt text"></p>
+<p>为了提供高可用的时间戳服务，OB 也将 Paxos 利用到了时间戳服务中，Paxos leader 通常位于数据表分片的相同 region 中，向 OB 的节点提供时间戳服务。</p>
+<p>OB 的事务处理使用了一个典型的两阶段提交协议（2PC），两阶段提交可以说是数据库领域基础中的基础了，基础到现在已经都不会有人会在面试中问的程度。我们先复习一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">两阶段提交（Two-Phase Commit，简称2PC）是一种用于确保分布式系统中事务的一致性的协议。在分布式系统中，由于数据存储在不同节点上，跨节点的事务可能会导致数据不一致的问题。为了解决这个问题，2PC协议引入了一个协调者（Coordinator）来协调参与事务的所有节点，以确保事务的原子性和一致性。</span><br><span class="line"></span><br><span class="line">2PC协议的执行过程通常分为两个阶段：</span><br><span class="line"></span><br><span class="line">阶段一（Prepare 阶段）：</span><br><span class="line">1. 协调者向所有参与者（Participants）发送事务请求，并询问是否可以执行该事务。</span><br><span class="line">2. 参与者在接收到事务请求后，执行预备（Prepare）操作，检查自己的事务执行是否会成功，并将结果反馈给协调者。</span><br><span class="line"></span><br><span class="line">阶段二（Commit 阶段）：</span><br><span class="line">1. 协调者根据阶段一的反馈结果来决定是否提交事务。</span><br><span class="line">2. 如果所有参与者都返回了“可以执行”（Prepare成功），则协调者发送“提交”指令给所有参与者。</span><br><span class="line">3. 参与者在接收到“提交”指令后，正式执行事务，并将事务执行结果反馈给协调者。</span><br><span class="line"></span><br><span class="line">如果在任何阶段出现了问题，协调者将发送“中止”指令给所有参与者，参与者将回滚之前的操作，确保数据的一致性。</span><br><span class="line"></span><br><span class="line">2PC协议的优点在于保证了分布式系统中的事务一致性，即要么所有节点都成功提交事务，要么所有节点都回滚事务。然而，它也存在一些缺点，主要包括：</span><br><span class="line"></span><br><span class="line">1. 阻塞：2PC中的阶段二需要所有节点的参与者都处于可用状态，如果有任何一个节点出现故障或网络延迟，整个协议都会被阻塞，影响系统的性能和可用性。</span><br><span class="line"></span><br><span class="line">2. 单点故障：2PC协议中的协调者是单点，如果协调者发生故障，整个事务可能无法继续执行。</span><br><span class="line"></span><br><span class="line">3. 性能：由于需要等待所有参与者的响应，2PC的性能较低，特别是在大规模系统中。</span><br><span class="line"></span><br><span class="line">为了克服2PC协议的一些缺点，出现了其他分布式事务协议，如三阶段提交（3PC）和Paxos算法等，这些协议在一致性和性能方面做了不同程度的权衡。在实际应用中，需要根据具体的场景和需求来选择合适的分布式事务协议。</span><br></pre></td></tr></table></figure>
 
+<p>OB 把 Paxos 引入到两阶段提交中，如下图所示，在 OB 中，每个 2PC 的参与者都有一个 Paxos集群，在 2PC 过程中，如果某个参与者 fail 了，它可以直接切到自己的另一个 replica。这里还提到了一个优化，在传统 2PC 中，需要所有的参与者提交完成才能够返回提交成功，但是在OB 中，由于 Paxos 保证了参与者数据状态的可用性，OB 就可以在 Prepare 阶段完成之后就向 caller 返回成功，又 OB自己异步的完成 commit 阶段的工作。OB 支持读已提交和快照隔离的事务隔离级别。</p>
+<p><img src="/images/ob_2pc.png" alt="Alt text"></p>
+<h2 id="OB-的设计经验"><a href="#OB-的设计经验" class="headerlink" title="OB 的设计经验"></a>OB 的设计经验</h2><p>论文中总结了几个 OB 的设计经验，具体内容如下：</p>
+<h3 id="从-NoSQL-到-NewSQL"><a href="#从-NoSQL-到-NewSQL" class="headerlink" title="从 NoSQL 到 NewSQL"></a>从 NoSQL 到 NewSQL</h3><ol>
+<li>业务应用需要充分利用数据库本身的能力，而不应该简单地把数据库当作 KV 存储来使用</li>
+<li>存储过程对OLTP应用仍然具有价值</li>
+<li>分布式场景下，每个 SQL 查询和事务都应该设置超市，避免无限等待造成死锁</li>
+</ol>
+<h3 id="Both-cost-and-performance"><a href="#Both-cost-and-performance" class="headerlink" title="Both cost and performance"></a>Both cost and performance</h3><p>LSM tree 的架构天生适合进行数据压缩，数据压缩在付出一定程度 CPU 损耗的前提下能够大量减少存储所消耗的资源，甚至在 OLTP 场景下，数据压缩编码能够带来更好的 缓存命中率和 更低的 IO 开销。这里提到支付宝从 Oracle 迁移到 OB，整个数据量从 100TB 降到了 33TB</p>
+<h3 id="分区和分片"><a href="#分区和分片" class="headerlink" title="分区和分片"></a>分区和分片</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Partitioning（分区）和Sharding（分片）都是用于处理大规模数据的方法，它们在分布式系统中被广泛使用，但它们在具体的概念和实现上有一些区别。</span><br><span class="line"></span><br><span class="line">Partitioning（分区）：</span><br><span class="line">分区是将数据划分成更小的逻辑单元，称为分区或分片。每个分区通常包含一部分数据，这样可以将大规模的数据集分解成管理较小的单元，使得数据的存储和处理更加高效。分区可以根据数据的某种属性或键值进行，以确保相关的数据存储在同一个分区中，从而提高查询性能和数据访问的效率。分区可以在单个服务器上实现，也可以在分布式系统中使用。</span><br><span class="line"></span><br><span class="line">Sharding（分片）：</span><br><span class="line">分片是将数据水平拆分成多个独立的数据集，每个数据集称为一个分片。每个分片都存储着部分数据，并且在分布式系统中通常被分布在不同的服务器上。通过分片，可以将大规模的数据集分散到多个节点上，从而实现数据的分布式存储和处理。分片可以基于不同的策略进行，如哈希分片、范围分片等，目的是平衡数据的负载并实现数据的水平扩展。</span><br><span class="line"></span><br><span class="line">区别：</span><br><span class="line">1. 数据范围：</span><br><span class="line">   - 分区是将数据划分为逻辑单元，通常是为了管理大规模数据集，可以在单个服务器或数据库中实现。</span><br><span class="line">   - 分片是将数据水平拆分为多个独立数据集，通常用于在分布式系统中分散数据存储，实现水平扩展。</span><br><span class="line"></span><br><span class="line">2. 存储方式：</span><br><span class="line">   - 分区通常是逻辑上的划分，并没有实际分散数据存储的概念。</span><br><span class="line">   - 分片是实际将数据分散存储在不同的节点或服务器上。</span><br><span class="line"></span><br><span class="line">3. 目的：</span><br><span class="line">   - 分区旨在提高数据管理和处理的效率，减少数据访问的负担。</span><br><span class="line">   - 分片旨在实现数据的分布式存储，以支持大规模和高并发的应用需求。</span><br><span class="line"></span><br><span class="line">虽然Partitioning和Sharding在某些情况下可以用来指代相似的概念，但在分布式系统的背景下，它们通常代表了不同的数据处理和管理策略。</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -267,14 +330,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/07/30/interview/%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%AD%E7%9A%84%E9%99%90%E6%B5%81%E6%96%B9%E6%A1%88/" rel="prev" title="生产环境中的限流方案 -- 如果让你设计一个请求限流器，你会怎么做？">
-                  <i class="fa fa-chevron-left"></i> 生产环境中的限流方案 -- 如果让你设计一个请求限流器，你会怎么做？
+                <a href="/2023/07/30/tidb/optimize/" rel="prev" title="TiDB 查询计划优化，Optimize 是怎么实现的">
+                  <i class="fa fa-chevron-left"></i> TiDB 查询计划优化，Optimize 是怎么实现的
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/07/30/tidb/optimize/" rel="next" title="TiDB 查询计划优化，Optimize 是怎么实现的">
-                  TiDB 查询计划优化，Optimize 是怎么实现的 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -300,6 +360,22 @@
     </span>
     <span class="author" itemprop="copyrightHolder">Chengliang</span>
   </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">38k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:17</span>
+  </span>
+</div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
 
