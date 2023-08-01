@@ -32,8 +32,9 @@
 <meta property="og:image" content="https://liang7878.github.io/images/ob_replica_type.png">
 <meta property="og:image" content="https://liang7878.github.io/images/ob_paxos.png">
 <meta property="og:image" content="https://liang7878.github.io/images/ob_2pc.png">
+<meta property="og:image" content="https://liang7878.github.io/images/ob_evo.png">
 <meta property="article:published_time" content="2023-07-30T14:10:33.000Z">
-<meta property="article:modified_time" content="2023-08-01T16:22:25.620Z">
+<meta property="article:modified_time" content="2023-08-01T17:32:13.655Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="Paper Reading">
@@ -124,7 +125,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">整体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">2.</span> <span class="nav-text">存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%BC%95%E6%93%8E"><span class="nav-number">3.</span> <span class="nav-text">事务处理引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OB-%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">OB 的设计经验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E-NoSQL-%E5%88%B0-NewSQL"><span class="nav-number">4.1.</span> <span class="nav-text">从 NoSQL 到 NewSQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Both-cost-and-performance"><span class="nav-number">4.2.</span> <span class="nav-text">Both cost and performance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%8C%BA%E5%92%8C%E5%88%86%E7%89%87"><span class="nav-number">4.3.</span> <span class="nav-text">分区和分片</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">整体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">2.</span> <span class="nav-text">存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%BC%95%E6%93%8E"><span class="nav-number">3.</span> <span class="nav-text">事务处理引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OB-%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">OB 的设计经验</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +225,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-02 00:22:25" itemprop="dateModified" datetime="2023-08-02T00:22:25+08:00">2023-08-02</time>
+      <time title="修改时间：2023-08-02 01:32:13" itemprop="dateModified" datetime="2023-08-02T01:32:13+08:00">2023-08-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -243,14 +244,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.7k</span>
+      <span>5.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>17 分钟</span>
+      <span>19 分钟</span>
     </span>
 </div>
 
@@ -280,8 +281,9 @@
 <ul>
 <li>支持在商品级硬件上快速伸缩，满足高性能和低成本的要求（这主要是因为 Oracle 真的太贵，卡脖子了）</li>
 <li>跨区域部署和错误容忍，说白了就是要高可用。</li>
-<li>兼容主流数据库（因为不兼容的话业务方就不想迁移过来了）<br>整体来说，这几个设计目标很符合当时的时代背景。</li>
+<li>兼容主流数据库（因为不兼容的话业务方就不想迁移过来了）</li>
 </ul>
+<p>整体来说，这几个设计目标很符合当时的业务背景。</p>
 <p>接着是设计标准，对于一个新的数据库而言，总要面临以下挑战：</p>
 <ol>
 <li>业务的迁移成本和风险</li>
@@ -310,13 +312,35 @@
 <p>OB 把 Paxos 引入到两阶段提交中，如下图所示，在 OB 中，每个 2PC 的参与者都有一个 Paxos集群，在 2PC 过程中，如果某个参与者 fail 了，它可以直接切到自己的另一个 replica。这里还提到了一个优化，在传统 2PC 中，需要所有的参与者提交完成才能够返回提交成功，但是在OB 中，由于 Paxos 保证了参与者数据状态的可用性，OB 就可以在 Prepare 阶段完成之后就向 caller 返回成功，又 OB自己异步的完成 commit 阶段的工作。OB 支持读已提交和快照隔离的事务隔离级别。</p>
 <p><img src="/images/ob_2pc.png" alt="Alt text"></p>
 <h2 id="OB-的设计经验"><a href="#OB-的设计经验" class="headerlink" title="OB 的设计经验"></a>OB 的设计经验</h2><p>论文中总结了几个 OB 的设计经验，具体内容如下：</p>
-<h3 id="从-NoSQL-到-NewSQL"><a href="#从-NoSQL-到-NewSQL" class="headerlink" title="从 NoSQL 到 NewSQL"></a>从 NoSQL 到 NewSQL</h3><ol>
+<ol>
+<li><p>从 NoSQL 到 NewSQL</p>
+<ol>
 <li>业务应用需要充分利用数据库本身的能力，而不应该简单地把数据库当作 KV 存储来使用</li>
 <li>存储过程对OLTP应用仍然具有价值</li>
-<li>分布式场景下，每个 SQL 查询和事务都应该设置超市，避免无限等待造成死锁</li>
+<li>分布式场景下，每个 SQL 查询和事务都应该设置超时，避免无限等待造成死锁</li>
 </ol>
-<h3 id="Both-cost-and-performance"><a href="#Both-cost-and-performance" class="headerlink" title="Both cost and performance"></a>Both cost and performance</h3><p>LSM tree 的架构天生适合进行数据压缩，数据压缩在付出一定程度 CPU 损耗的前提下能够大量减少存储所消耗的资源，甚至在 OLTP 场景下，数据压缩编码能够带来更好的 缓存命中率和 更低的 IO 开销。这里提到支付宝从 Oracle 迁移到 OB，整个数据量从 100TB 降到了 33TB</p>
-<h3 id="分区和分片"><a href="#分区和分片" class="headerlink" title="分区和分片"></a>分区和分片</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Partitioning（分区）和Sharding（分片）都是用于处理大规模数据的方法，它们在分布式系统中被广泛使用，但它们在具体的概念和实现上有一些区别。</span><br><span class="line"></span><br><span class="line">Partitioning（分区）：</span><br><span class="line">分区是将数据划分成更小的逻辑单元，称为分区或分片。每个分区通常包含一部分数据，这样可以将大规模的数据集分解成管理较小的单元，使得数据的存储和处理更加高效。分区可以根据数据的某种属性或键值进行，以确保相关的数据存储在同一个分区中，从而提高查询性能和数据访问的效率。分区可以在单个服务器上实现，也可以在分布式系统中使用。</span><br><span class="line"></span><br><span class="line">Sharding（分片）：</span><br><span class="line">分片是将数据水平拆分成多个独立的数据集，每个数据集称为一个分片。每个分片都存储着部分数据，并且在分布式系统中通常被分布在不同的服务器上。通过分片，可以将大规模的数据集分散到多个节点上，从而实现数据的分布式存储和处理。分片可以基于不同的策略进行，如哈希分片、范围分片等，目的是平衡数据的负载并实现数据的水平扩展。</span><br><span class="line"></span><br><span class="line">区别：</span><br><span class="line">1. 数据范围：</span><br><span class="line">   - 分区是将数据划分为逻辑单元，通常是为了管理大规模数据集，可以在单个服务器或数据库中实现。</span><br><span class="line">   - 分片是将数据水平拆分为多个独立数据集，通常用于在分布式系统中分散数据存储，实现水平扩展。</span><br><span class="line"></span><br><span class="line">2. 存储方式：</span><br><span class="line">   - 分区通常是逻辑上的划分，并没有实际分散数据存储的概念。</span><br><span class="line">   - 分片是实际将数据分散存储在不同的节点或服务器上。</span><br><span class="line"></span><br><span class="line">3. 目的：</span><br><span class="line">   - 分区旨在提高数据管理和处理的效率，减少数据访问的负担。</span><br><span class="line">   - 分片旨在实现数据的分布式存储，以支持大规模和高并发的应用需求。</span><br><span class="line"></span><br><span class="line">虽然Partitioning和Sharding在某些情况下可以用来指代相似的概念，但在分布式系统的背景下，它们通常代表了不同的数据处理和管理策略。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Both cost and performance</p>
+<p> LSM tree 的架构天生适合进行数据压缩，数据压缩在付出一定程度 CPU 损耗的前提下能够大量减少存储所消耗的资源，甚至在 OLTP 场景下，数据压缩编码能够带来更好的 缓存命中率和 更低的 IO 开销。这里提到支付宝从 Oracle 迁移到 OB，整个数据量从 100TB 降到了 33TB</p>
+</li>
+<li><p>分区和分片</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Partitioning（分区）和Sharding（分片）都是用于处理大规模数据的方法，它们在分布式系统中被广泛使用，但它们在具体的概念和实现上有一些区别。</span><br><span class="line"></span><br><span class="line">Partitioning（分区）：</span><br><span class="line">分区是将数据划分成更小的逻辑单元，称为分区或分片。每个分区通常包含一部分数据，这样可以将大规模的数据集分解成管理较小的单元，使得数据的存储和处理更加高效。分区可以根据数据的某种属性或键值进行，以确保相关的数据存储在同一个分区中，从而提高查询性能和数据访问的效率。分区可以在单个服务器上实现，也可以在分布式系统中使用。</span><br><span class="line"></span><br><span class="line">Sharding（分片）：</span><br><span class="line">分片是将数据水平拆分成多个独立的数据集，每个数据集称为一个分片。每个分片都存储着部分数据，并且在分布式系统中通常被分布在不同的服务器上。通过分片，可以将大规模的数据集分散到多个节点上，从而实现数据的分布式存储和处理。分片可以基于不同的策略进行，如哈希分片、范围分片等，目的是平衡数据的负载并实现数据的水平扩展。</span><br><span class="line"></span><br><span class="line">区别：</span><br><span class="line">1. 数据范围：</span><br><span class="line">- 分区是将数据划分为逻辑单元，通常是为了管理大规模数据集，可以在单个服务器或数据库中实现。</span><br><span class="line">- 分片是将数据水平拆分为多个独立数据集，通常用于在分布式系统中分散数据存储，实现水平扩展。</span><br><span class="line"></span><br><span class="line">2. 存储方式：</span><br><span class="line">- 分区通常是逻辑上的划分，并没有实际分散数据存储的概念。</span><br><span class="line">- 分片是实际将数据分散存储在不同的节点或服务器上。</span><br><span class="line"></span><br><span class="line">3. 目的：</span><br><span class="line">- 分区旨在提高数据管理和处理的效率，减少数据访问的负担。</span><br><span class="line">- 分片旨在实现数据的分布式存储，以支持大规模和高并发的应用需求。</span><br><span class="line"></span><br><span class="line">虽然Partitioning和Sharding在某些情况下可以用来指代相似的概念，但在分布式系统的背景下，它们通常代表了不同的数据处理和管理策略。</span><br></pre></td></tr></table></figure>
+
+<p>  这里着重提了一下分区和分片的区别，从文中的介绍来看，分区具有逻辑性，比如基于 column 分区，而分片则完全依赖于 hash，不存在逻辑上的区分。相比分片，分区主要有以下好处：</p>
+<ol>
+<li>优化使用。分区不可用并不意味着对象不可用，查询优化器可以自动将无法引用的分区移除。其实这句话很 confusing，我的理解是，比如在基于列分区的场景下，有些列不可访问并不会影响不涉及这些列的查询。但是直接通过哈希分片则无法满足这个要求。</li>
+<li>更方便地管理对象。分区可以分别管理，各类 DDL 语句可以在分区上执行。</li>
+<li>减少资源争用，我的理解是分区是基于逻辑关系来切分的，所以相对应的共享资源争用就会少一些。</li>
+<li>优化查询性能，分区键可以一定程度上实现数据过滤。</li>
+<li>优化负载均衡。逻辑分区的好处是可以基于业务场景进行数据的均衡存储，直接简单的哈希分片则无法优化单点过热的问题。</li>
+</ol>
+</li>
+<li><p>互联网公司和非互联网公司<br> 互联网公司面临更多的高并发场景，所以对数据库产品的性能需求会高很多，OB 避免传统数据库的一次性升级，转而采用灰度升级的方式来削弱风险。其实这个地方的描述有点灌水的感觉了，现在只要是大规模集群，基本都会采用灰度发布的方式。当然，不排除还有一些传统公司仍然使用单点数据库服务。</p>
+</li>
+</ol>
+<p>下图是 OB 的演进历史，大家可以看一下，以作了解：<br><img src="/images/ob_evo.png" alt="Alt text"></p>
+<p>文中还描述了 OB 做的 TPC-C 实验的具体数据，感兴趣的同学可以看看原文。</p>
+
     </div>
 
     
@@ -376,7 +400,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:17</span>
+    <span title="站点阅读时长">2:19</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
