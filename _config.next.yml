@@ -467,16 +467,16 @@ font:
 
 # If true, site-subtitle will be added to the title of index page.
 # Remember to set up your site-subtitle in Hexo `_config.yml` (e.g. subtitle: Subtitle)
-index_with_subtitle: false
+index_with_subtitle: true
 
 # Automatically add external URL with Base64 encrypt & decrypt.
-exturl: false
+exturl: true
 # If true, an icon will be attached to each external URL
 exturl_icon: true
 
 # Google Webmaster tools verification.
 # See: https://developers.google.com/search
-google_site_verification:
+google_site_verification: DUnFGSduBfJ_Bj_Ef5LbAox1KnU81nRkpqBVIsCkmd0
 
 # Bing Webmaster tools verification.
 # See: https://www.bing.com/webmasters
