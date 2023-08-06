@@ -1,10 +1,11 @@
 ---
 title: TiDB 查询计划优化，Optimize 是怎么实现的
 tags:
-    - TiDB
-    - 数据库
-    - 源码分析
-categories: "源码分析"
+  - TiDB
+  - 数据库
+  - 源码分析
+categories: 源码分析
+abbrlink: a76f0ffc
 ---
 
 查询优化器可以说是 DBMS 的灵魂模块了，这篇文章会简单讲一下 TiDB 的查询优化模块，从`planner/optimize.go`的 `Optimize`方法出发，逐步拆解 TiDB 查询优化的整个过程。

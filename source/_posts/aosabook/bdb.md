@@ -1,8 +1,9 @@
 ---
 title: Berkeley DB -- 软件设计的十点经验
 tags:
-    - TBD
-categories: "技术书籍"
+  - TBD
+categories: 技术书籍
+abbrlink: b13c4ce6
 ---
 
 ### 设计经验一 -- 软件必须被设计为多个有边界的互相协作的模块

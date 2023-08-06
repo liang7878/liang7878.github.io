@@ -1,10 +1,11 @@
 ---
-title: "OceanBase: A 707 Million tpmC Distributed Relational Database System"
-date: 2023-07-30 22:10:33
+title: 'OceanBase: A 707 Million tpmC Distributed Relational Database System'
 tags:
-    - 数据库
-    - Paper Reading
-categories: "论文阅读"
+  - 数据库
+  - Paper Reading
+categories: 论文阅读
+abbrlink: a536f4da
+date: 2023-07-30 22:10:33
 ---
 
 时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。

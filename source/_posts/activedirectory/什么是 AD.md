@@ -1,8 +1,9 @@
 ---
 title: Active Directory 介绍
 tags:
-    - 数据库
-categories: " 工作分享"
+  - 数据库
+categories: ' 工作分享'
+abbrlink: 1f41e82f
 ---
 
 其实我们真的是个数据库。
