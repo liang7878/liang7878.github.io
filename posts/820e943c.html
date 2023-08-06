@@ -24,22 +24,22 @@
     <meta name="description" content="这是一个经久不衰的题目，不管你是校招新人还是资深大牛，面试过程中都有可能被问到这个问题，这篇文章会梳理一下常见的数据结构和排序算法，以及相关操作的时间复杂度和空间复杂度。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="你知道哪些数据结构？他们的时间复杂度和空间复杂度是多少？">
-<meta property="og:url" content="https://liang7878.github.io/2023/07/30/interview/%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/index.html">
+<meta property="og:url" content="https://liang7878.github.io/posts/820e943c.html">
 <meta property="og:site_name" content="小良的分布式之路">
 <meta property="og:description" content="这是一个经久不衰的题目，不管你是校招新人还是资深大牛，面试过程中都有可能被问到这个问题，这篇文章会梳理一下常见的数据结构和排序算法，以及相关操作的时间复杂度和空间复杂度。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-07-30T06:11:37.245Z">
-<meta property="article:modified_time" content="2023-07-30T14:41:02.743Z">
+<meta property="article:published_time" content="2023-08-01T16:22:03.268Z">
+<meta property="article:modified_time" content="2023-08-06T14:54:48.523Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="技术杂谈">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://liang7878.github.io/2023/07/30/interview/%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+<link rel="canonical" href="https://liang7878.github.io/posts/820e943c.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/2023/07/30/interview/%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/","path":"2023/07/30/interview/常见数据结构的时间复杂度和空间复杂度/","title":"你知道哪些数据结构？他们的时间复杂度和空间复杂度是多少？"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/820e943c.html","path":"posts/820e943c.html","title":"你知道哪些数据结构？他们的时间复杂度和空间复杂度是多少？"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>你知道哪些数据结构？他们的时间复杂度和空间复杂度是多少？ | 小良的分布式之路</title>
@@ -81,7 +81,7 @@
       <p class="site-title">小良的分布式之路</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">一个后端程序员的分布式之路，学习各种后端技术</p>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
   </div>
 
   <div class="site-nav-right">
@@ -127,7 +127,7 @@
     <img class="site-author-image" itemprop="image" alt="Chengliang"
       src="/images/avatar.png">
   <p class="site-author-name" itemprop="name">Chengliang</p>
-  <div class="site-description" itemprop="description">事业常成于坚忍，毁于浮躁</div>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路</div>
 </div>
 <div class="site-state-wrap animated">
   <nav class="site-state">
@@ -163,6 +163,10 @@
 
         </div>
       </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
     </div>
 
     
@@ -182,7 +186,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/2023/07/30/interview/%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/820e943c.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -191,7 +195,7 @@
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="事业常成于坚忍，毁于浮躁">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -210,9 +214,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-07-30 14:11:37 / 修改时间：22:41:02" itemprop="dateCreated datePublished" datetime="2023-07-30T14:11:37+08:00">2023-07-30</time>
+      <time title="创建时间：2023-08-02 00:22:03" itemprop="dateCreated datePublished" datetime="2023-08-02T00:22:03+08:00">2023-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-06 22:54:48" itemprop="dateModified" datetime="2023-08-06T22:54:48+08:00">2023-08-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -570,10 +580,10 @@
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> 归并插入排序（Merge Insertion Sort）是一种结合了归并排序和插入排序思想的排序算法。它利用了归并排序在处理大规模数据时的高效性能，同时又利用了插入排序在小规模数据上的优势。</span><br><span class="line"></span><br><span class="line"><span class="code">    归并插入排序的基本思想是：对于待排序的数组，首先将数组分割成较小的子数组，然后对每个子数组使用插入排序进行排序，最后再使用归并操作将子数组合并成一个有序的数组。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    具体步骤如下：</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="bullet">        1.</span> 初始状态下，将待排序数组分割成多个较小的子数组（通常是递归地将数组分成两半）。</span><br><span class="line"><span class="bullet">        2.</span> 对每个子数组应用插入排序算法进行排序。当子数组的长度小于等于一定阈值时，切换到插入排序算法。</span><br><span class="line"><span class="bullet">        3.</span> 合并操作：通过不断合并相邻的有序子数组，将子数组合并成一个有序的数组。这一过程类似于归并排序中的合并操作。</span><br><span class="line"></span><br><span class="line"><span class="code">    归并插入排序的关键在于确定合适的子数组大小，通常当子数组的长度小于一定阈值时，切换到插入排序算法。因为插入排序对于小规模数据具有较好的性能，而归并排序在大规模数据上具有较好的性能。通过合理划分子数组大小，可以在排序过程中充分利用两种排序算法的优势。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    归并插入排序算法的时间复杂度为O(n log n)，其中n为待排序数组的长度。由于归并排序和插入排序的时间复杂度都是O(n log n)和O(n^2)级别，归并插入排序在实际应用中的性能与具体实现和问题规模有关。它适用于各种数据分布情况下的排序需求，并且在实践中往往能够提供较好的性能和稳定性。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="bullet">2.</span> 桶排序（Bucket Sort）是一种排序算法，它将待排序的元素分到不同的桶（或称为容器）中，然后对每个桶中的元素分别进行排序，最后将各个桶中的元素按顺序合并得到有序的结果。</span><br><span class="line"></span><br><span class="line"><span class="code">    桶排序的基本思想是将待排序的元素均匀地分布到若干个桶中，每个桶内部使用一个较快的排序算法（如插入排序、快速排序等）对元素进行排序。具体的步骤如下：</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="bullet">        1.</span> 确定桶的数量和范围：根据待排序元素的分布情况，确定桶的数量，可以是固定的数量，也可以根据元素的范围动态确定。</span><br><span class="line"><span class="bullet">        2.</span> 将元素分配到桶中：遍历待排序的元素，根据元素的值将其分配到相应的桶中。</span><br><span class="line"><span class="bullet">        3.</span> 对每个桶中的元素进行排序：对每个桶内部的元素使用一个较快的排序算法进行排序，可以选择插入排序、快速排序等。</span><br><span class="line"><span class="bullet">        4.</span> 合并桶中的元素：按照桶的顺序，将每个桶中的元素按顺序合并成一个有序的结果数组。</span><br><span class="line"></span><br><span class="line"><span class="code">    桶排序的时间复杂度取决于分配到桶中的元素的分布情况，以及每个桶内部排序算法的选择。在最理想的情况下，当元素均匀分布在不同的桶中，并且每个桶内部的排序时间复杂度为O(nlogn)时，桶排序的时间复杂度可以达到O(n)。然而，在某些情况下，如果元素分布不均匀，可能会导致较大的空间复杂度或较长的排序时间。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    桶排序适用于待排序元素分布较均匀的情况，尤其适合外部排序，即待排序元素无法全部加载到内存中。在实践中，可以根据具体应用场景和数据特点选择合适的桶排序算法的实现方式和参数设置。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="bullet">3.</span> 立方体排序（Cube Sort），也称为三维排序或多关键字排序，是一种用于对具有多个关键字的记录进行排序的算法。它在三维空间中对记录进行排序，每个记录具有三个关键字，分别对应三个维度。</span><br><span class="line"></span><br><span class="line"><span class="code">    立方体排序的基本思想是通过多次应用稳定的排序算法，先按照一个维度对记录进行排序，然后按照另一个维度对已排序的记录进行排序，依此类推，直到所有关键字都按照指定顺序排列为止。可以类比为将记录组成一个立方体，按照某个维度逐层进行切割和排序。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    具体步骤如下：</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="bullet">        1.</span> 确定排序顺序：确定按照哪个维度的关键字先进行排序，然后依次确定其他维度的排序顺序。</span><br><span class="line"><span class="bullet">        2.</span> 应用稳定的排序算法：按照确定的顺序依次对记录进行稳定的排序，通常使用的排序算法有插入排序、冒泡排序、归并排序等。</span><br><span class="line"><span class="bullet">        3.</span> 重复步骤2：对已排序的记录再次按照下一个维度的关键字进行排序，直到所有关键字都按照指定顺序排列。</span><br><span class="line"></span><br><span class="line"><span class="code">    立方体排序的时间复杂度取决于所使用的稳定排序算法的复杂度和记录的数量。如果记录的数量为n，每个维度的排序所使用的算法复杂度为O(f(n))，那么立方体排序的总时间复杂度为O(d * f(n))，其中d为关键字的维度。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    立方体排序适用于多关键字排序的情况，特别适合于具有三个或更多关键字的记录的排序。它可以保持记录之间的相对顺序，并根据每个关键字的重要性进行排序。然而，立方体排序在维度较高和记录数量较大时，可能会面临性能和空间上的挑战。在实际应用中，可以根据具体情况选择合适的排序算法和优化策略。</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://www.bigocheatsheet.com/">Big-O Cheat Sheet</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Splay_tree">Splay tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/K-d_tree">K-d tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://chat.openai.com/">ChatGPT</a></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlnb2NoZWF0c2hlZXQuY29tLw==">Big-O Cheat Sheet<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvU3BsYXlfdHJlZQ==">Splay tree<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSy1kX3RyZWU=">K-d tree<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jaGF0Lm9wZW5haS5jb20v">ChatGPT<i class="fa fa-external-link-alt"></i></span></li>
 </ol>
 
     </div>
@@ -591,13 +601,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/07/30/interview/etcd%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-raft/" rel="prev" title="etcd 源码分析 - Raft 是如何实现的">
-                  <i class="fa fa-chevron-left"></i> etcd 源码分析 - Raft 是如何实现的
+                <a href="/posts/8a34612.html" rel="prev" title="AD的 replication">
+                  <i class="fa fa-chevron-left"></i> AD的 replication
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/07/30/aosabook/bdb/" rel="next" title="Berkeley DB -- 软件设计的十点经验">
-                  Berkeley DB -- 软件设计的十点经验 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/40b3bac4.html" rel="next" title="etcd 源码分析 - Raft 是如何实现的">
+                  etcd 源码分析 - Raft 是如何实现的 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -654,10 +664,9 @@
     <span class="toggle-line"></span>
   </div>
   <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -682,7 +691,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e63051154e92c276f51906286a64a6f9"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"88c4fbb3ce616a809ce65344a91fcea1"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
