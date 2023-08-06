@@ -1,6 +1,7 @@
 ---
 title: ESE 源码分析
 tags:
-    - TBD
-categories: " 工作分享"
+  - TBD
+categories: ' 工作分享'
+abbrlink: edcfded2
 ---
