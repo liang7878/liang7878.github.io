@@ -132,7 +132,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -175,6 +175,108 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/b13c4ce6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/b13c4ce6.html" class="post-title-link" itemprop="url">Berkeley DB -- 软件设计的十点经验</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-06 23:10:28" itemprop="dateCreated datePublished" datetime="2023-08-06T23:10:28+08:00">2023-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="设计经验一-–-软件必须被设计为多个有边界的互相协作的模块"><a href="#设计经验一-–-软件必须被设计为多个有边界的互相协作的模块" class="headerlink" title="设计经验一 – 软件必须被设计为多个有边界的互相协作的模块"></a>设计经验一 – 软件必须被设计为多个有边界的互相协作的模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">It is vital for any complex software package&#x27;s testing and maintenance that the software be designed and built as a cooperating set of modules with well-defined API boundaries. The boundaries can (and should!) shift as needs dictate, but they always need to be there. The existence of those boundaries prevents the software from becoming an unmaintainable pile of spaghetti. Butler Lampson once said that all problems in computer science can be solved by another level of indirection. More to the point, when asked what it meant for something to be object-oriented, Lampson said it meant being able to have multiple implementations behind an API. The Berkeley DB design and implementation embody this approach of permitting multiple implementations behind a common interface, providing an object-oriented look and feel, even though the library is written in C.</span><br></pre></td></tr></table></figure>
+<p>对于任何复杂软件的测试和维护而言，这一点是至关重要的；软件必须被设计和构建为具有明确 API边界的一系列相互协作的模块。这些边界可以灵活调整，但是必须存在。这些边界的存在能够避免该软件变得不可维护。Butler Lampson 曾说过， 计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决。当被问到这在面向对象系统中意味着什么，Lampson 进一步阐述到，这意味着API 背后要能够有多种不同的实现。Berkeley DB 的设计和实现体现了这种允许通用接口背后有不同实现的设计方式，尽管系统是用 C 语言实现的，它仍然能给人一种面向对象的感觉。</p>
+<h3 id="设计经验二-–"><a href="#设计经验二-–" class="headerlink" title="设计经验二 –"></a>设计经验二 –</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A software design is simply one of several ways to force yourself to think through the entire problem before attempting to solve it. Skilled programmers use different techniques to this end: some write a first version and throw it away, some write extensive manual pages or design documents, others fill out a code template where every requirement is identified and assigned to a specific function or comment. For example, in Berkeley DB, we created a complete set of Unix-style manual pages for the access methods and underlying components before writing any code. Regardless of the technique used, it&#x27;s difficult to think clearly about program architecture after code debugging begins, not to mention that large architectural changes often waste previous debugging effort. Software architecture requires a different mind set from debugging code, and the architecture you have when you begin debugging is usually the architecture you&#x27;ll deliver in that release.</span><br></pre></td></tr></table></figure>
+<p>软件设计是一种强迫自己在尝试解决问题之前深入思考整个问题的一种方式。有经验的程序员会用不同的方式来达到这个目的：一些人会写下第一个版本然后丢掉，一些人会写下操作手册或者设计文档，另外一些人会尝试填满一个能够定位和结算一些通用方法的代码模版。例如，在编写 Berkeley DB时，我们创建了一套完整的 Unix 风格的说明手册，用来在写代码之前描述这些访问方法和内部模块。不管使用哪种技术，在开始代码调试之后都很难思考清楚程序的架构，更不用说有些大型的架构变化经常会浪费前期的调试工作。软件架构需要与调试代码不同的思维方式。当你开始调试代码时候的软件架构往往就是你最终交付的软件架构。</p>
+<h3 id="设计经验三-–"><a href="#设计经验三-–" class="headerlink" title="设计经验三 –"></a>设计经验三 –</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Software architecture does not age gracefully. Software architecture degrades in direct proportion to the number of changes made to the software: bug fixes corrode the layering and new features stress design. Deciding when the software architecture has degraded sufficiently that you should re-design or re-write a module is a hard decision. On one hand, as the architecture degrades, maintenance and development become more difficult and at the end of that path is a legacy piece of software maintainable only by having an army of brute-force testers for every release, because nobody understands how the software works inside. On the other hand, users will bitterly complain over the instability and incompatibilities that result from fundamental changes. As a software architect, your only guarantee is that someone will be angry with you no matter which path you choose.</span><br></pre></td></tr></table></figure>
+<p>软件架构并不会优雅地衰老。软件架构降级与其中发生 change 的数量成正比，修复 bug 会腐蚀分层，新功能会强迫设计。决定软件何时降级到需要重新设计或者重写一个模块是一个艰难的决定。一方面，随着架构的降级，维护和开发变得更难，最终是一个庞大的软件维护的只能由大量测试者暴力测试来保证，因为没有人会理解软件内部是如何运作的。另一方面，用户会痛苦地抱怨软件的不稳定性和不兼容性，一些来自来自底层的结果会发生变化。作为一个架构师，你唯一能够保证的是总会有人抱怨你的选择，无论你选择了哪条路。</p>
+<h3 id="设计经验四-–"><a href="#设计经验四-–" class="headerlink" title="设计经验四 –"></a>设计经验四 –</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">It doesn&#x27;t matter how you name your variables, methods, functions, or what comments or code style you use; that is, there are a large number of formats and styles that are &quot;good enough.&quot; What does matter, and matters very much, is that naming and style be consistent. Skilled programmers derive a tremendous amount of information from code format and object naming. You should view naming and style inconsistencies as some programmers investing time and effort to lie to the other programmers, and vice versa. Failing to follow house coding conventions is a firing offense.</span><br></pre></td></tr></table></figure>
+<p>无论您如何命名变量、方法、函数，以及使用何种注释或代码风格，这并不重要；也就是说，存在许多足够好的格式和风格。真正重要的是，命名和风格必须保持一致。熟练的程序员可以从代码格式和对象命名中获取大量的信息。您应该将命名和风格的不一致视为一些程序员花费时间和精力欺骗其他程序员的行为，反之亦然。不遵守内部的编码规范是会导致被解雇的违规行为。</p>
+<h3 id="设计经验五-–"><a href="#设计经验五-–" class="headerlink" title="设计经验五 –"></a>设计经验五 –</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Software architects must choose their upgrade battles carefully: users will accept minor changes to upgrade to new releases (if you guarantee compile-time errors, that is, obvious failures until the upgrade is complete; upgrade changes should never fail in subtle ways). But to make truly fundamental changes, you must admit it&#x27;s a new code base and requires a port of your user base. Obviously, new code bases and application ports are not cheap in time or resources, but neither is angering your user base by telling them a huge overhaul is really a minor upgrade.</span><br></pre></td></tr></table></figure>
+<p>软件架构师必须慎重选择升级战斗：用户将接受小的变化以升级到新版本（如果您能保证编译时错误，也就是明显的故障，直到升级完成为止；升级变化绝不能以微妙的方式失败）。但是，要进行真正的基本变更，您必须承认这是一个新的代码基础，并需要对用户基础进行移植。显然，新的代码基础和应用程序移植在时间或资源上都不便宜，但是通过告诉用户一个巨大的改进实际上只是一个小的升级来激怒他们，同样也是得不偿失的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -552,98 +654,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/8a34612.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/8a34612.html" class="post-title-link" itemprop="url">AD的 replication</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-08-06 23:10:28" itemprop="dateCreated datePublished" datetime="2023-08-06T23:10:28+08:00">2023-08-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E4%BD%9C%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name"> 工作分享</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -668,14 +678,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">42k</span>
+    <span title="站点总字数">43k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:34</span>
+    <span title="站点阅读时长">2:35</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
