@@ -11,3 +11,4 @@ coverage/
 .tmp*
 .vscode
 .deploy_git/
+db.json
