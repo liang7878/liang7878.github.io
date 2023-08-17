@@ -21,30 +21,31 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="这道题纯粹就是一道试机题，只要正常输出结果就可以了，下面是我的代码： 1234567891011121314151617181920212223242526272829303132333435#include &quot;iostream&quot;using namespace std;string s[] &#x3D; &amp;#123;&quot;                ********&quot;">
+    <meta name="description" content="C++ 并发编程基础什么是并发并发（concurrency）：把任务在不同的时间点交给处理器进行处理。在同一时间点，任务并不会同时运行。 并行（parallelism）：把每一个任务分配给每一个处理器独立完成。在同一时间点，任务一定是同时运行。 并发的方式包括多进程并发和多线程并发，多进程并发通过进程间通信（信号、套接字、文件、管道等）来相互传递信息；由于同一进程内的所有线程都共用相同的地址空间，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="洛谷综合题单 -- P1000超级玛丽游戏">
-<meta property="og:url" content="https://liang7878.github.io/posts/d27d7a9c.html">
+<meta property="og:title" content="读《C++并发编程实战 -- C++ Concurrency In Action》">
+<meta property="og:url" content="https://liang7878.github.io/posts/836781f0.html">
 <meta property="og:site_name" content="小良的分布式之路">
-<meta property="og:description" content="这道题纯粹就是一道试机题，只要正常输出结果就可以了，下面是我的代码： 1234567891011121314151617181920212223242526272829303132333435#include &quot;iostream&quot;using namespace std;string s[] &#x3D; &amp;#123;&quot;                ********&quot;">
+<meta property="og:description" content="C++ 并发编程基础什么是并发并发（concurrency）：把任务在不同的时间点交给处理器进行处理。在同一时间点，任务并不会同时运行。 并行（parallelism）：把每一个任务分配给每一个处理器独立完成。在同一时间点，任务一定是同时运行。 并发的方式包括多进程并发和多线程并发，多进程并发通过进程间通信（信号、套接字、文件、管道等）来相互传递信息；由于同一进程内的所有线程都共用相同的地址空间，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-11T02:10:33.000Z">
-<meta property="article:modified_time" content="2023-08-17T14:33:24.209Z">
+<meta property="article:published_time" content="2023-08-15T12:24:43.000Z">
+<meta property="article:modified_time" content="2023-08-17T14:33:24.197Z">
 <meta property="article:author" content="Chengliang">
-<meta property="article:tag" content="OI">
-<meta property="article:tag" content="算法">
-<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="CPP">
+<meta property="article:tag" content="编程进阶">
+<meta property="article:tag" content="并发编程">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://liang7878.github.io/posts/d27d7a9c.html">
+<link rel="canonical" href="https://liang7878.github.io/posts/836781f0.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/d27d7a9c.html","path":"posts/d27d7a9c.html","title":"洛谷综合题单 -- P1000超级玛丽游戏"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/836781f0.html","path":"posts/836781f0.html","title":"读《C++并发编程实战 -- C++ Concurrency In Action》"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>洛谷综合题单 -- P1000超级玛丽游戏 | 小良的分布式之路</title>
+<title>读《C++并发编程实战 -- C++ Concurrency In Action》 | 小良的分布式之路</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
@@ -107,7 +108,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -120,6 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">C++ 并发编程基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B6%E5%8F%91"><span class="nav-number">1.1.</span> <span class="nav-text">什么是并发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%AE%A1%E6%8E%A7"><span class="nav-number">2.</span> <span class="nav-text">线程管控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE"><span class="nav-number">3.</span> <span class="nav-text">在线程间共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C%E7%9A%84%E5%90%8C%E6%AD%A5"><span class="nav-number">4.</span> <span class="nav-text">并发操作的同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">C++内存模型和原子操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%9F%BA%E4%BA%8E%E9%94%81%E7%9A%84%E5%B9%B6%E5%8F%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">设计基于锁的并发数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%97%A0%E9%94%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">7.</span> <span class="nav-text">设计无锁数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%8F%91%E4%BB%A3%E7%A0%81"><span class="nav-number">8.</span> <span class="nav-text">设计并发代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">9.</span> <span class="nav-text">高级线程管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">并行算法函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BA%94%E7%94%A8%E7%9A%84%E6%B5%8B%E8%AF%95%E5%92%8C%E9%99%A4%E9%94%99"><span class="nav-number">11.</span> <span class="nav-text">多线程应用的测试和除错</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,7 +189,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/d27d7a9c.html">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/836781f0.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -200,12 +202,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="洛谷综合题单 -- P1000超级玛丽游戏 | 小良的分布式之路">
+      <meta itemprop="name" content="读《C++并发编程实战 -- C++ Concurrency In Action》 | 小良的分布式之路">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          洛谷综合题单 -- P1000超级玛丽游戏
+          读《C++并发编程实战 -- C++ Concurrency In Action》
         </h1>
 
         <div class="post-meta-container">
@@ -216,7 +218,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-08-11 10:10:33" itemprop="dateCreated datePublished" datetime="2023-08-11T10:10:33+08:00">2023-08-11</time>
+      <time title="创建时间：2023-08-15 20:24:43" itemprop="dateCreated datePublished" datetime="2023-08-15T20:24:43+08:00">2023-08-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -224,15 +226,6 @@
       </span>
       <span class="post-meta-item-text">更新于</span>
       <time title="修改时间：2023-08-17 22:33:24" itemprop="dateModified" datetime="2023-08-17T22:33:24+08:00">2023-08-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">编程进阶</span></a>
-        </span>
     </span>
 
   
@@ -242,14 +235,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>86</span>
+      <span>863</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -259,10 +252,31 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>这道题纯粹就是一道试机题，只要正常输出结果就可以了，下面是我的代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">string s[] = &#123;<span class="string">&quot;                ********&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ************&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ####....#.&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             #..###.....##....&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             ###.......######              ###            ###&quot;</span>,</span><br><span class="line">              <span class="string">&quot;                ...........               #...#          #...#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ##*#######                 #.#.#          #.#.#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;            ####*******######             #.#.#          #.#.#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ...#***.****.*###....          #...#          #...#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ....**********##.....           ###            ###&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ....****    *****....&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             ####        ####&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ######        ######&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##############################################################&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#...#......#.##...#......#.##...#......#.##------------------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;###########################################------------------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#..#....#....##..#....#....##..#....#....#####################&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#.....#......##.....#......##.....#......#    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#.#..#....#..##.#..#....#..##.#..#....#..#    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    ############&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (string str : s) &#123;</span><br><span class="line">        cout &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>非常朴实无华地用一个数组把需要输出的字符画保存起来输出就行了。没有什么技巧。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="C-并发编程基础"><a href="#C-并发编程基础" class="headerlink" title="C++ 并发编程基础"></a>C++ 并发编程基础</h2><h3 id="什么是并发"><a href="#什么是并发" class="headerlink" title="什么是并发"></a>什么是并发</h3><p>并发（concurrency）：把任务在不同的时间点交给处理器进行处理。在同一时间点，任务并不会同时运行。</p>
+<p>并行（parallelism）：把每一个任务分配给每一个处理器独立完成。在同一时间点，任务一定是同时运行。</p>
+<p>并发的方式包括多进程并发和多线程并发，多进程并发通过进程间通信（信号、套接字、文件、管道等）来相互传递信息；由于同一进程内的所有线程都共用相同的地址空间，所以多进程并发通过共享内存来同步数据。</p>
+<span id="more"></span>
 
+<p>并发技术可以：</p>
+<ol>
+<li>分离关注点（separation of concerns），使得不同的线程关注不同的任务；</li>
+<li>提升性能。任务并行可以采取两种方式，一种是将单一任务分成多个部分，各自并行运作，从而节省总运行耗时；第二种是利用并行资源解决规模更大的问题。</li>
+</ol>
+<p>什么时候避免并发？</p>
+<ol>
+<li>并发会增加额外的复杂度，增加开发时间和维护成本</li>
+<li>多线程的性能增幅可能不如预期，因为线程的启动会有额外的时间开销</li>
+<li>线程是一种有限的资源，过多的线程会消耗系统资源，从而导致系统整体变慢</li>
+<li>运行的线程越多，操作系统的上下文切换就越频繁，上下文切换会减少本该用于实质工作的时间</li>
+</ol>
+<p>我们先尝试一个简单的多线程版本的 <code>Hello World</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Hello Concurrent World\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">thread <span class="title">t</span><span class="params">(hello)</span></span>;</span><br><span class="line">    t.<span class="built_in">join</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程管控"><a href="#线程管控" class="headerlink" title="线程管控"></a>线程管控</h2><p>线程的管控可以通过 std::thread 对象来实现。</p>
+<p>悬空引用（Dangling Reference）是指一个引用在指向有效数据之后，被引用的数据被销毁或释放，从而引用变成了无效的情况。这种情况可能导致程序运行时的未定义行为，因为引用指向的数据已经不存在，但程序仍试图通过该引用访问这个不存在的数据。如果新线程上的函数持有指针或引用，指向主线程的局部变量；但主线程所运行的函数退出后，新线程却还没结束，这时就会访问悬空引用的情况。</p>
+<p>上述情况的处理办法是令线程函数完全自含（self-contained），将数据复制到新线程内部，而不是共享数据。另一种方法是汇合新线程，确保主线程的函数退出前，新线程执行完毕。</p>
+<p>等待线程完成可调用成员函数<code>join()</code>来实现。在<code>std::thread</code>对象销毁前，我们需确保已经调用<code>join()</code>或<code>detach()</code>.假使打算等待线程结束，则需小心地选择执行代码的位置来调用join()。原因是，如果线程启动以后主线程有异常抛出，而join()尚未执行，则该join()调用会被略过。</p>
+<h2 id="在线程间共享数据"><a href="#在线程间共享数据" class="headerlink" title="在线程间共享数据"></a>在线程间共享数据</h2><h2 id="并发操作的同步"><a href="#并发操作的同步" class="headerlink" title="并发操作的同步"></a>并发操作的同步</h2><h2 id="C-内存模型和原子操作"><a href="#C-内存模型和原子操作" class="headerlink" title="C++内存模型和原子操作"></a>C++内存模型和原子操作</h2><h2 id="设计基于锁的并发数据结构"><a href="#设计基于锁的并发数据结构" class="headerlink" title="设计基于锁的并发数据结构"></a>设计基于锁的并发数据结构</h2><h2 id="设计无锁数据结构"><a href="#设计无锁数据结构" class="headerlink" title="设计无锁数据结构"></a>设计无锁数据结构</h2><h2 id="设计并发代码"><a href="#设计并发代码" class="headerlink" title="设计并发代码"></a>设计并发代码</h2><h2 id="高级线程管理"><a href="#高级线程管理" class="headerlink" title="高级线程管理"></a>高级线程管理</h2><h2 id="并行算法函数"><a href="#并行算法函数" class="headerlink" title="并行算法函数"></a>并行算法函数</h2><h2 id="多线程应用的测试和除错"><a href="#多线程应用的测试和除错" class="headerlink" title="多线程应用的测试和除错"></a>多线程应用的测试和除错</h2>
     </div>
 
     
@@ -271,23 +285,21 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OI/" rel="tag"># OI</a>
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
-              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/CPP/" rel="tag"># CPP</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/" rel="tag"># 编程进阶</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag"># 并发编程</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2d329e20.html" rel="prev" title="洛谷综合题单 -- A+B Problem">
-                  <i class="fa fa-chevron-left"></i> 洛谷综合题单 -- A+B Problem
+                <a href="/posts/bf304d7d.html" rel="prev" title="洛谷综合题单 —— P1909 [NOIP2016 普及组] 买铅笔">
+                  <i class="fa fa-chevron-left"></i> 洛谷综合题单 —— P1909 [NOIP2016 普及组] 买铅笔
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/38d9ffd1.html" rel="next" title="读字节技术文章《广告案例｜10亿数据、查询<10s，论基于OLAP搭建广告系统的正确姿势》">
-                  读字节技术文章《广告案例｜10亿数据、查询<10s，论基于OLAP搭建广告系统的正确姿势》 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -370,7 +382,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"173878a1de5436e2a05dce4df3c263aa"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"08bb1733b92bbc38a762bbbc92cac0c7"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
