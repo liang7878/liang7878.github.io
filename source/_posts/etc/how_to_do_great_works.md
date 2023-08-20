@@ -1,6 +1,9 @@
 ---
 title: How To Do Great Work
-tags: '-杂谈 -生活 -阅读'
+tags: 
+    - "杂谈" 
+    - "生活" 
+    - "阅读"
 abbrlink: 7b67d6ae
 date: 2023-08-21 01:33:02
 ---
