@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Systems Performance》这本书可以说是做性能调优的必读书目了，不仅仅是因为它有很多关于性能调优的理论知识，还因为它有很多关于性能调优的实例和思考。其实这本书我几年前就读过了，这次重新回顾一下，可以记录一些重要的知识点。话不多说，开始读起来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读《性能之巅》">
+<meta property="og:url" content="https://liang7878.github.io/posts/6429ef26.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="《Systems Performance》这本书可以说是做性能调优的必读书目了，不仅仅是因为它有很多关于性能调优的理论知识，还因为它有很多关于性能调优的实例和思考。其实这本书我几年前就读过了，这次重新回顾一下，可以记录一些重要的知识点。话不多说，开始读起来。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/system_latency.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/cpu_arch.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/cpu_cache.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/multi_process_vs_multi_thread.png">
+<meta property="article:published_time" content="2023-08-21T14:16:46.000Z">
+<meta property="article:modified_time" content="2023-08-21T17:13:22.050Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="阅读">
+<meta property="article:tag" content="性能">
+<meta property="article:tag" content="杂谈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liang7878.github.io/posts/6429ef26/system_latency.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/posts/6429ef26.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/6429ef26.html","path":"posts/6429ef26.html","title":"读《性能之巅》"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>读《性能之巅》 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%AA%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E6%B5%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">观测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">6.</span> <span class="nav-text">CPU</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmxpYW5nNzg3OEBob3RtYWlsLmNvbQ==" title="E-Mail → mailto:liang7878@hotmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktY2hlbmctbGlhbmctMzU=" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35"><i class="fab fa-zhihu fa-fw"></i>Zhihu</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/6429ef26.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="读《性能之巅》 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          读《性能之巅》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-21 22:16:46" itemprop="dateCreated datePublished" datetime="2023-08-21T22:16:46+08:00">2023-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-22 01:13:22" itemprop="dateModified" datetime="2023-08-22T01:13:22+08:00">2023-08-22</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>31 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>《Systems Performance》这本书可以说是做性能调优的必读书目了，不仅仅是因为它有很多关于性能调优的理论知识，还因为它有很多关于性能调优的实例和思考。其实这本书我几年前就读过了，这次重新回顾一下，可以记录一些重要的知识点。话不多说，开始读起来。</p>
+<span id="more"></span>
+
+<h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><p>系统性能是对整个系统的研究，包括了所有的硬件组件和整个软件栈。术语“全栈”（entire stack）有时一般仅仅指的是应用程序环境，包括数据库、应用程序，以及网站服务器。不过，当论及系统性能时，我们用全栈来表示所有事情，包括系统库和内核。</p>
+<p>性能领域包括了一下的事情：</p>
+<p>1.设置性能目标和建立性能模型<br>2.基于软件或硬件原型进行性能特征归纳<br>3.对开发代码进行性能分析（软件整合之前）<br>4.执行软件非回归性测试（软件发布前或发布后）<br>5.针对软件发布版本的基准测试<br>6.目标环境中的概念验证（Proof-of-concept）测试<br>7.生产环境部署的配置优化<br>8.监控生产环境中运行的软件<br>9.特定问题的性能分析</p>
+<p>性能分析的两种视角：负载分析（workload analysis）和资源分析（resource analysis），二者从不同的方向对软件栈做分析。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>常见术语：</p>
+<ul>
+<li>IOPS：每秒发生的输入&#x2F;输出操作的次数，是数据传输的一个度量方法。对于磁盘的读写，IOPS 指的是每秒读和写的次数。</li>
+<li>吞吐量：评价工作执行的速率，尤其是在数据传输方面，这个术语用于描述数据传输速度（字节&#x2F;秒或比特&#x2F;秒）。在某些情况下（如数据库），吞吐量指的是操作的速度（每秒操作数或每秒业务数）</li>
+<li>响应时间：一次操作完成的时间。包括用于等待和服务的时间，也包括用来返回结果的时间。</li>
+<li>延时：延时是描述操作里用来等待服务的时间。在某些情况下，它可以指的是整个操作时间，等同于响应时间。例子参见 2.3 节。</li>
+<li>使用率：对于服务所请求的资源，使用率描述在所给定的时间区间内资源的繁忙程度。对于存储资源来说，使用率指的就是所消耗的存储容量（例如，内存使用率）。</li>
+<li>饱和度：指的是某一资源无法满足服务的排队工作量。</li>
+<li>瓶颈：在系统性能里，瓶颈指的是限制系统性能的那个资源。分辨和移除系统瓶颈是系统性能的一项重要工作。</li>
+<li>工作负载：系统的输入或者是对系统所施加的负载叫做工作负载。对于数据库来说，工作负载就是客户端发出的数据库请求和命令。</li>
+<li>缓存：用于复制或者缓冲一定量数据的高速存储区域，目的是为了避免对较慢的存储层级的直接访问，从而提高性能。出于经济考虑，缓存区的容量要比更慢一级的存储容量要小。</li>
+</ul>
+<p>各种系统延时：</p>
+<p><img src="/posts/6429ef26/system_latency.png" alt="Alt text"></p>
+<p>在计算机性能领域，profiling通常是按照特定的时间间隔对系统的状态进行采样，然后对这些样本进行研究。</p>
+<p>通用的系统性能方法：</p>
+<ul>
+<li>问题陈述法：对性能问题的描述，包括对性能目标的定义。</li>
+<li>科学法：科学法研究未知的问题是通过假设和试验。总结下来有以下步骤：问题、假设、预测、试验、分析。</li>
+<li>诊断循环：假设→仪器检验→数据→假设</li>
+<li>工具法：1.列出可用到的性能工具（可选的，安装的或者可购买的）2.对于每一个工具，列出它提供的有用的指标 3.对于每一个指标，列出阐释该指标可能的规则。</li>
+<li>USE 方法（utilization、saturation、errors）应用于性能研究，用来识别系统瓶颈[Gregg 13]。一言以蔽之，就是：对于所有的资源，查看它的使用率、饱和度和错误。</li>
+<li>工作负载特征归纳：工作负载可以通过回答下列的问题来进行特征归纳：负载是谁产生的？进程ID、用户ID、远端的IP 地址？负载为什么会被调用？代码路径、堆栈跟踪？负载的特征是什么？IOPS、吞吐量、方向类型（读取&#x2F;写入）？包含变动（标准方差），如果有的话。负载是怎样随着时间变化的？有日常模式吗？</li>
+<li>向下挖掘分析：1.监测：用于持续记录高层级的统计数据，如果问题出现，予以辨别和报警。2.识别：对于给定问题，缩小研究的范围，找到可能的瓶颈。3.分析：对特定的系统部分做进一步的检查，找到问题根源并量化问题。五个 Why</li>
+<li>延时分析：延时分析检查完成一项操作所用的时间，然后把时间再分成小的时间段，接着对有着最大延时的时间段做再次的划分，最后定位并量化问题的根本原因。</li>
+<li>R 方法：R方法是针对Oracle 数据库开发的性能分析方法，意在找到延时的根源，基于Oracle 的trace events[Millsap 03]。它被描述成“基于时间的响应性能提升方法，可以得到对业务的最大经济收益”，着重于识别和量化查询过程中所消耗的时间。</li>
+<li>事件跟踪：系统的操作就是处理离散的事件，包括CPU 指令、磁盘I&#x2F;O，以及磁盘命令、网络包、系统调用、函数库调用、应用程序事件、数据库查询，等等</li>
+<li>基础线统计：基础线统计包括大范围的系统观测并将数据进行保存以备将来参考。在系统或应用程序变化的之前和之后都能做基础线统计，进而分析性能变化。可以不定期地执行基础线统计并把它作为站点记录的一部分，让管理员有一个参照，了解“正常”是什么样的。若是作为性能监测的一部分，可以每天都按固定间隔执行这类任务。</li>
+<li>静态性能调整：静态性能分析是在系统空闲没有施加负载的时候执行的。做性能分析和调整，要对系统的所有组件逐一确认下列问题：该组件是需要的吗？配置是针对预期的工作负载设定的吗？组件的自动配置对于预期的工作负载是最优的吗？有组件出现错误吗？是在降级状态（degraded state）吗？</li>
+<li>缓存调优：1.缓存的大小尽量和栈的高度一样，靠近工作执行的地方，减少命中缓存的资源开销。2.确认缓存开启并确实在工作。3.确认缓存的命中&#x2F;失效比例和失效率。4.如果缓存的大小是动态的，确认它的当前尺寸。5.针对工作负载调整缓存。这项工作依赖缓存的可调参数。6.针对缓存调整工作负载。这项工作包括减少对缓存不必要的消耗，这样可以释放更多空间来给目标工作负载使用。</li>
+<li>微基准测试：微基准测试测量的是施加了简单的人造工作负载的性能。微基准测试可以用于支持科学方法，将假设和预测放到测试中验证，或者作为容量规划的一部分来执行。可以用微基准测试工具来施加工作负载并度量性能。或者用负载生成器来产生负载，用标准的系统工具来测量性能。两种方法都可以，但最稳妥的办法是使用微基准测试工具并用标准系统工具再次确认性能数据。</li>
+</ul>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
+<li>操作系统：这里指的是安装在系统上的软件和文件，使得系统可以启动和运行程序。操作系统包括内核、管理工具，以及系统库。</li>
+<li>内核：内核是管理系统的程序，包括设备（硬件）、内存和CPU 调度。它运行在CPU的特权模式，允许直接访问硬件，称为内核态。</li>
+<li>进程：是一个OS 的抽象概念，是用来执行程序的环境。程序通常运行在用户模式，通过系统调用或自陷来进入内核模式（例如，执行设备I&#x2F;O）。进程是用以执行用户级别程序的环境。它包括内存地址空间、文件描述符、线程栈和寄存器</li>
+<li>线程：可被调度的运行在CPU 上的可执行上下文。内核有多个线程，一个进程有一个或多个线程。</li>
+<li>任务：一个Linux 的可运行实体，可以指一个进程（含有单个线程），或一个多线程的进程里的一个线程，或者内核线程。</li>
+<li>内核空间：内核的内存地址空间。</li>
+<li>用户空间：进程的内存地址空间。</li>
+<li>用户空间：用户级别的程序和库（&#x2F;usr&#x2F;bin、&#x2F;usr&#x2F;lib……）。</li>
+<li>上下文切换：内核程序切换CPU 让其在不同的地址空间上做操作（上下文）。</li>
+<li>系统调用：一套定义明确的协议，为用户程序请求内核执行特权操作，包括设备I&#x2F;O。</li>
+<li>处理器：不要与进程混淆[1]，处理器是包含有一颗或多颗CPU 的物理芯片。</li>
+<li>自陷：信号发送到内核，请求执行一段系统程序（特权操作）。自陷类型包括系统调用、处理器异常，以及中断。</li>
+<li>中断：由物理设备发送给内核的信号，通常是请求I&#x2F;O 服务。中断是自陷的一种类型。</li>
+</ul>
+<p>内核管理着CPU 调度、内存、文件系统、网络协议，以及系统设备（磁盘、网络接口，等等）。</p>
+<p>栈用函数和寄存器的方式记录了线程的执行历史。当函数被调用时，CPU 当前的寄存器组（保存CPU 状态）会存放在栈里，在顶部会为线程的当前执行添加一个新的栈帧。函数通过调用CPU 指令“return”终止执行，从而清除当前的栈，执行会返回到之前的栈，并恢复相应的状态。</p>
+<p>在执行系统调用时，一个进程的线程有两个栈：一个用户级别的栈和一个内核级别的栈。</p>
+<p>中断服务程序（interrupt service routine）需要通过注册来处理设备中断。这类程序的设计要点是需要运行得尽可能快，以减少对活动线程中断的影响。如果中断要做的工作不少，尤其是还可能被锁阻塞，那么最好用中断线程来处理，由内核来调度。</p>
+<p>从中断开始到中断被服务之间的时间叫做中断延时（interrupt latency）</p>
+<p>中断优先级（interrupt priority level，IPL）表示的是当前活跃的中断服务程序的优先级。</p>
+<p>虚拟内存是主存的抽象，提供进程和内核，它们自己的近乎是无穷的和私有的主存视野。</p>
+<p>一级存储是主存（RAM），二级存储是存储设备（磁盘）。</p>
+<p>当虚拟内存用二级存储作为主存的扩展时，内核会尽力保持最活跃的数据在主存中。有以下两个内核例程做这件事情。<br>● 交换：让整个进程在主存和二级存储之间做移动。<br>● 换页：移动称为页的小的内存单元（例如，4KB）。<br>swapping 是原始的UNIX 方法，会引起严重的性能损耗。paging 是更高效的方法，经由换页虚拟内存的引入而加到了BSD 中。两种方法，最近最少使用（或最近未使用）的内存被移动到二级存储，仅在需要时再次搬回</p>
+<p>调度器可以动态地修改进程的优先级以提升特定工作负载的性能。工作负载可以做以下分类：</p>
+<ul>
+<li>CPU 密集型：应用程序执行繁重的计算，例如，科学和数学分析，通常运行时间较长（秒、分钟、小时）。这些会受到CPU 资源的限制。</li>
+<li>I&#x2F;O 密集型：应用程序执行I&#x2F;O，计算不多，例如，Web 服务器、文件服务器，以及交互的shell，这些需要的是低延时的响应。当负载增加时，会受到存储I&#x2F;O 或网络资源的限制。</li>
+</ul>
+<p>操作系统提供了全局的文件命名空间，组织成为一个以根目录（“&#x2F;”）为起点，自上而下的拓扑结构。通过挂载（mounting）可以添加文件系统的树，把自己的树挂在一个目录上（挂载点）。这使得遍历文件命名空间对于终端用户是透明的，不用考虑底层的文件系统类型。</p>
+<h2 id="观测工具"><a href="#观测工具" class="headerlink" title="观测工具"></a>观测工具</h2><ol>
+<li>计数器</li>
+</ol>
+<p>内核维护了各种统计数据，称为计数器，用于对事件计数。计数器的使用可以认为是“零开销”的，因为它们默认就是开启的，而且始终由内核维护。唯一的使用开销是从用户空间读取它们的时候（可以忽略不计）。</p>
+<p>系统级别：</p>
+<ul>
+<li>vmstat：虚拟内存和物理内存的统计，系统级别。</li>
+<li>mpstat：每个CPU 的使用情况。</li>
+<li>iostat：每个磁盘I&#x2F;O 的使用情况，由块设备接口报告。</li>
+<li>netstat：网络接口的统计，TCP&#x2F;IP 栈的统计，以及每个连接的一些统计信息。</li>
+<li>sar：各种各样的统计，能归档历史数据。</li>
+</ul>
+<p>进程级别：</p>
+<ul>
+<li>ps：进程状态，显示进程的各种统计信息，包括内存和CPU 的使用。</li>
+<li>top：按一个统计数据（如CPU 使用）排序，显示排名高的进程。基于Solaris 的系统对应的工具是prstat(1M)。</li>
+<li>pmap：将进程的内存段和使用统计一起列出。</li>
+</ul>
+<ol start="2">
+<li>tracing</li>
+</ol>
+<p>跟踪收集每一个事件的数据以供分析。跟踪框架一般默认是不启用的，因为跟踪捕获数据会有CPU 开销。</p>
+<p>系统级别：</p>
+<ul>
+<li>tcpdump：网络包跟踪（用libpcap 库）。</li>
+<li>snoop：为基于Solaris 的系统打造的网络包跟踪工具。</li>
+<li>blktrace：块I&#x2F;O 跟踪（Linux）。</li>
+<li>iosnoop：块I&#x2F;O 跟踪（基于DTrace）。</li>
+<li>execsnoop：跟踪新进程（基于DTrace）。</li>
+<li>dtruss：系统级别的系统调用缓冲跟踪（基于DTrace）。</li>
+<li>DTrace：跟踪内核的内部活动和所有资源的使用情况（不仅仅是网络和块I&#x2F;O），支持静态和动态的跟踪。</li>
+<li>SystemTap：跟踪内核的内部活动和所有资源的使用情况，支持静态和动态的跟踪。</li>
+<li>perf：Linux 性能事件，跟踪静态和动态的探针。</li>
+</ul>
+<p>进程级别：</p>
+<ul>
+<li>strace：基于Linux 系统的系统调用跟踪。</li>
+<li>truss：基于Solaris 系统的系统调用跟踪。</li>
+<li>gdb：源代码级别的调试器，广泛应用于Linux 系统。</li>
+<li>mdb：Solaris 系统的一个具有可扩展性的调试器。</li>
+</ul>
+<ol start="3">
+<li>Profiling</li>
+</ol>
+<p>剖析（profiling）通过对目标收集采样或快照来归纳目标特征。</p>
+<p>系统级别和进程级别：</p>
+<ul>
+<li>profile：Linux 系统剖析。</li>
+<li>perf：Linux 性能工具集，包含有剖析的子命令。</li>
+<li>DTrace：程序化剖析，基于时间的剖析用自身的profile provider，基于硬件事件的剖析用cpc provider。</li>
+<li>SystemTap：程序化剖析，基于时间的剖析用自身的timer tapset，基于硬件事件的剖析用自身perf tapset。</li>
+<li>cachegrind：源自valgrind 工具集，能对硬件缓存的使用做剖析，也能用kcachegrind做数据可视化。</li>
+<li>Intel VTune Amplifier XE：Linux 和Windows 的剖析，拥有包括源代码浏览在内的图形界面。</li>
+<li>Oracle Solaris Studio：用自带的性能分析器对Solaris 和Linux 做剖析，拥有包括源代码浏览在内的图形界面。</li>
+</ul>
+<h2 id="应用程序"><a href="#应用程序" class="headerlink" title="应用程序"></a>应用程序</h2><p>性能调整离工作所执行的地方越近越好：最好在应用程序里。</p>
+<p>一个能有效提高应用程序性能的方法是找到对应生产环境工作负载的公用代码路径，并开始对其做优化。如果应用程序是CPU 密集型的，那么意味着代码路径会频繁占用CPU。如果应用程序是I&#x2F;O 密集型的，你应该查看导致频繁I&#x2F;O 的代码路径。</p>
+<p>操作系统最大的性能提升在于消除不必要的工作。</p>
+<p>应用程序性能技术：</p>
+<ul>
+<li>选择 IO 的大小：执行I&#x2F;O 的开销包括初始化缓冲区、系统调用、上下文切换、分配内核元数据、检查进程权限和限制、映射地址到设备、执行内核和驱动代码来执行I&#x2F;O，以及，在最后释放元数据和缓冲区。增加I&#x2F;O 尺寸是应用程序提高吞吐量的常用策略。考虑到每次I&#x2F;O 的固定开销，一次I&#x2F;O 传输128KB 要比128 次传输1KB 高效得多。尤其是磁盘I&#x2F;O，由于寻道时间，每次I&#x2F;O 开销都较高。</li>
+<li>缓存：缓存提高了读操作性能，存储通常用缓冲区来提高写操作的性能。</li>
+<li>缓冲区：环形缓冲区（或循环缓冲区）是一类用于组件之间连续数据传输的大小固定的缓冲区，缓冲区的操作是异步的。该类型缓冲可以用头指针和尾指针来实现，指针随着数据的增加或移出而改变位置。</li>
+<li>轮询：轮询是系统等待某一事件发生的技术，该技术在循环中检查事件状态，两次检查之间有停顿。轮询有一些潜在的性能问题：重复检查的CPU 开销高昂；事件发生和下一次检查的延时较高。poll()接口支持多个文件描述符作为一个数组，当事件发生要找到相应的文件描述符时，需要应用程序扫描这个数组。这个扫描是O(n)，扩展时可能会变成一个性能问题：在Linux 里是epoll()，epoll()避免了这种扫描，复杂度是O(1)</li>
+<li>并发和并行：分时系统（包括所有从UNIX 衍生的系统）支持程序的并发：装载和开始执行多个可运行程序的能力。另外一个方法是基于事件并发（event-based concurrency），应用程序服务于不同的函数并在事件发生时在这些函数之间进行切换。</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Note:</span><br><span class="line"></span><br><span class="line">同步原语：</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> mutex（MUTually EX clusive）锁：只有锁持有者才能操作，其他线程会阻塞并等待CPU。</span><br><span class="line"><span class="bullet">-</span> 自旋锁：自旋锁允许锁持有者操作，其他的需要自旋锁的线程会在CPU 上循环自旋，检查锁是否被释放。虽然这样可以提供低延时的访问，被阻塞的线程不会离开CPU，时刻准备着运行直到锁可用，但是线程自旋、等待也是对CPU 资源的浪费。</span><br><span class="line"><span class="bullet">-</span> 读写锁：读/写锁通过允许多个读者或者只允许一个写者而没有读者，来保证数据的完整性。</span><br><span class="line"></span><br><span class="line">mutex 锁可以用库或内核实现成为自适应mutex 锁（adaptive mutex lock）：这是自旋锁和mutex 锁的混合，如果锁持有者当前正运行在另一个CPU 上，线程会自旋，如果不是，线程会阻塞（或者自旋的时间阈值到了）。自适应的mutex 锁的优化支持低延时访问而又不浪费CPU资源，在基于Solaris 的系统上已经用了很多年。它在2009年应用到了Linux 上，称为自适应自旋mutex（adaptive spinning mutex）</span><br><span class="line"></span><br><span class="line">哈希表：</span><br><span class="line"></span><br><span class="line">可以用一张锁的哈希表来对大量数据结构的锁做数目优化。下面是两种方法：</span><br><span class="line"><span class="bullet">-</span> 为所有的数据结构只设定一个全局的mutex 锁。虽然这个方案很简单，不过并发的访问会有锁的竞争，等待时也会有延时。需要该锁的多个线程会串行执行，而不是并发执行。</span><br><span class="line"><span class="bullet">-</span> 为每个数据结构都设定一个mutex 锁。虽然这个方案将锁的竞争减小到真正需要时才发生——对同一个数据结构的访问也会是并发的——但是锁会有存储开销，为每个数据结构创建和销毁锁也会有CPU 开销。</span><br><span class="line">锁哈希表是一种折衷的方案，当期望锁的竞争能轻一些的时候很适用。创建固定数目的锁，用哈希算法来选择哪个锁用于哪个数据结构。这就避免了随数据结构创建和销毁锁的开销，也避免了只使用单个锁的问题。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>非阻塞 I&#x2F;O：非阻塞I&#x2F;O 模型是异步地发起I&#x2F;O，而不阻塞当前的线程，线程可以执行其他的工作。</li>
+<li>处理器绑定：NUMA 环境对于进程或线程保持运行在一颗CPU 上是有优势的，线程执行I&#x2F;O 后，能像执行I&#x2F;O 之前那样运行在同一CPU 上。这提高了应用程序的内存本地性，减少内存I&#x2F;O，并提高了应用程序的整体性能。某些应用程序会强制将自身与CPU 绑定。对于某些系统，这样做能显著地提高性能。</li>
+</ul>
+<p>方法与分析：</p>
+<ul>
+<li>线程状态分析：六种状态。<ul>
+<li>执行：在CPU 上。</li>
+<li>可运行：等待轮到上CPU。</li>
+<li>匿名换页：可运行，但是因等待匿名换页而受阻。</li>
+<li>睡眠：等待包括网络、块设备和数据&#x2F;文本页换入在内的I&#x2F;O。</li>
+<li>锁：等待获取同步锁（等待其他线程）。</li>
+<li>空闲：等待工作。</li>
+</ul>
+</li>
+<li>CPU剖析：剖析的目标是要判断应用程序是如何消耗CPU 资源的。一个有效的技术是对CPU 上的用户栈跟踪做采样并将采样结果联系起来。栈跟踪告诉我们所选择的代码路径，这能够从高层和底层两方面揭示出应用程序消耗CPU 的原因。</li>
+<li>系统调用分析：执行：CPU 上（用户模式）；系统调用：系统调用的时间（内核模式在运行或者等待）系统调用的时间包括I&#x2F;O、锁，以及其他系统调用类型。其他的线程状态，如可运行（等待CPU）和匿名换页，都被简化了。即使碰到这些状态（CPU 饱和或内存饱和），也能用USE 方法在系统中识别出来。</li>
+<li>I&#x2F;O 剖析：I&#x2F;O 剖析判断的是I&#x2F;O 相关的系统调用执行的原因和方式。用DTrace 可以做到这一点，检查用户栈里系统调用的栈跟踪。</li>
+<li>工作负载特征归纳：应用程序向系统资源——CPU、内存、文件系统、磁盘和网络，施加负载，也通过系统调用向操作系统施加负载。</li>
+<li>USE 方法：USE 方法检查使用率、饱和，以及所有硬件资源的错误。通过发现某一成为瓶颈的资源，许多应用程序的性能问题都能用该方法得到解决。USE 方法也适用于软件资源，取决于应用程序。如果你能找到应用程序的内部组件的功能图，对每种软件资源都做使用率、饱和和错误指标上的考量，看看有什么问题。</li>
+<li>向下挖掘法：对于应用程序，向下挖掘法可以检查应用程序的服务操作作为开始，然后向下至应用程序内部，看看它是如何执行的。对于I&#x2F;O，向下挖掘的程度可以进入系统库、系统调用，甚至是内核。</li>
+<li>锁分析：对于多线程的应用程序，锁可能会成为阻碍并行化和扩展性的瓶颈。锁的分析可以通过检查竞争或者检查过长的持锁时间。第一个要识别的是当前是否有问题。过长的持锁时间并不一定会是问题，但是在将来随着更多的并行负载的加入，可能会产生问题的是试图识别每一个锁的名字（若存在）和通向使用锁的代码路径。</li>
+<li>静态性能调优：重点在于环境配置的问题</li>
+</ul>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>CPU 架构</p>
+<p><img src="/posts/6429ef26/cpu_arch.png" alt="Alt text"></p>
+<p>CPU 内存缓存</p>
+<p><img src="/posts/6429ef26/cpu_cache.png" alt="Alt text"></p>
+<p>正在排队和就绪运行的软件线程数量是一个很重要的性能指标，表示了CPU 的饱和度</p>
+<p>对于多处理器系统，内核通常为每个CPU 提供了一个运行队列，并尽量使得线程每次都被放到同一队列之中。这意味着线程更有可能在同一个CPU 上运行，因为CPU 缓存里保存了它们的数据。</p>
+<p>时钟是一个驱动所有处理器逻辑的数字信号。每个CPU 指令都可能会花费一个或者多个时钟周期（称为CPU 周期）来执行。CPU 以一个特定的时钟频率执行，例如，一个5GHz 的CPU每秒运行五十亿个时钟周期。</p>
+<p>CPU 执行指令集中的指令。一个指令包括以下步骤，每个都由CPU 的一个叫作功能单元的组件处理：<br>1.指令预取<br>2.指令解码<br>3.执行<br>4.内存访问<br>5.寄存器写回</p>
+<p>指令流水线是一种CPU 架构，通过同时执行不同指令的不同部分，来达到同时执行多个指令的结果</p>
+<p>指令宽度描述了同时处理的目标指令数量。现代处理器一般为宽度3 或者宽度4，意味着它们可以在每个周期里最多完成3～4 个指令。</p>
+<p>每指令周期数（CPI）是一个很重要的高级指标，用来描述CPU 如何使用它的时钟周期，同时也可以用来理解CPU 使用率的本质。这个指标也可以被表示为每周期指令数（instructions per cycle，IPC），即CPI 的倒数。CPI 较高代表CPU 经常陷入停滞，通常都是在访问内存。而较低的CPI 则代表CPU 基本没有停滞，指令吞吐量较高。内存访问密集的负载，可以通过下面的方法提高性能，如使用更快的内存（DRAM）、提高内存本地性（软件配置），或者减少内存I&#x2F;O 数量。</p>
+<p>CPU 使用率通过测量一段时间内CPU 实例忙于执行工作的时间比例获得，以百分比表示。CPU 使用率的测量包括了所有符合条件活动的时钟周期，包括内存停滞周期。虽然看上去有些违反直觉，但CPU 有可能像前面描述的那样，会因为经常停滞等待I&#x2F;O 而导致高使用率，而不仅是在执行指令。</p>
+<p>CPU 花在执行用户态应用程序代码的时间称为用户时间，而执行内核态代码的时间称为内核时间。内核时间包括系统调用、内核线程和中断的时间。当在整个系统范围内进行测量时，用户时间和内核时间之比揭示了运行的负载类型。</p>
+<p>计算密集的应用程序几乎会把大量的时间用在用户态代码上，用户&#x2F;内核时间之比接近99&#x2F;1。这类例子有图像处理、基因组学和数据分析。</p>
+<p>I&#x2F;O 密集的应用程序的系统调用频率较高，通过执行内核代码进行I&#x2F;O 操作。例如，一个进行网络I&#x2F;O 的Web 服务器的用户&#x2F;内核时间比大约为70&#x2F;30。</p>
+<p>一个100%使用率的CPU 被称为是饱和的，线程在这种情况下会碰上调度器延时，因为它们需要等待才能在CPU 上运行，降低了总体性能。</p>
+<p>允许更高优先级的线程抢占当前正在运行的线程，并开始执行自己。这样节省了更高优先级工作的运行队列延时时间，提高了性能。</p>
+<p>优先级反转指的是一个低优先级线程拥有了一项资源，从而阻塞了高优先级线程运行的情况。</p>
+<p>多进程 vs 多线程</p>
+<p><img src="/posts/6429ef26/multi_process_vs_multi_thread.png" alt="Alt text"></p>
+<p>处理器是围绕最大字长设计的——32 位或者64 位——这是整数大小和寄存器宽度。</p>
+<p>应用程序在CPU 上的运行时间可以通过编译器选项（包括字长设置）来大幅改进。编译器也频繁地更新以利用最新的CPU 指令集以及其他优化。有时应用程序性能可以通过使用新的编译器显著地提高。</p>
+<p>多级缓存是用来取得大小和延时平衡的最佳配置。一级缓存的访问时间一般是几个CPU 时钟周期，而更大的二级缓存大约是几十个时钟周期。主存大概会花上60ns（对于4GHz 处理器大约是240 个周期），而MMU 的地址转译又会增加延时。</p>
+<p>内存可能会同时被缓存在不同处理器的多个CPU 里。当一个CPU 修改了内存，所有的缓存需要知道它们的缓存拷贝已经失效，应该被丢弃，这样后续所有的读才会取到新修改的拷贝。这个过程叫做缓存一致性，确保了CPU 永远访问正确的内存状态。这也是设计可扩展多处理器系统里最大的挑战之一，因为内存会被频繁修改。</p>
+<p>MMU 负责虚拟地址到物理地址的转换</p>
+<p>支撑CPU 的内核软件包括了调度器、调度器类和空闲线程。</p>
+<p>调度器功能如下：</p>
+<ul>
+<li>分时：可运行线程之间的多任务，优先执行最高优先级任务。</li>
+<li>抢占：一旦有高优先级线程变为可运行状态，调度器能够抢占当前运行的线程，这样较高优先级的线程可以马上开始运行。</li>
+<li>负载均衡：把可运行的线程移到空闲或者较不繁忙的CPU 队列中。</li>
+</ul>
+<p>CPU 分析和调优的方法：</p>
+<ul>
+<li><p>工具法： 对于CPU，工具法可以检查以下项目。</p>
+<ul>
+<li>uptime：检查负载平均数以确认CPU 负载是随时间上升还是下降。负载平均数超过了CPU 数量通常代表CPU 饱和。</li>
+<li>vmstat：每秒运行vmstat，然后检查空闲列，看看还有多少余量。少于10%可能是一个问题。</li>
+<li>mpstat：检查单个热点（繁忙）CPU，挑出一个可能的线程扩展性问题。</li>
+<li>top&#x2F;prstat：看看哪个进程和用户是CPU 消耗大户。</li>
+<li>pidstat&#x2F;prstat：把CPU 消耗大户分解成用户和系统时间。</li>
+<li>perf&#x2F;dtrace&#x2F;stap&#x2F;oprofile：从用户时间或者内核时间的角度剖析CPU 使用的堆栈跟踪，以了解为什么使用这么多CPU。</li>
+<li>perf&#x2F;cpustat：测量CPI。</li>
+</ul>
+</li>
+<li><p>USE 方法：对于每个CPU，检查以下内容</p>
+<ul>
+<li>使用率：CPU 繁忙的时间（未在空闲线程中）。</li>
+<li>饱和度：可运行线程排队等待CPU 的程度。</li>
+<li>错误：CPU 错误，包括可改正错误。</li>
+</ul>
+</li>
+<li><p>负载特征归纳：CPU 负载特征归纳的基本属性有：</p>
+<ul>
+<li>平均负载（使用率+饱和度）</li>
+<li>用户时间与系统时间之比</li>
+<li>系统调用频率</li>
+<li>自愿上下文切换频率</li>
+<li>中断频率</li>
+</ul>
+</li>
+<li><p>剖析Profiling</p>
+</li>
+<li><p>周期分析</p>
+</li>
+<li><p>性能监控：使用率和饱和度</p>
+</li>
+<li><p>静态性能调优：配置环境的问题</p>
+</li>
+<li><p>优先级调优：UNIX 一直都提供nice()系统调用，通过设置nice 值以调整进程优先级。正nice 值代表降低进程优先级（更友好），而负值——只能由超级用户（root）设置——代表提高优先级。</p>
+</li>
+<li><p>资源控制： 操作系统可能为给进程或者进程组分配CPU 资源提供细粒度控制。</p>
+</li>
+<li><p>CPU 绑定：另一个CPU 性能调优的方法是把进程和线程绑定在单个CPU 或者一组CPU 上。这可以增加进程的CPU 缓存温度，提高它的内存I&#x2F;O 性能。实现方式有进程绑定和独占 CPU 组两种</p>
+</li>
+<li><p>微型基准测试：操作可能基于下列元素。</p>
+<ul>
+<li>CPU 指令：整数运算、浮点操作、内存加载和存储、分支和其他指令。</li>
+<li>内存访问：调查不同CPU 缓存的延时和主存吞吐量。</li>
+<li>高级语言：类似CPU 指令测试，不过使用高级解释或者编译语言编写。</li>
+<li>操作系统操作：测试CPU 消耗型系统库和系统调用函数，例如getpid()和进程创建。</li>
+</ul>
+</li>
+<li><p>扩展：一个基于资源的容量规划简单的扩展方法：<br>  1.确定目标用户数或者应用程序请求频率。<br>  2.转化成每用户或每请求CPU 使用率。对于现有系统，CPU 用量可以通过监控获得，再除以现有用户数或者请求数。对于未投入使用系统，负载生成工具可以模拟用户，以获得CPU 用量。<br>  3.推算出当CPU 资源达到100%使用率时的用户或者请求数。这就是系统的理论上限。</p>
+</li>
+</ul>
+<TBD>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/%E9%98%85%E8%AF%BB/" rel="tag"># 阅读</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD/" rel="tag"># 性能</a>
+              <a href="/tags/%E6%9D%82%E8%B0%88/" rel="tag"># 杂谈</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/7b67d6ae.html" rel="prev" title="How To Do Great Work">
+                  <i class="fa fa-chevron-left"></i> How To Do Great Work
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">60k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:36</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e242df489cdd4b48ca2f440ebcce8a79"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
