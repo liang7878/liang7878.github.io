@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git checkout -b users/chs/$1
+
 mkdir $1
 
 cd $1
