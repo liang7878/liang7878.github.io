@@ -32,8 +32,11 @@
 <meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/cpu_arch.png">
 <meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/cpu_cache.png">
 <meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/multi_process_vs_multi_thread.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/store_benchmark.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/virtual_type.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6429ef26/virtual_comparsion.png">
 <meta property="article:published_time" content="2023-08-21T14:16:46.000Z">
-<meta property="article:modified_time" content="2023-08-21T17:13:22.050Z">
+<meta property="article:modified_time" content="2023-08-22T16:43:52.855Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="TBD">
 <meta property="article:tag" content="阅读">
@@ -126,7 +129,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%AA%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E6%B5%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">观测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">6.</span> <span class="nav-text">CPU</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%AA%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E6%B5%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">观测工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">6.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98"><span class="nav-number">7.</span> <span class="nav-text">内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">8.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98"><span class="nav-number">9.</span> <span class="nav-text">磁盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">10.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97"><span class="nav-number">11.</span> <span class="nav-text">云计算</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -230,7 +233,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-22 01:13:22" itemprop="dateModified" datetime="2023-08-22T01:13:22+08:00">2023-08-22</time>
+      <time title="修改时间：2023-08-23 00:43:52" itemprop="dateModified" datetime="2023-08-23T00:43:52+08:00">2023-08-23</time>
     </span>
 
   
@@ -240,14 +243,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>8.6k</span>
+      <span>14k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>31 分钟</span>
+      <span>50 分钟</span>
     </span>
 </div>
 
@@ -504,7 +507,137 @@
 <li><p>扩展：一个基于资源的容量规划简单的扩展方法：<br>  1.确定目标用户数或者应用程序请求频率。<br>  2.转化成每用户或每请求CPU 使用率。对于现有系统，CPU 用量可以通过监控获得，再除以现有用户数或者请求数。对于未投入使用系统，负载生成工具可以模拟用户，以获得CPU 用量。<br>  3.推算出当CPU 资源达到100%使用率时的用户或者请求数。这就是系统的理论上限。</p>
 </li>
 </ul>
-<TBD>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><ul>
+<li>主存：也称为物理内存，描述了计算机的高速数据存储区域，通常是动态随机访问内存（DRAM）。</li>
+<li>虚拟内存：一个抽象的主存概念，它（几乎是）无限的和非竞争性的。虚拟内存不是真实的内存。</li>
+<li>常驻内存：当前处于主存中的内存。</li>
+<li>匿名内存：无文件系统位置或者路径名的内存。它包括进程地址空间的工作数据，称作堆。</li>
+<li>地址空间：内存上下文。每个进程和内核都有对应的虚拟地址空间。</li>
+<li>段：标记为特殊用途的一块内存区域，例如用来存储可执行或者可写的页。</li>
+<li>OOM：内存耗尽，内核检测到可用内存低。</li>
+<li>页：操作系统和CPU 使用的内存单位。它一直以来是4KB 或者8KB。现代的处理器允许多种页大小以支持更大的页面尺寸。</li>
+<li>缺页：无效的内存访问。使用按需虚拟内存时，这是正常事件。</li>
+<li>换页：在主存与存储设备间交换页。</li>
+<li>交换：源自UNIX，指将整个进程从主存转移到交换设备。Linux 中交换指页面转移到交换设备（迁移交换页）。本书中使用原来的定义，即转移整个进程。</li>
+<li>交换（空间）：存放换页的匿名数据和交换进程的磁盘空间。它可以是存储设备的一块空间，也称为物理交换设备，或者是文件系统文件，称作交换文件。部分工具用交换这个术语特指虚拟内存（这是令人误解和不正确的）。</li>
+</ul>
+<p>文件系统换页由读写位于内存中的映射文件页引发。对于使用文件内存映射（mmap()）的应用程序和使用了页缓存的文件系统，这是正常的行为。这也被称作“好的”换页。如果一个文件系统页在主存中修改过（“脏的”），页面换出要求将该页写回磁盘。相反，如果文件系统页没有修改过（“干净的”），因为磁盘已经存在一份副本，页面换出仅仅释放这些内存以便立即重用。</p>
+<p>匿名换页牵涉进程的私有数据：进程堆和栈。被称为匿名是由于它在操作系统中缺乏有名字的地址（例如，没有文件系统路径）。匿名页面换出要求迁移数据到物理交换设备或者交换文件。Linux 用交换（swapping）来命名这种类型的换页。</p>
+<p>交换是在主存与物理交换设备或者交换文件之间移动整个进程。</p>
+<p>利用更大的字长有可能提升内存性能，具体取决于CPU 架构。当一个数据类型在更长的字长下有未使用的位时，可能会浪费一小部分内存。</p>
+<p>内存硬件包括主存、总线、CPU 缓存和MMU（内存管理单元）。连接到每个CPU 的内存组被称为内存节点，或者仅仅是节点。基于处理器提供的信息，操作系统能了解内存节点的拓扑。这使得它可以根据内存本地性分配和调度线程，尽可能倾向于本地内存以提高性能。</p>
+<p>空闲链表是一个未使用的页列表（也称为空闲内存），它能立刻用于分配。通常的实现是多个空闲页链表，每个本地组（NUMA）一个。在节点的空闲链表内分配能提高内存的本地性和性能。</p>
+<p>页扫描仅按需启动。通常平衡的系统不会经常做页扫描并且仅以短期爆发方式扫描。如前所述，基于Solaris 的系统在页扫描前会利用其他机制释放内存，因此若页扫描多于几秒通常是内存压力问题的预兆。</p>
+<p>内存调优方法：</p>
+<ul>
+<li>工具法<ul>
+<li>页扫描：寻找连续的页扫描（超过10 秒），它是内存压力的预兆。Linux 中，可以使用sar -B 并检查pgscan 列。在Solaris 中，可以使用vmstat (1M)并检查sr 列。</li>
+<li>换页：换页是系统内存低的进一步征兆。Linux 中，可以使用vmstat (8)并检查si和so 列（这里，交换指匿名换页）。Solaris 中，vmstat -p 按类型显示换页，检查匿名换页。</li>
+<li>vmstat：每秒运行vmstat 检查free 列的可用内存。</li>
+<li>OOM 终结者：仅对Linux 有效，这些事件可以在系统日志&#x2F;var&#x2F;log&#x2F;messages，或者从dmesg(1)中找到。搜索“Out of memory”。</li>
+<li>交换：仅对Solaris 有效，运行vmstat 并检查w 列，它显示交换出的线程，这往往事后才能注意到。要查看即时的交换，用vmstat -S 并检查si 和so。</li>
+<li>top&#x2F;prstat：查看哪些进程和用户是（常驻）物理内存和虚拟内存的最大使用者（列名参考Man 手册，不同版本有所变化）。这些工具也会总结内存使用率。</li>
+<li>dtrace&#x2F;stap&#x2F;perf：内存分配的栈跟踪，确认内存使用的原因。</li>
+</ul>
+</li>
+<li>USE 方法：要确认物理使用率，需要了解可用内存（free）大小。不同的工具不一定考虑了未被引用的文件系统缓存页或者非活动页，因此它们的报告可能会不同。<ul>
+<li>使用特征归纳：对于内存，这包括了要求发现内存用于何处以及使用了多少，如下所示。</li>
+<li>系统范围的物理和虚拟内存使用率。</li>
+<li>饱和度：换页、交换、OOM 终结者。</li>
+<li>内核和文件系统缓存使用情况。</li>
+<li>每个进程的物理和虚拟内存使用情况。</li>
+<li>是否存在内存资源控制。</li>
+</ul>
+</li>
+<li>周期分析：内存总线负载通过检查CPU 性能计数器（CPC）测定，它能被设置用来计算内存停滞周期。</li>
+<li>性能监测：关键的内存指标如下。使用率：使用百分比，由可用内存推断。饱和度：换页、交换、OOM 终结者。</li>
+<li>泄露检测：内存泄漏：一种类型的软件bug，忘记分配过的内存而没有释放。通过修改软件代码，或应用补丁及进行升级（进而修改代码）能修复。内存增长：软件在正常地消耗内存，远高于系统允许的速率。通过修改软件配置，或者由软件开发人员修改软件内存的消耗方式来进行修复。</li>
+<li>静态性能调优：调整各类配置</li>
+<li>资源控制：操作系统可能向进程或进程组内存分配提供细粒度控制。这些控制可能会包括使用主存和虚拟内存的固定极限。</li>
+<li>微基准测试：微基准测试可用于确定主存的速度和特征，例如CPU 缓存和缓存线长度。它有助于分析系统间的不同。由于应用程序和负载的不同，内存访问速度可能比CPU 时钟速度对性能影响更大。</li>
+</ul>
+<p>最重要的内存调优是保证应用程序保留在主存中，并且避免换页和交换经常发生。</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><ul>
+<li>文件系统：一种把数据组织成文件和目录的存储方式，提供了基于文件的存取接口，并通过文件权限控制访问。另外，还包括一些表示设备、套接字和管道的特殊文件类型，以及包含文件访问时间戳的元数据。</li>
+<li>文件系统缓存：主存（通常是DRAM）的一块区域，用来缓存文件系统的内容，可能包含各种数据和元数据。</li>
+<li>操作：文件系统的操作是对文件系统的请求，包括read()、write()、open()、close()、stat()、 mkdir()以及其他操作。</li>
+<li>I&#x2F;O：输入&#x2F;输出。文件系统I&#x2F;O 有好几种定义，这里仅仅指直接读写（执行I&#x2F;O）的操作，包括read()、write()、stat()（读的统计信息）和mkdir()（创建一个新的目录项）。I&#x2F;O 不包括open()和close()。</li>
+<li>逻辑I&#x2F;O：由应用程序发给文件系统的I&#x2F;O。</li>
+<li>物理I&#x2F;O：由文件系统直接发给磁盘的I&#x2F;O（或者通过裸I&#x2F;O）。</li>
+<li>吞吐量：当前应用程序和文件系统之间的数据传输率，单位是B&#x2F;s。</li>
+<li>inode：一个索引节点（inode）是一种含有文件系统对象元数据的数据结构，其中有访问权限、时间戳以及数据指针。</li>
+<li>VFS：虚拟文件系统，一个为了抽象与支持不同文件系统类型的内核接口。在Solaris上，一个VFS inode 被称为一个vnode。</li>
+<li>卷管理器：灵活管理物理存储设备的软件，在设备上创建虚拟卷供操作系统使用。</li>
+</ul>
+<p>文件系统延时是文件系统性能一项主要的指标，指的是一个文件系统逻辑请求从开始到结束的时间。它包括了消耗在文件系统、内核磁盘I&#x2F;O 子系统以及等待磁盘设备——物理I&#x2F;O 的时间。应用程序的线程通常在请求时阻塞，等待文件系统请求的结束。这种情况下，文件系统的延时与应用程序的性能有着直接和成正比的关系。</p>
+<p>文件系统用缓存（caching）提高读性能，而用缓冲（buffering）（在缓存中）提高写性能。</p>
+<p>为了平衡系统对于速度和可靠性的需求，文件系统默认采用写回缓存策略，但同时也提供一个同步写的选项绕过这个机制，把数据直接写在磁盘上。</p>
+<p>裸I&#x2F;O：绕过了整个文件系统，直接发给磁盘地址。有些应用程序使用了裸I&#x2F;O（特别是数据库），因为它们能比文件系统更好地缓存自己的数据。其缺点在于难以管理，即不能使用常用文件系统工具执行备份&#x2F;恢复和监控。</p>
+<p>直接I&#x2F;O：允许应用程序绕过缓存使用文件系统。直接I&#x2F;O 可用于备份文件系统的应用程序，防止只读一次的数据污染文件系统缓存。裸I&#x2F;O和直接I&#x2F;O 还可以用于那些在进程堆里自建缓存的应用程序，避免了双重缓存的问题。</p>
+<p>内存映射通过系统调用mmap()创建，通过munmap()销毁。如果问题在于磁盘设备的高I&#x2F;O 延时，用mmap()消除小小的系统调用开销，是无济于事的，这时，磁盘设备的高I&#x2F;O 问题并没有解决并仍在拖累性能。</p>
+<p>如果说数据对应了文件和目录的内容，那元数据则对应了有关它们的信息。元数据可能是通过文件系统接口（POSIX）读出的信息，也可能是文件系统实现磁盘布局所需的信息。前者被称为逻辑元数据，后者被称为物理元数据。</p>
+<p>下面这个列举步骤的例子描述了应用程序写入一个字节的背后发生了什么：<br>1.一个应用程序对一个已有的文件发起了一个一字节的写操作。<br>2.文件系统定位了这个地址对应的128KB 数据块，发现它未在缓存中（尽管指向数据块的元数据被缓存了）。<br>3.文件系统请求从磁盘载入那个记录块。<br>4.磁盘设备层把128KB 字节的读请求分拆成适配设备的较小读请求。<br>5.磁盘执行了多次较小的读请求，总共128KB。<br>6.文件系统把要写入的那个字节替换成新的数据。<br>7.一段时间后，文件系统请求把128KB 的“脏”记录写回到磁盘。<br>8.磁盘写入128KB 的记录（如果有需要还要分拆请求）。<br>9.文件系统写入新的元数据，比如引用（为了写时复制）或者访问时间。<br>10.磁盘执行更多的写入操作。<br>这样，即便应用程序只执行了一个字节的写操作，磁盘也承担了多次读（共128KB）和更多的写（超过128KB）操作。</p>
+<p>一些操作的性能数据：<br><img src="/posts/6429ef26/store_benchmark.png" alt="Alt text"></p>
+<p>页缓存缓存了虚拟内存的页面，包括文件系统的页面，提升了文件和目录的性能。页缓存大小是动态的，它会不断增长消耗可用的内存，并在应用程序需要的时候释放</p>
+<p>基于块的文件系统把数据存储在固定大小的块里，被存储在元数据块里的指针所引用。对于大文件，这种方法需要大量的块指针和元数据块，而且数据块的摆放可能会变得零零碎碎，造成随机I&#x2F;O。有些基于块的文件系统尝试通过把块连续摆放，来解决这个问题。另一个办法是使用变长的块大小，随着文件的增长采用更大的数据块，也能减小元数据的开销。</p>
+<h2 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h2><ul>
+<li>虚拟磁盘：存储设备的模拟。在系统看来，这是一块物理磁盘，但是，它可能由多块磁盘组成。</li>
+<li>传输总线：用来通信的物理总线，包括数据传输（I&#x2F;O）以及其他磁盘命令。</li>
+<li>扇区：磁盘上的一个存储块，通常是512B 大小。</li>
+<li>I&#x2F;O：对于磁盘，严格地说仅仅包括读和写，而不包括其他磁盘命令。I&#x2F;O 至少由方向（读或写）、磁盘地址（位置）和大小（字节数）组成。</li>
+<li>磁盘命令：除了读写之外，磁盘还会被指派执行其他非数据传输的命令（例如缓存写回）。</li>
+<li>吞吐量：对于磁盘而言，吞吐量通常指当前数据传输速率，单位是B&#x2F;s。</li>
+<li>带宽：这是存储传输或者控制器能够达到的最大数据传输速率。</li>
+<li>I&#x2F;O 延时：一个I&#x2F;O 操作的执行时间，这个词在操作系统领域广泛使用，早已超出了设备层。注意在网络领域，这个词有其他的意思，指发起一个I&#x2F;O 的延时，后面还跟着数据传输时间。</li>
+<li>延时离群点：非同寻常的高延时磁盘I&#x2F;O。</li>
+</ul>
+<p>I&#x2F;O 等待是针对单个CPU 的性能指标，表示当CPU 分发队列（在睡眠态）里有线程被阻塞在磁盘I&#x2F;O 上时消耗的空闲时间。</p>
+<p>磁盘检查工具：</p>
+<ul>
+<li>iostat：使用扩展模式寻找繁忙磁盘（超过60%使用率），较高的平均服务时间（超过大概10ms），以及高IOPS（可能）。</li>
+<li>iotop：发现哪个进程引发了磁盘I&#x2F;O。</li>
+<li>dtrace&#x2F;stap&#x2F;perf：包含了iosnoop(1)工具，仔细检查磁盘I&#x2F;O 延时，以发现延时离群点（超过大概100ms）。</li>
+<li>磁盘控制器专用工具（厂商提供）。</li>
+</ul>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>包的长度通常受限于网络接口的最大传输单元（MTU）长度，许多以太网中它设置为1500B。以太网支持接近9000B 的特大包（帧），也称为巨型帧。</p>
+<p>较大的缓冲可以通过在阻塞和等待确认前持续传输数据缓解高往返延时带来的影响。</p>
+<p>全双工模式允许双向同时传输，利用分离的通道传输和接收能利用全部带宽。半双工模式仅允许单向的传输。</p>
+<p>现代内核中网络栈是多线程的，并且传入的包能被多个CPU 处理。传入的包与CPU 的映射可用多个方法完成：可能基于源IP 地址哈希以平均分布负载，或者基于最近处理的CPU 以有效利用CPU 缓存热度以及内存本地性。</p>
+<p>对于网络通信来说，应用工具法可以检查如下内容。</p>
+<ul>
+<li>netstat -s：查找高流量的重新传输和乱序数据包。哪些是“高”重新传输率依客户机而不同，面向互联网的系统因具有不稳定的远程客户会比仅拥有同数据中心客户的内部系统具有更高的重新传输率。</li>
+<li>netstat -i：检查接口的错误计数器（特定的计数器依OS 版本而不同）。</li>
+<li>ifconfig（仅限Linux 版本）：检查“错误”、“丢弃”、“超限”。</li>
+<li>吞吐量：检查传输和接收的字节率-在Linux 中用ip(8)，在Solaris 中用nicstat(1)或者dladm(1M)。高吞吐量可能会因为到达协商的线速率而受到限制，它也可能导致系统中网络用户的竞争及延时。</li>
+<li>tcpdump&#x2F;snoop：尽管需要大量的CPU 开销，短期使用可能就足以发现谁在使用网络并且定位可以消除的不必要的操作。</li>
+<li>dtrace&#x2F;stap&#x2F;perf：用来检查包括内核状态在内的应用程序与线路间选中的数据。</li>
+</ul>
+<h2 id="云计算"><a href="#云计算" class="headerlink" title="云计算"></a>云计算</h2><p>OS 虚拟化将操作系统划分为形同分隔的访客服务器且能独立于宿主管理和重启的实例。相比硬件虚拟化技术，一个关键区别是仅有一个内核在运行。它有如下优势：</p>
+<ul>
+<li>由于客户应用程序能直接向宿主内核发起系统调用，客户应用程序I&#x2F;O 仅有一些甚至没有性能开销。</li>
+<li>分配给客户的内存能完全用于客户应用程序——而没有来自OS 虚拟层或者其他访客内核的额外内核负担。</li>
+<li>只有一个统一的文件系统缓存——没有宿主和访客的双重缓存。</li>
+<li>所有的客户进程都可由宿主观测到，这样可以调试牵涉到它们之间的相互作用（包括资源竞争）的性能问题。</li>
+<li>CPU 是真实的CPU，自适应互斥锁的假设仍然有效。<br>而劣势为：</li>
+<li>任何kernel panic 会影响到所有客户。</li>
+<li>客户不能运行不同的内核版本。</li>
+</ul>
+<p>硬件虚拟化创建系统虚拟机实例，它们能运行包括自己内核在内的整个操作系统。硬件虚拟化包括如下类型。</p>
+<ul>
+<li>全虚拟化——二进制翻译：提供一个由虚拟硬件组件组成的完整虚拟系统。在此之上可以安装未修改的操作系统。它由VMware 于1998年在x86 平台上始创，混合利用了直接处理器执行和按需翻译二进制指令。相对于服务器整合带来的节省，它的性能开销通常是可接受的。</li>
+<li>全虚拟化——硬件支持：提供一个由虚拟组件组成的完整虚拟系统。在此之上可以安装未修改的操作系统。它利用处理器的支持以更有效地执行虚拟机，特别是2005-2006年引入的AMD-V 和Intel VT-x 扩展。</li>
+<li>半虚拟化：提供了包括使得访客机操作系统更有效地使用宿主资源的接口（通过hypercalls）的一个虚拟系统，而不需要包括所有组件的完整虚拟化。例如，设置计时器通常需要多个必须由虚拟层模拟的特权指令。对于一个半虚拟化的客户机，这能被简化为单个超级调用。半虚拟化可能会利用访客机的半虚拟网络设备驱动将数据包更高效地传递给宿主的物理网络接口。尽管性能有所提升，但它依赖于客户OS 对半虚拟化的支持（Windows 一直以来不提供）。</li>
+</ul>
+<p>另一类硬件虚拟化，混合虚拟化，同时利用硬件辅助的虚拟化和更高效的半虚拟化调用，以期提供最佳性能。最常见的半虚拟化的目标是如网络板卡和存储控制器等的虚拟设备。</p>
+<p><img src="/posts/6429ef26/virtual_type.png" alt="Alt text"></p>
+<p>图中展示了两种类型的虚拟机管理程序：</p>
+<ul>
+<li>1 型　直接运行于处理器上，并且不属于其他宿主的内核或用户软件。虚拟机管理程序的管理可以由一个特权访客机实现（这里描绘为系统中的第一个：0 号）。它能创建和启动新的访客机。1 型也称为本地虚拟机管理程序或者裸机虚拟机管理程序。这类虚拟机管理程序包括了自带的用于客户VM 的CPU 调度器。</li>
+<li>2 型　由宿主OS 内核运行并且可能由内核级模块和用户级进程组成。宿主OS 有管理虚拟机管理程序和启动新访客机的特权。这类虚拟机管理程序由宿主内核调度器调度。</li>
+</ul>
+<p>虚拟化技术的比较：</p>
+<p><img src="/posts/6429ef26/virtual_comparsion.png" alt="Alt text"></p>
+
     </div>
 
     
@@ -560,14 +693,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">60k</span>
+    <span title="站点总字数">65k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:36</span>
+    <span title="站点阅读时长">3:56</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
