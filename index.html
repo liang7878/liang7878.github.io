@@ -16,10 +16,10 @@
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
 <meta property="og:type" content="website">
@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,6 +188,298 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/a2161837.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/a2161837.html" class="post-title-link" itemprop="url">读《云原生分布式存储基石：etcd 深入解析》</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-09 23:59:02" itemprop="dateCreated datePublished" datetime="2023-10-09T23:59:02+08:00">2023-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近一个月时间一直都在忙着搬家，国庆又带老婆回家待了几天，一直都没什么时间静下心来看看书，终于国庆过完了，又开一个新坑。这本书是华为做容器服务的团队写的，etcd 的源码大家多多少少都看过一些，这本书系统过了一下整个 etcd 的设计和一些重要的设计亮点和实现原理，对于我们自己对 etcd 的理解也能有一个梳理和印证。</p>
+<p>本书分为三个大部分，分布式基础、 etcd 实战以及源码分析，总共十二章。</p>
+<h2 id="分布式基础"><a href="#分布式基础" class="headerlink" title="分布式基础"></a>分布式基础</h2><p>分布式系统的设计目标主要有以下几个方面:</p>
+<ul>
+<li>可用性：可用性是分布式系统的核心需求，其用于衡量一个分布式系统持续对外提供服务的能力。可用性方面，主要是通过系统冗余（备份、多节点）来保证容灾。</li>
+<li>可扩展性：增加机器后不会改变或极少改变系统行为，并且能获得近似线性的性能提升。这一点对于业务增长来说十分重要。</li>
+<li>容错性：系统发生错误时，具有对错误进行规避以及从错误中恢复的能力。数据中心能够出现的错误往往超过你的想象，怎么在出现错误时提供稳定的服务，这一点在设计时也需要深入思考。</li>
+<li>性能：对外服务的响应延时和吞吐率要能满足用户的需求。这点就不多说了，尤其是 ToC的业务，系统响应往往决定了用户的留存。</li>
+</ul>
+<p>这里又要老生常谈 CAP 了，我们复习一下，CAP 分别是一致性（Consistency）、可用性（Availability）和分区容忍性（Tolerance to the partition of network）。分布式环境下网络分区是常态，所以分布式系统往往是AP 或者 CP，要么提高可用性降低一致性需求，要么要求强一致性但是可用性会降低。一般除了一些特定的场景（比如金融业务）会要求 CP，其他基本都是以 AP 为主，满足最终一致性即可。</p>
+<p>我们重点聊聊一致性，首先什么是一致性，在分布式场景下，用通俗的话来说，就是怎么保证多个副本的数据是否一致，或者说系统对外呈现的状态是否一致。对于一致性，可以分别从客户端和服务端两个不同的视角来理解。从客户端来看，一致性主要是指多并发访问时如何获取更新过的数据的问题。从服务端来看，则是更新如何复制分布到整个系统，以保证数据最终的一致性。因此，可以从两个角度来查看一致性模型：以数据为中心的一致性模型和以用户为中心的一致性模型。</p>
+<p>以数据为中心的一致性模型有强一致性（Strong Consistency）、顺序一致性（Sequential Consistency）、因果一致性（Causal Consistency）、可串行化一致性（Serializable Consistency）</p>
+<p>强一致性（Strong Consistency），顺序一致性（Sequential Consistency），因果一致性（Causal Consistency），和可串行化一致性（Serializable Consistency）是分布式系统中描述不同一致性级别的概念。它们之间的区别主要在于对于并发操作的处理和数据操作顺序的要求。</p>
+<ol>
+<li><p><strong>强一致性（Strong Consistency）：</strong> 在一个强一致性系统中，任何时刻，客户端读取的数据都是最新的，而且所有节点上的数据副本都是完全一致的。强一致性要求系统保证所有节点上的读操作都能够读取到最近一次的写操作结果。这种一致性保证通常需要在分布式系统中采用复杂的同步和协调机制，因此可能会影响系统的性能和可用性。</p>
+</li>
+<li><p><strong>顺序一致性（Sequential Consistency）：</strong> 顺序一致性保证所有节点上的操作都会被按照相对于其他操作的发生顺序来进行。也就是说，如果一个操作在系统中发生在另一个操作之前，那么所有节点上的观察结果都应该反映这个发生顺序。不过，顺序一致性并不要求所有节点上的操作立即被所有其他节点看到，可能会有一定的延迟。</p>
+</li>
+<li><p><strong>因果一致性（Causal Consistency）：</strong> 因果一致性是一种比顺序一致性更弱的一致性模型。在因果一致性下，系统保证具有因果关系的操作会被按照其发生的顺序来进行，但不保证并发操作之间的顺序。如果一个事件A影响了事件B，那么观察到事件A的节点在事件B之前就应该知道事件A发生了。</p>
+</li>
+<li><p><strong>可串行化一致性（Serializable Consistency）：</strong> 可串行化一致性是一种强一致性模型，它要求系统的执行序列等价于某个串行执行序列（即在一个时刻只有一个操作被执行）。这意味着系统的并发操作不能产生与某个串行执行序列不一致的结果。可串行化一致性是一种非常严格的一致性模型，通常需要使用各种事务处理技术来实现。</p>
+</li>
+</ol>
+<p>以用户为中心的一致性模型主要是指实际业务需求中需要满足针对某个用户业务的一致性，比如最终一致性，即允许一个不一致性窗口，只要最终所有副本达到一致性即可。</p>
+<p>当同一份数据存在多个副本时，我们通过复制状态机来管理它们。复制状态机（Replicated State Machine）是一种分布式系统的设计模式，用于确保在多个节点上保持相同的状态副本。在复制状态机模型中，多个服务器节点通过相互通信和协作来保持一致的状态，并且客户端可以向任意一个节点发送请求，系统会确保处理请求的顺序和结果在所有节点上都是一致的。</p>
+<p>复制状态机的核心思想是将分布式系统中的状态看作是一个状态机，这个状态机会接收客户端的请求并且按照特定的顺序进行处理，从而达到一致的状态。为了实现复制状态机，通常会使用一种称为共识算法（Consensus Algorithm）的技术，例如Paxos、Raft等。这些共识算法可以确保系统中的节点在面对故障和网络分区等问题时，依然能够保持一致的状态。</p>
+<p>FLP（Fisher, Lynch, Paterson）定理是分布式计算领域的一个基本定理，指出在异步网络中，当存在一个或多个节点发生故障时，不可能设计一个算法，能够在有限的时间内，保证所有节点对一个共享的变量（例如确定某个决策）达成一致的协议。简而言之，FLP定理指出，在异步网络中，不可能同时满足一致性（Consistency）、可用性（Availability）和分区容忍性（Partition Tolerance）这三个分布式系统设计的基本要求。</p>
+<p>具体来说，FLP定理的内容是：在一个异步网络中，如果有一个或多个节点可能发生故障，且网络不提供时钟同步（即消息传递没有上限，消息可能在任何时间间隔内被传递），那么在有限的时间内不可能设计一个分布式算法，能够确保所有节点对某个共享的变量达成一致的协议。</p>
+<p>这个定理的结论有重要的实际意义，它告诉我们，在异步网络环境下，无法设计一个能够在所有情况下都保证一致性的分布式算法。因此，在实际系统设计中，需要根据具体需求和系统特性，权衡一致性、可用性和分区容忍性，选择适当的系统模型和算法。根据FLP定理，实际的一致性协议（Paxos、Raft等）在理论上都是有缺陷的，最大的问题是理论上存在不可终止性！至于Paxos和Raft协议在工程的实现上都做了哪些调整（例如，Paxos和Raft都通过随机的方式显著降低了发生算法无法终止的概率），从而规避了理论上存在的哪些问题，下文将会有详细的解释。</p>
+<p>书中接下来讲到了 Paxos 、 Raft算法，这两个协议在网上都有大量的介绍，我们不多赘述，只简单说一下 Raft，Raft把一致性问题分解成了领袖选举（leader election）、日志复制（log replication）、安全性（safety）和成员关系变化（membership changes）这几个子问题，我们在面试时候如果聊到 Raft 可以从这几个角度逐一介绍。</p>
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><p>为什么使用 etcd？在聊到 etcd 的时候，我们往往会聊到类似的其他系统，比如 zookeeper，与 zookeeper 相比，etcd 更加稳定可靠。在服务发现的实现上，etcd使用的是节点租约(Lease)，并且 支持Group(多key);而ZooKeeper使用的是临时节点。etcd支持稳定的watch，而不是ZooKeeper一样简单的单次触发式 (one time trigger)watch。etcd支持MVCC(多版本并发控制)，因为有协同系统需要无锁操作。 etcd 支持更大的数据规模，支持百万到千万级别的 key。 etcd 性能更好，在 3 台八核云服务器上部署的 etcd v3 可以实现每秒数万次的写操作和数十万次的读操作。</p>
+<p>etcd 的官方定义是“A distributed, reliable key-value store for the most critical data of a distributed system.”本质上是为了提供可靠的分布式键值存储，用来存储分布式系统中的最关键的数据。 etcd 的常见使用场景有：服务发现、分布式锁、分布式数据队列、分布式通知和协调、主备选举等。（p.s.我自己就是做服务发现相关的业务，不过是在一个没有强一致性的环境，在这种场景下怎么保证服务发现的一致性其实也是一个很有意思的问题，我们在生产环境做了大量的 workaround，这个以后有机会可以聊一下）</p>
+<p>etcd 基于 Raft 协议，通过日志复制来保证数据的强一致性，简单来说，客户端在写一个 key 的时候，首先会存储到 etcd 的 leader 节点上，接着通过 Raft 协议同步到集群中所有成员中，以此维护各成员的一致性。准确地说，只有在多数节点 ack 了这个写操作，这个写操作才算成功。etcd 能够容忍集群中(n-1)&#x2F;2 个节点的故障。 etcd 的数据通过 WAL 来持久化，数据操作先写 WAL，再做提交。 etcd 通过快照来记录某一时刻的所有数据，默认每一万条数据做一次快照，快照后 WAL 即可删除。</p>
+<p>etcd 单实例支持每秒一千次以上的写操作，极限情况下 QPS 可以达到 10k 。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/b0cb3be9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/b0cb3be9.html" class="post-title-link" itemprop="url">读《OceanBase 数据库源码解析》</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-09 21:58:30" itemprop="dateCreated datePublished" datetime="2023-09-09T21:58:30+08:00">2023-09-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">书籍阅读</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近在挺多地方见到网友推荐这本书，看到微信阅读上面已经有这本书的中文版，抽了点时间看了一下，都说这本书常读常新，我读下来感觉其中的一些观点的确对于程序员的成长有一定的指导作用，尤其是对于新进入职场的新手程序员和一些瓶颈期的程序员，与我工作这几年所沉淀的方法论也有一定的重合。我们系统过一遍，看看书中是如何指导程序员的入门和成长的。</p>
+<p>我们按照以下几个部分来过一遍这本书：</p>
+<ul>
+<li>整体发展路径</li>
+<li>如何步入自觉阶段</li>
+</ul>
+<h2 id="整体发展路径"><a href="#整体发展路径" class="headerlink" title="整体发展路径"></a>整体发展路径</h2><p>对于一个工程师而言，想晋级的话我们必须具备以下四个方向的能力：技术知识 （立身之本，我们需要理解我们的系统，熟悉如何写代码、如何在线上维护我们的代码）、执行力（如何用技术解决问题、如何 On-Call，经常参加技术讲座、阅读小组等）、沟通能力（很多人觉得程序员只要写好代码就好了，但是如何以建设性的方式定义问题、提出问题，如何帮助别人解决问题，如何文档化我们的工作，如何撰写设计文档并征求反馈意见等，这些问题对于一个程序员的精进非常重要）、领导力（从新手程序员到技术专家甚至技术经理的重要能力，我们需要能够在一定的工作范围能自主独立完成工作，处理好各类问题，积极参与项目和季度的规划，帮助团队内其他成员成长等，这些对于我们构建自己影响力都十分重要）。</p>
+<p>对于任何一个新人而言，我们可以做的最简单的事情是将我们所经历的（或者说所观察到的、学习到的）流程、内容等各类东西文档化，这样不仅能够帮助我们熟悉整个团队的工作流程，同时也可以帮助我们构建自己的影响力。同时要和 manager 确认我们参加团队和公司的各种重要会议，以获取相应的信息。（公司的组织架构决定了决策信息是自上而下流动的，获取更多的信息能够拥有超过周围人的视野，以做出更加符合公司导向的决策，进而获得各种机会）</p>
+<p>这里提到两个点：坎宁安定律和自行车棚效应，坎宁安定律（Cunningham’s law）是说“在互联网上获得正确答案的方式不是问问题，而是发布一个错误的答案”。团队里的同事在看到你的文档之后会帮忙修正一些内容，“重点并不是要写一份完美的文档，而是要写得足够多，以引发讨论，充实细节”。我们不应该把这些评论和纠正当做对我们个人的批评。（这里其实有一个小问题，涉及到我们个人的声誉，即我们写出来的东西是否经得起一定的推敲，如果写了过多错误的内容，这对我们个人的声誉也会有一定的影响，所以我们可以有理解的错误，但我们不应该有过多“明显的”、“粗浅的”、“因为不细心而导致的”错误，这个是我的个人观点，书上并没有提到这些）。另一个是自行车棚效应（bike-sheddling, Law of triviality），团队往往对于真正重要的决定草草通过，而对于一些无关紧要的事情吹毛求疵。</p>
+<p>在你的成长过程中，持续学习是至关重要的。了解如何编译、测试和部署代码。阅读那些提交代码的请求和代码评审意见。不要害怕询问更多的信息。多报名参加技术讲座、午餐会、阅读小组、导师计划，诸如此类。多和老板 1:1，理解老板的期望并谈谈你自己的目标，这些都很重要。</p>
+<p>我们要积极参与各种代码 review 、项目设计和季度规划，这些有助于我们获取更多的信息，进而增加自己的影响力。我们经常出现一些情况，参加了一个会议，但我们并没有真正的参加，即一场会议下来我们并不知道发生了什么，这样既浪费了时间也浪费了我们获取信息的机会。</p>
+<p>我们要学习如何交付代码，学习如何维护自己在线上的 feature，这个过程能够帮助我们理解我们的业务场景，理解客户的需求是什么。</p>
+<p>接着我们会开始负责一个小的项目，做项目规划，设计相对复杂的系统，这个过程中我们要沉淀对于团队或者公司的工作流的观察和见解，思考哪些是有效的、哪些是可改进的、哪些是无效的，和老板们谈谈自己的看法，同时也可以和老板们谈谈自己的长期规划。</p>
+<p>完成上面这些步骤，我们就可以说我们在团队内能够胜任一些工作，贡献自己的价值了。从我个人理解而言，能够稳定达到以上表现，基本就是 senior 及以上的工程师水平了，后续的进一步发展也只是在这些的基础上进一步加深和扩宽自己的领域，基本的方法论是不变的。</p>
+<h2 id="如何步入自觉阶段"><a href="#如何步入自觉阶段" class="headerlink" title="如何步入自觉阶段"></a>如何步入自觉阶段</h2><p>能力的4个阶段：“无意识的无能力”(unconscious incompetence)、“有意识的无能力”(conscious incompetence)，“有意识的有能力”(conscious competence)和“无意识的有能力”(unconscious competence)。我想大多数新手工程师都是在第二阶段甚至是第一阶段，两者的区别在于是否知道自己的努力方向。</p>
+<p><strong>软件工程领域在不断地发展。无论你是一名刚毕业的学生还是一名经验丰富的老手，如果你不学习，你就会落后。</strong></p>
+<p>每周都花一些时间去阅读团队文档、设计文档、代码、work item、书籍、论文和技术网站。在读代码时，如果可以的话我们应该尽量使用 IDE 去读，通过调试来跟踪和理解代码的运行逻辑。通过读团队的文档、work item 和 PR，我们可以知道整个团队目前在做什么工作。</p>
+<p>如何提出问题对于个人成长也十分重要，我们使用这样三个步骤：做研究，提出明确的问题，并恰当地安排解决你的问题所需的时间。首先我们必须要自己研究一下，在自己设定的时间限制之内如果没有解决问题，我们可以记录下我们研究的整个过程，在提问时提供给对方，这样对方能知道你做出了足够的努力，也能了解到你到底是哪里没有弄清楚。注意提问时不要打扰他人，通过邮件来提问是一个不错的方式，你也可以礼貌地发一个消息给对方，在一定时间内没得到回复的话，可以友好地 ping 一下。反过来，如果别人在向你提问时，你也可以尽量集中批量处理，避免不断地被别人打断，而浪费自己的大块时间。</p>
+<p>有两种典型的成长障碍：冒充者综合征和邓宁-克鲁格效应。</p>
+<p>患有冒充者综合征的人无法将自己的成功归因于自己的能力，并总是担心有朝一日会被他人识破自己其实是骗子这件事。他们坚信自己的成功并非源于自己的努力或能力，而是凭借著运气、良好的时机，或别人误以为他们能力很强、很聪明，才导致他们的成功。对于这种情况，我们应该多和别人交流，获取正面的反馈，这样慢慢就能够意识到自己的成绩，并建立信心。</p>
+<p>邓宁-克鲁格效应（Dunning-Kruger effect）则完全相反，即过于自信，认为自己的想法是正确的，批评公司的技术栈，即井底之蛙。解决的办法有很多：保持开放的心态，多和大佬交流，在遇到不同意见时多问问为什么会有这样的决策，培养权衡利弊的心态，而不是非黑即白。我自己的经验是，我们依然可以利用上面的坎宁安定律，多输出自己的观点和想法，这样能够在与别人交流的过程中意识到自己的不足。</p>
+<h2 id="如何做好项目变更"><a href="#如何做好项目变更" class="headerlink" title="如何做好项目变更"></a>如何做好项目变更</h2><p>大家如果看看各个公司的内部代码就会意识到，企业的代码质量是参差不齐的，大型项目的代码用“屎山”来形容毫不为过。原因是什么？我们可以理解一下软件的熵（software entropy）这个概念，即软件代码会慢慢走向无序的状态。原因有很多，某些程序员代码写的不好或者业务场景不断变化等。我们可以通过一些方法保持代码的整洁，避免熵增，比如代码风格检测等。</p>
+<p>另一个则是技术债（technical debt），经常出现的情况是我们现在要赶着交付一个项目了，所以某些地方就不得不妥协，或者说我们在上线之前并不知道某些场景，所以在写代码时候没考虑到。其实这些都是无可避免的，但是我们可以想办法解决。讨论技术债的模版如下：<br>1.按事实陈述情况；<br>2.描述技术债的风险和成本；<br>3.提出解决方案；<br>4.讨论备选方案（不采取行动也是备选方案）；<br>5.权衡利弊。<br>说白了，有些技术债不一定要解决，取决于解决它带来的收益是什么。</p>
+<p>在做代码变更的时候，我们要保证几点：</p>
+<ol>
+<li>在做变更时要为我们变更的功能增加测试，小步前进。</li>
+<li>保证过手的代码要比之前更干净。</li>
+<li>不要一次性做很大的修改，最好慢慢修改，多提交PR，慢慢来，这样既方便 review，又可以避免忽略某些问题，捅大娄子。我个人其实犯过这个错误，在写项目的时候，一个大 PR 看起来是很厉害，但其实一堆小 PR 才更好 track 和 review。</li>
+<li>不要为了重构而重构，重构一定要能带来价值，有些代码能干掉的就不要留下来。</li>
+<li>用好 git（也有的是 svn），用一个标准模版来提交我们的 PR。如果没有既定的规则，可以遵循克里斯·比姆斯的建议。用一个空行将标题与正文分开。标题行限制在50个字符以内。标题行要大写。不要以句号结束标题行。在标题行中使用命令式语气。将正文限制在72个字符之内。用正文解释修改的内容和原因，而不解释如何修改。</li>
+</ol>
+<p>做技术的人很本能地追求最新的技术，但是在做技术选型时我们应该尽量保守，选择比较成熟的方案。不要追求特立独行而特立独行，要学会思考和理解公司内的实现方案，思考其现状的原因，这样才不会无缘无故地搞一些自定义方案。对重构保持谨慎，思考清楚之后再做重构，因为重构的过程往往会超过我们的预期。</p>
+<h2 id="如何写好代码"><a href="#如何写好代码" class="headerlink" title="如何写好代码"></a>如何写好代码</h2><p>写代码这部分其实没什么技术内容，主要是编程习惯。</p>
+<p>要做好防御性编程，主要包括：</p>
+<ul>
+<li>避免空值</li>
+<li>对不可变的变量要及时声明</li>
+<li>做好类型检查</li>
+<li>对输入进行验证，我的经验是，最好所有方法都验证一下（哪怕是 private 方法，因为 private 方法可能被后面在当前文件内做变更的人调用到）</li>
+<li>用好异常，异常能够返回很多信息，在抛异常和抓异常时最好都有明确定义，这样会安全一些</li>
+<li>“早抛晚捕”，就是说尽可能在接近错误的地方抛异常</li>
+<li>退避重试，不要不停地重试，尽量以退避的方式重试，避免不断重试，另外为了避免惊群，要给重试的时间间隔加一些随机的延时。</li>
+<li>构建幂等系统，这个就不说了，避免重试产生错误</li>
+<li>及时释放资源，资源及时释放能够避免泄露。</li>
+</ul>
+<p> 对于日志的介绍部分其实没什么好说的，基本都是一些常识，比如日志分级、日志保证原子性、处理字符串时注意性能、注意数据安全等。</p>
+<p> 系统监控可以说是生产环境的一个关键要素，即如何监测你的 feature。feature 从设计阶段就应该考虑好如何进行监测，常见的监测有 counter、metrics、dashboard等等，各家都有自己的玩法，这个就不多说了。</p>
+<p>配置部分也没什么好说的，大家都有自己的标准做法，简单来说就是配置要干净简洁，提供各种默认值。</p>
+<p>工具集其实也没什么好说的，每家公司都有自己的工具集。工具集的好处在于，大家在进行一些标准流程的时候能够以安全的方式去执行，是人都会犯错误，但是工具可以帮助我们在执行前进行检查，避免一些错误。</p>
+<h2 id="如何管理项目依赖"><a href="#如何管理项目依赖" class="headerlink" title="如何管理项目依赖"></a>如何管理项目依赖</h2><p>在现有的代码上增加一个依赖似乎是一个简单的决定。“不要重复自己”(Don’t repeat yourself，DRY)是一个通常被教导的原则。</p>
+<p>一个好的版本管理方案，其版本都具有以下特点：</p>
+<ul>
+<li>唯一性(unique)：版本不应该被重复使用。构件会被分发、缓存，并被自动化工作流拉取。永远不要在现有版本下重新发布更改的代码。</li>
+<li>可比性(comparable)：版本应该帮助人们和工具对版本的优先顺序进行推断。当一个构建依赖于同一构件的多个版本时，可以使用优先顺序来解决冲突。</li>
+<li>信息性(informative)：版本信息区分了预先发布的代码和已发布的代码，将构建流水号与构件相关联，并设置了稳定性和兼容性的合理预期。</li>
+</ul>
+<p>语义版本管理(semantic versioning，SemVer)是版本管理中最常用的方案之一。官方的SemVer规范可在其网站中找到。该规范定义了3个数字：主版本号、次版本号和补丁版本号（有时也称作微版本号）。这3个数字被合并为“主版本号.次版本号.补丁版本号”的版本号格式。</p>
+<p>如何避免各种循环依赖呢？首先是隔离依赖项，虽然我们经常说 DRY，但是必要情况下，我们要敢于复制代码，避免奇怪的依赖关系。在添加依赖项时，我们应该按需要添加，而不应该一股脑地全都加入到依赖列表中。</p>
+<h2 id="如何进行项目测试"><a href="#如何进行项目测试" class="headerlink" title="如何进行项目测试"></a>如何进行项目测试</h2><p>测试有单元测试、系统测试、性能测试、验收测试。其中单元测试只负责测试单一的方法和行为，系统测试会测试端到端（End-to-end, e2e）的工作流程。而性能测试则是通过压测了解系统的性能极限，主要是为了规划整个系统的容量和服务等级划分。验收测试则是有客户进行，一般程序员比较少遇到。不逐一列举书上的内容了，贴个图：</p>
+<p><img src="/test.png" alt="Alt text"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/b0cb3be9.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -224,7 +516,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-09 05:13:12" itemprop="dateModified" datetime="2023-09-09T05:13:12+08:00">2023-09-09</time>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -343,7 +635,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-09 05:13:12" itemprop="dateModified" datetime="2023-09-09T05:13:12+08:00">2023-09-09</time>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -451,7 +743,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-09 05:13:12" itemprop="dateModified" datetime="2023-09-09T05:13:12+08:00">2023-09-09</time>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -514,226 +806,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/76e54fc8.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/76e54fc8.html" class="post-title-link" itemprop="url">洛谷综合题单 -- P1089 [NOIP2004 提高组] 津津的储蓄计划</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-08-23 04:47:12" itemprop="dateCreated datePublished" datetime="2023-08-23T04:47:12+08:00">2023-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-09 05:13:12" itemprop="dateModified" datetime="2023-09-09T05:13:12+08:00">2023-09-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">编程进阶</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>681</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="NOIP2004-提高组-津津的储蓄计划"><a href="#NOIP2004-提高组-津津的储蓄计划" class="headerlink" title="[NOIP2004 提高组] 津津的储蓄计划"></a>[NOIP2004 提高组] 津津的储蓄计划</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>津津的零花钱一直都是自己管理。每个月的月初妈妈给津津 $300$ 元钱，津津会预算这个月的花销，并且总能做到实际花销和预算的相同。</p>
-<p>为了让津津学习如何储蓄，妈妈提出，津津可以随时把整百的钱存在她那里，到了年末她会加上 $20%$ 还给津津。因此津津制定了一个储蓄计划：每个月的月初，在得到妈妈给的零花钱后，如果她预计到这个月的月末手中还会有多于 $100$ 元或恰好 $100$ 元，她就会把整百的钱存在妈妈那里，剩余的钱留在自己手中。</p>
-<p>例如 $11$月初津津手中还有 $83$ 元，妈妈给了津津 $300$ 元。津津预计$11$月的花销是 $180$ 元，那么她就会在妈妈那里存 $200$ 元，自己留下 $183$ 元。到了 $11$ 月月末，津津手中会剩下 $3$ 元钱。</p>
-<p>津津发现这个储蓄计划的主要风险是，存在妈妈那里的钱在年末之前不能取出。有可能在某个月的月初，津津手中的钱加上这个月妈妈给的钱，不够这个月的原定预算。如果出现这种情况，津津将不得不在这个月省吃俭用，压缩预算。</p>
-<p>现在请你根据 $2004$ 年 $1$ 月到 $12$ 月每个月津津的预算，判断会不会出现这种情况。如果不会，计算到 $2004$ 年年末，妈妈将津津平常存的钱加上 $20%$ 还给津津之后，津津手中会有多少钱。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/76e54fc8.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/6429ef26.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/6429ef26.html" class="post-title-link" itemprop="url">读《性能之巅》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-08-21 22:16:46" itemprop="dateCreated datePublished" datetime="2023-08-21T22:16:46+08:00">2023-08-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-09 05:13:12" itemprop="dateModified" datetime="2023-09-09T05:13:12+08:00">2023-09-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>14k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>50 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>《Systems Performance》这本书可以说是做性能调优的必读书目了，不仅仅是因为它有很多关于性能调优的理论知识，还因为它有很多关于性能调优的实例和思考。其实这本书我几年前就读过了，这次重新回顾一下，可以记录一些重要的知识点。话不多说，开始读起来。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/6429ef26.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -756,14 +830,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">88k</span>
+    <span title="站点总字数">95k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:21</span>
+    <span title="站点阅读时长">5:47</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动

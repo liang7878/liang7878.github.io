@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="最近一个月时间一直都在忙着搬家，国庆又带老婆回家待了几天，一直都没什么时间静下心来看看书，终于国庆过完了，又开一个新坑。这本书是华为做容器服务的团队写的，etcd 的源码大家多多少少都看过一些，这本书系统过了一下整个 etcd 的设计和一些重要的设计亮点和实现原理，对于我们自己对 etcd 的理解也能有一个梳理和印证。 本书分为三个大部分，分布式基础、 etcd 实战以及源码分析，总共十二章。 分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读《云原生分布式存储基石：etcd 深入解析》">
+<meta property="og:url" content="https://liang7878.github.io/posts/a2161837.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="最近一个月时间一直都在忙着搬家，国庆又带老婆回家待了几天，一直都没什么时间静下心来看看书，终于国庆过完了，又开一个新坑。这本书是华为做容器服务的团队写的，etcd 的源码大家多多少少都看过一些，这本书系统过了一下整个 etcd 的设计和一些重要的设计亮点和实现原理，对于我们自己对 etcd 的理解也能有一个梳理和印证。 本书分为三个大部分，分布式基础、 etcd 实战以及源码分析，总共十二章。 分">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-09T15:59:02.000Z">
+<meta property="article:modified_time" content="2023-10-11T13:48:38.946Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="阅读">
+<meta property="article:tag" content="源码分析">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://liang7878.github.io/posts/a2161837.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/a2161837.html","path":"posts/a2161837.html","title":"读《云原生分布式存储基石：etcd 深入解析》"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>读《云原生分布式存储基石：etcd 深入解析》 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">分布式基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">实战篇</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmxpYW5nNzg3OEBob3RtYWlsLmNvbQ==" title="E-Mail → mailto:liang7878@hotmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktY2hlbmctbGlhbmctMzU=" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35"><i class="fab fa-zhihu fa-fw"></i>Zhihu</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/a2161837.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="读《云原生分布式存储基石：etcd 深入解析》 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          读《云原生分布式存储基石：etcd 深入解析》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-09 23:59:02" itemprop="dateCreated datePublished" datetime="2023-10-09T23:59:02+08:00">2023-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-11 21:48:38" itemprop="dateModified" datetime="2023-10-11T21:48:38+08:00">2023-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>最近一个月时间一直都在忙着搬家，国庆又带老婆回家待了几天，一直都没什么时间静下心来看看书，终于国庆过完了，又开一个新坑。这本书是华为做容器服务的团队写的，etcd 的源码大家多多少少都看过一些，这本书系统过了一下整个 etcd 的设计和一些重要的设计亮点和实现原理，对于我们自己对 etcd 的理解也能有一个梳理和印证。</p>
+<p>本书分为三个大部分，分布式基础、 etcd 实战以及源码分析，总共十二章。</p>
+<h2 id="分布式基础"><a href="#分布式基础" class="headerlink" title="分布式基础"></a>分布式基础</h2><p>分布式系统的设计目标主要有以下几个方面:</p>
+<ul>
+<li>可用性：可用性是分布式系统的核心需求，其用于衡量一个分布式系统持续对外提供服务的能力。可用性方面，主要是通过系统冗余（备份、多节点）来保证容灾。</li>
+<li>可扩展性：增加机器后不会改变或极少改变系统行为，并且能获得近似线性的性能提升。这一点对于业务增长来说十分重要。</li>
+<li>容错性：系统发生错误时，具有对错误进行规避以及从错误中恢复的能力。数据中心能够出现的错误往往超过你的想象，怎么在出现错误时提供稳定的服务，这一点在设计时也需要深入思考。</li>
+<li>性能：对外服务的响应延时和吞吐率要能满足用户的需求。这点就不多说了，尤其是 ToC的业务，系统响应往往决定了用户的留存。</li>
+</ul>
+<p>这里又要老生常谈 CAP 了，我们复习一下，CAP 分别是一致性（Consistency）、可用性（Availability）和分区容忍性（Tolerance to the partition of network）。分布式环境下网络分区是常态，所以分布式系统往往是AP 或者 CP，要么提高可用性降低一致性需求，要么要求强一致性但是可用性会降低。一般除了一些特定的场景（比如金融业务）会要求 CP，其他基本都是以 AP 为主，满足最终一致性即可。</p>
+<p>我们重点聊聊一致性，首先什么是一致性，在分布式场景下，用通俗的话来说，就是怎么保证多个副本的数据是否一致，或者说系统对外呈现的状态是否一致。对于一致性，可以分别从客户端和服务端两个不同的视角来理解。从客户端来看，一致性主要是指多并发访问时如何获取更新过的数据的问题。从服务端来看，则是更新如何复制分布到整个系统，以保证数据最终的一致性。因此，可以从两个角度来查看一致性模型：以数据为中心的一致性模型和以用户为中心的一致性模型。</p>
+<p>以数据为中心的一致性模型有强一致性（Strong Consistency）、顺序一致性（Sequential Consistency）、因果一致性（Causal Consistency）、可串行化一致性（Serializable Consistency）</p>
+<p>强一致性（Strong Consistency），顺序一致性（Sequential Consistency），因果一致性（Causal Consistency），和可串行化一致性（Serializable Consistency）是分布式系统中描述不同一致性级别的概念。它们之间的区别主要在于对于并发操作的处理和数据操作顺序的要求。</p>
+<ol>
+<li><p><strong>强一致性（Strong Consistency）：</strong> 在一个强一致性系统中，任何时刻，客户端读取的数据都是最新的，而且所有节点上的数据副本都是完全一致的。强一致性要求系统保证所有节点上的读操作都能够读取到最近一次的写操作结果。这种一致性保证通常需要在分布式系统中采用复杂的同步和协调机制，因此可能会影响系统的性能和可用性。</p>
+</li>
+<li><p><strong>顺序一致性（Sequential Consistency）：</strong> 顺序一致性保证所有节点上的操作都会被按照相对于其他操作的发生顺序来进行。也就是说，如果一个操作在系统中发生在另一个操作之前，那么所有节点上的观察结果都应该反映这个发生顺序。不过，顺序一致性并不要求所有节点上的操作立即被所有其他节点看到，可能会有一定的延迟。</p>
+</li>
+<li><p><strong>因果一致性（Causal Consistency）：</strong> 因果一致性是一种比顺序一致性更弱的一致性模型。在因果一致性下，系统保证具有因果关系的操作会被按照其发生的顺序来进行，但不保证并发操作之间的顺序。如果一个事件A影响了事件B，那么观察到事件A的节点在事件B之前就应该知道事件A发生了。</p>
+</li>
+<li><p><strong>可串行化一致性（Serializable Consistency）：</strong> 可串行化一致性是一种强一致性模型，它要求系统的执行序列等价于某个串行执行序列（即在一个时刻只有一个操作被执行）。这意味着系统的并发操作不能产生与某个串行执行序列不一致的结果。可串行化一致性是一种非常严格的一致性模型，通常需要使用各种事务处理技术来实现。</p>
+</li>
+</ol>
+<p>以用户为中心的一致性模型主要是指实际业务需求中需要满足针对某个用户业务的一致性，比如最终一致性，即允许一个不一致性窗口，只要最终所有副本达到一致性即可。</p>
+<p>当同一份数据存在多个副本时，我们通过复制状态机来管理它们。复制状态机（Replicated State Machine）是一种分布式系统的设计模式，用于确保在多个节点上保持相同的状态副本。在复制状态机模型中，多个服务器节点通过相互通信和协作来保持一致的状态，并且客户端可以向任意一个节点发送请求，系统会确保处理请求的顺序和结果在所有节点上都是一致的。</p>
+<p>复制状态机的核心思想是将分布式系统中的状态看作是一个状态机，这个状态机会接收客户端的请求并且按照特定的顺序进行处理，从而达到一致的状态。为了实现复制状态机，通常会使用一种称为共识算法（Consensus Algorithm）的技术，例如Paxos、Raft等。这些共识算法可以确保系统中的节点在面对故障和网络分区等问题时，依然能够保持一致的状态。</p>
+<p>FLP（Fisher, Lynch, Paterson）定理是分布式计算领域的一个基本定理，指出在异步网络中，当存在一个或多个节点发生故障时，不可能设计一个算法，能够在有限的时间内，保证所有节点对一个共享的变量（例如确定某个决策）达成一致的协议。简而言之，FLP定理指出，在异步网络中，不可能同时满足一致性（Consistency）、可用性（Availability）和分区容忍性（Partition Tolerance）这三个分布式系统设计的基本要求。</p>
+<p>具体来说，FLP定理的内容是：在一个异步网络中，如果有一个或多个节点可能发生故障，且网络不提供时钟同步（即消息传递没有上限，消息可能在任何时间间隔内被传递），那么在有限的时间内不可能设计一个分布式算法，能够确保所有节点对某个共享的变量达成一致的协议。</p>
+<p>这个定理的结论有重要的实际意义，它告诉我们，在异步网络环境下，无法设计一个能够在所有情况下都保证一致性的分布式算法。因此，在实际系统设计中，需要根据具体需求和系统特性，权衡一致性、可用性和分区容忍性，选择适当的系统模型和算法。根据FLP定理，实际的一致性协议（Paxos、Raft等）在理论上都是有缺陷的，最大的问题是理论上存在不可终止性！至于Paxos和Raft协议在工程的实现上都做了哪些调整（例如，Paxos和Raft都通过随机的方式显著降低了发生算法无法终止的概率），从而规避了理论上存在的哪些问题，下文将会有详细的解释。</p>
+<p>书中接下来讲到了 Paxos 、 Raft算法，这两个协议在网上都有大量的介绍，我们不多赘述，只简单说一下 Raft，Raft把一致性问题分解成了领袖选举（leader election）、日志复制（log replication）、安全性（safety）和成员关系变化（membership changes）这几个子问题，我们在面试时候如果聊到 Raft 可以从这几个角度逐一介绍。</p>
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><p>为什么使用 etcd？在聊到 etcd 的时候，我们往往会聊到类似的其他系统，比如 zookeeper，与 zookeeper 相比，etcd 更加稳定可靠。在服务发现的实现上，etcd使用的是节点租约(Lease)，并且 支持Group(多key);而ZooKeeper使用的是临时节点。etcd支持稳定的watch，而不是ZooKeeper一样简单的单次触发式 (one time trigger)watch。etcd支持MVCC(多版本并发控制)，因为有协同系统需要无锁操作。 etcd 支持更大的数据规模，支持百万到千万级别的 key。 etcd 性能更好，在 3 台八核云服务器上部署的 etcd v3 可以实现每秒数万次的写操作和数十万次的读操作。</p>
+<p>etcd 的官方定义是“A distributed, reliable key-value store for the most critical data of a distributed system.”本质上是为了提供可靠的分布式键值存储，用来存储分布式系统中的最关键的数据。 etcd 的常见使用场景有：服务发现、分布式锁、分布式数据队列、分布式通知和协调、主备选举等。（p.s.我自己就是做服务发现相关的业务，不过是在一个没有强一致性的环境，在这种场景下怎么保证服务发现的一致性其实也是一个很有意思的问题，我们在生产环境做了大量的 workaround，这个以后有机会可以聊一下）</p>
+<p>etcd 基于 Raft 协议，通过日志复制来保证数据的强一致性，简单来说，客户端在写一个 key 的时候，首先会存储到 etcd 的 leader 节点上，接着通过 Raft 协议同步到集群中所有成员中，以此维护各成员的一致性。准确地说，只有在多数节点 ack 了这个写操作，这个写操作才算成功。etcd 能够容忍集群中(n-1)&#x2F;2 个节点的故障。 etcd 的数据通过 WAL 来持久化，数据操作先写 WAL，再做提交。 etcd 通过快照来记录某一时刻的所有数据，默认每一万条数据做一次快照，快照后 WAL 即可删除。</p>
+<p>etcd 单实例支持每秒一千次以上的写操作，极限情况下 QPS 可以达到 10k 。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/%E9%98%85%E8%AF%BB/" rel="tag"># 阅读</a>
+              <a href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="tag"># 源码分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/b0cb3be9.html" rel="prev" title="读《OceanBase 数据库源码解析》">
+                  <i class="fa fa-angle-left"></i> 读《OceanBase 数据库源码解析》
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">95k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:47</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"83e5fc064403b72a3d415cef6a6cdfa6"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
