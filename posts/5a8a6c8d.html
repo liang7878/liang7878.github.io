@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="为什么需要分布式锁？在单机环境下编写多线程程序时，为了避免多个线程同时操作同一个资源，我们往往会通过加锁来实现互斥，以保证同一时间只有一个操作者对某个资源执行操作，在单机多进程的情况下，如果们想操作同一个共享资源，我们也可以通过操作系统提供的文件锁和心好凉来实现互斥，这些都是单台机器上的操作。而在分布式环境下，如果不同机器上的不同进程需要同时操作某一个共享资源，我们同样也需要这样一个统一的锁来实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》">
+<meta property="og:url" content="https://liang7878.github.io/posts/5a8a6c8d.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="为什么需要分布式锁？在单机环境下编写多线程程序时，为了避免多个线程同时操作同一个资源，我们往往会通过加锁来实现互斥，以保证同一时间只有一个操作者对某个资源执行操作，在单机多进程的情况下，如果们想操作同一个共享资源，我们也可以通过操作系统提供的文件锁和心好凉来实现互斥，这些都是单台机器上的操作。而在分布式环境下，如果不同机器上的不同进程需要同时操作某一个共享资源，我们同样也需要这样一个统一的锁来实现">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-11T13:59:46.000Z">
+<meta property="article:modified_time" content="2023-10-11T16:59:05.375Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="编程进阶">
+<meta property="article:tag" content="阅读">
+<meta property="article:tag" content="分布式">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://liang7878.github.io/posts/5a8a6c8d.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/5a8a6c8d.html","path":"posts/5a8a6c8d.html","title":"读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么需要分布式锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Redis-%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">如何使用 Redis 来实现分布式锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-%E9%9B%86%E7%BE%A4%E4%B8%8B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">3.</span> <span class="nav-text">Redis 集群下的分布式锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-ZooKeeper-%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">基于 ZooKeeper 的分布式锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-etcd-%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">5.</span> <span class="nav-text">基于 etcd 的分布式锁</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmxpYW5nNzg3OEBob3RtYWlsLmNvbQ==" title="E-Mail → mailto:liang7878@hotmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktY2hlbmctbGlhbmctMzU=" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35"><i class="fab fa-zhihu fa-fw"></i>Zhihu</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/5a8a6c8d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-11 21:59:46" itemprop="dateCreated datePublished" datetime="2023-10-11T21:59:46+08:00">2023-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-12 00:59:05" itemprop="dateModified" datetime="2023-10-12T00:59:05+08:00">2023-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="为什么需要分布式锁？"><a href="#为什么需要分布式锁？" class="headerlink" title="为什么需要分布式锁？"></a>为什么需要分布式锁？</h2><p>在单机环境下编写多线程程序时，为了避免多个线程同时操作同一个资源，我们往往会通过加锁来实现互斥，以保证同一时间只有一个操作者对某个资源执行操作，在单机多进程的情况下，如果们想操作同一个共享资源，我们也可以通过操作系统提供的文件锁和心好凉来实现互斥，这些都是单台机器上的操作。而在分布式环境下，如果不同机器上的不同进程需要同时操作某一个共享资源，我们同样也需要这样一个统一的锁来实现互斥。这个时候，我们就需要一个平台来提供这样一个互斥的能力，通常我们会采用一些能够提供一致性的服务，比如 ZooKeeper、 etcd 来满足对一致性要求较高的场景下的互斥需求，当然，也有些服务会用数据库，比如 MySQL，来实现互斥，然而在某些高并发业务场景下，我们通常会采用 Redis来实现。</p>
+<span id="more"></span>
+
+<h2 id="如何使用-Redis-来实现分布式锁？"><a href="#如何使用-Redis-来实现分布式锁？" class="headerlink" title="如何使用 Redis 来实现分布式锁？"></a>如何使用 Redis 来实现分布式锁？</h2><p>最简单的方式，使用 SETNX 命令，这个命令会实现 Set if not exist，在执行时，只有成功设置值才会返回 1，否则返回0。那么在某个客户端通过 SETNX 加锁之后，其他的客户端无法加锁。之后释放锁可以通过 DEL 命令删除这个 key 即可。这种方式存在的问题在于，如果加锁成功的客户端没有正确释放锁，那么其他客户端就有可能永远拿不到这个锁，这就是“锁饥饿”。</p>
+<p>那么如何避免这种情况呢？最简单的方法就是加一个过期时间（lease，租期），预估加锁后执行操作的时间，在达到该时间后如果持有锁的客户端没有释放锁，那么锁就被自动释放。在 Redis 里面实现时，我们可以给这个 key 加一个过期时间，那么无论客户端是否能够主动释放锁，只要一到过期时间，这个 key 就会被自动清理，锁就会自动释放。</p>
+<p>在老的 Redis 版本中，SETNX 操作和 Expire 操作是两条命令，这样就有可能出现我们加租期的操作没法正常完成，从而还会存在无法自动释放锁的情况。而在新的 Redis 版本中，Redis 扩展了 SET 命令，可以直接在 SET 时指定 EX（Expire，过期时间）和 NX（If not exist，如果不存在才 SET），这样就保证了加锁和设置自动释放这两个操作的原子性。</p>
+<p>这里提到了另外一个情况，如何保证加锁和解锁是由同一个客户端来执行，其实很简单，加锁的时候加个唯一标志就行了，可以直接写个 lua 脚本来实现。“因为 Redis 处理每一个请求是「单线程」执行的，在执行一个 Lua 脚本时，其它请求必须等待，直到这个 Lua 脚本处理完成，这样一来，GET + DEL 之间就不会插入其它命令了。”</p>
+<h2 id="Redis-集群下的分布式锁"><a href="#Redis-集群下的分布式锁" class="headerlink" title="Redis 集群下的分布式锁"></a>Redis 集群下的分布式锁</h2><p>前面提到的场景完全是单个 Redis 实例下的情况，在使用 Redis 时，我们往往采用主从集群+哨兵的模式来部署，在主节点异常时，哨兵可以实现自动切换，把从库转为主库，这个过程中存在一个问题，如果加锁时的写入操作没有同步到从库时主库就挂了，那这个锁就会在主从切换时丢失，怎么解决这个问题呢？这里提到了 Redlock（红锁）方案。</p>
+<p>Redlock 的方案基于两个前提：1. 不再部署从库和哨兵实例，只部署主库；2. 主库要部署多个，官方推荐至少 5 个实例。这里部署的 Redis 就不是什么集群了，就是五个相互独立的 Redis 实例。Redlock 主要有五个步骤：</p>
+<ol>
+<li>客户端先获取「当前时间戳 T1」</li>
+<li>客户端依次向这 5 个 Redis 实例发起加锁请求（用前面讲到的 SET 命令），且每个请求会设置超时时间（毫秒级，要远小于锁的有效时间），如果某一个实例加锁失败（包括网络超时、锁被其它人持有等各种异常情况），就立即向下一个 Redis 实例申请加锁</li>
+<li>如果客户端从 &gt;&#x3D;3 个（大多数）以上 Redis 实例加锁成功，则再次获取「当前时间戳 T2」，如果 T2 - T1 &lt; 锁的过期时间，此时，认为客户端加锁成功，否则认为加锁失败</li>
+<li>加锁成功，去操作共享资源（例如修改 MySQL 某一行，或发起一个 API 请求）</li>
+<li>加锁失败，向「全部节点」发起释放锁请求（前面讲到的 Lua 脚本释放锁）</li>
+</ol>
+<p>听描述，这里居然是顺序发起加锁请求，我看了一下原文档描述也是加锁 sequentially，不过这里其实 in parallel 的话是不是效率更高呢？</p>
+<p>整个方案的逻辑其实挺简单，加锁时取大多数，通过时间戳进行加锁超时检查，解锁时全量解锁。文中介绍了一下 Redis 的作者 Antirez 和分布式专家 Martin Kleppmann 关于 Redlock 的讨论中的一些重点，我们可以跟着过一遍：</p>
+<p><strong>首先是 Martin 对于 Redlock 的质疑</strong></p>
+<p>使用分布式锁的目的是什么？Martin 认为一种是为了效率，避免重复的工作浪费资源，这种情况即使出现锁失效也无伤大雅，第二种是为了正确性，避免并发场景下多方操作同一份数据导致的数据错误、丢失等问题。如果是为了效率，那么用原始方案就行了，偶尔锁失效也没事儿，但是如果是为了正确性，Redlock 是无法满足足够的安全性要求。</p>
+<p>锁在分布式场景下会遇到什么问题呢？其实就是分布式系统中的三个主要问题：NPC（N：Network Delay，网络延迟，P：Process Pause，进程暂停（GC）C：Clock Drift，时钟漂移）这里举了一个例子，在某个客户端拿到锁之后如果发生进程暂停，比如 GC，那么在 Redis 上所有锁过期之后，其他客户端仍然会重复加锁，发生锁冲突。</p>
+<p>另一方面，这个机制对时钟的正确性有强依赖，但事实上 time drift 是在数据中心里面经常发生的情况。下面是反例：</p>
+<ol>
+<li>客户端 1 获取节点 A、B、C 上的锁，但由于网络问题，无法访问 D 和 E</li>
+<li>节点 C 上的时钟「向前跳跃」，导致锁到期</li>
+<li>客户端 2 获取节点 C、D、E 上的锁，由于网络问题，无法访问 A 和 B</li>
+<li>客户端 1 和 2 现在都相信它们持有了锁（冲突）</li>
+</ol>
+<p>于是 Matrin 提出了一个 fecing token 的方案，来保证正确性，流程如下：</p>
+<ol>
+<li>客户端在获取锁时，锁服务可以提供一个「递增」的 token</li>
+<li>客户端拿着这个 token 去操作共享资源</li>
+<li>共享资源可以根据 token 拒绝「后来者」的请求</li>
+</ol>
+<p>Martin 表示，一个好的分布式锁，无论 NPC 怎么发生，可以不在规定时间内给出结果，但并不会给出一个错误的结果。也就是只会影响到锁的「性能」（或称之为活性），而不会影响它的「正确性」。</p>
+<p>Martin 的结论：<br>1、Redlock 不伦不类：它对于效率来讲，Redlock 比较重，没必要这么做，而对于正确性来说，Redlock 是不够安全的。<br>2、时钟假设不合理：该算法对系统时钟做出了危险的假设（假设多个节点机器时钟都是一致的），如果不满足这些假设，锁就会失效。<br>3、无法保证正确性：Redlock 不能提供类似 fencing token 的方案，所以解决不了正确性的问题。为了正确性，请使用有「共识系统」的软件，例如 Zookeeper。</p>
+<p>下面是 Redis 作者 Antirez 的回应：</p>
+<p>首先是时钟问题，Redlock 并不要求准确的时钟，只要时钟误差不要超过锁失效时间即可。关于进程暂停的问题，如果进程暂停发生在检查时间戳差值的步骤之前，那么在检查时间戳时就能发现锁已经失效，如果发生在其之后，那么其他锁服务也会遇到同样的问题，这并不是 Redlock 本身的问题。</p>
+<p>对于 fencing token 的方案，Redis 作者提出了两个问题，第一，这个方案必须要求要操作的「共享资源服务器」有拒绝「旧 token」的能力。第二，即使 Redlock 没有提供 fencing token 的能力，但 Redlock 已经提供了随机值，利用这个随机值，也可以达到与 fencing token 同样的效果。大概流程如下：</p>
+<ol>
+<li>客户端使用 Redlock 拿到锁</li>
+<li>客户端在操作共享资源之前，先把这个锁的 VALUE，在要操作的共享资源上做标记</li>
+<li>客户端处理业务逻辑，最后，在修改共享资源时，判断这个标记是否与之前一样，一样才修改（类似 CAS 的思路）</li>
+</ol>
+<p>相比 fencing token，这个方法只能保证互斥，并不能保证操作的顺序性。</p>
+<h2 id="基于-ZooKeeper-的分布式锁"><a href="#基于-ZooKeeper-的分布式锁" class="headerlink" title="基于 ZooKeeper 的分布式锁"></a>基于 ZooKeeper 的分布式锁</h2><p>文章下面介绍了基于 ZooKeeper 的分布式锁。</p>
+<ol>
+<li>客户端 1 和 2 都尝试创建「临时节点」，例如 &#x2F;lock</li>
+<li>假设客户端 1 先到达，则加锁成功，客户端 2 加锁失败</li>
+<li>客户端 1 操作共享资源</li>
+<li>客户端 1 删除 &#x2F;lock 节点，释放锁</li>
+</ol>
+<p>这里使用的是临时节点，要求客户端和 ZK 的连接不断开，只要断开，临时节点就会自动删除，从而释放锁。这里本质上是什么呢？本质上其实是 ZK 的客户端通过不断的心跳来维持 session，从而实现 lease 的续约。但是这里仍然也存在进程暂停导致的锁失效的问题。</p>
+<h2 id="基于-etcd-的分布式锁"><a href="#基于-etcd-的分布式锁" class="headerlink" title="基于 etcd 的分布式锁"></a>基于 etcd 的分布式锁</h2><p>实现流程如下：</p>
+<ol>
+<li>客户端 1 创建一个 lease 租约（设置过期时间）</li>
+<li>客户端 1 携带这个租约，创建 &#x2F;lock 节点</li>
+<li>客户端 1 发现节点不存在，拿锁成功</li>
+<li>客户端 2 同样方式创建节点，节点已存在，拿锁失败</li>
+<li>客户端 1 定时给这个租约「续期」，保持自己一直持有锁</li>
+<li>客户端 1 操作共享资源</li>
+<li>客户端 1 删除 &#x2F;lock 节点，释放锁</li>
+</ol>
+<p>这个 lease续期 和 ZK 里面的心跳类似，这里就不多赘述。其实本质上也会受到上面问题的影响。</p>
+<p>但是从功能层面而言，ZK 和 etcd 能够提供 Watch 机制，即监听节点的变化，从而感知锁的状态。</p>
+<p>作者最后介绍了一下自己的理解，从应用层面，作者个人倾向于常规 Redis 主从+哨兵的模式来实现分布式锁，正确性可以参考 fencing token 的实现，通过业务层面进行兜底，可以通过版本号（乐观锁）来避免锁失效时的数据错误。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/" rel="tag"># 编程进阶</a>
+              <a href="/tags/%E9%98%85%E8%AF%BB/" rel="tag"># 阅读</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/a2161837.html" rel="prev" title="读《云原生分布式存储基石：etcd 深入解析》">
+                  <i class="fa fa-angle-left"></i> 读《云原生分布式存储基石：etcd 深入解析》
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">98k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:57</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f701b06aed1068ce10329600f5d7fe25"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
