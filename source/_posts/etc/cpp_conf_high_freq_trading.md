@@ -1,7 +1,5 @@
 ---
-title: >-
-  CppCon 2017: When a Microsecond Is an Eternity: High Performance Trading
-  Systems in C++
+title: "CppCon 2017: When a Microsecond Is an Eternity: High Performance Trading Systems in C++"
 tags:
   - CppCon
   - C++

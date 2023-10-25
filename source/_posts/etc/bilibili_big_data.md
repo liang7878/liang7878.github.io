@@ -7,6 +7,7 @@ tags:
   - 数据仓库
   - 广告
   - 查询
+categories: 技术杂谈
 abbrlink: c8fa70e0
 date: 2023-10-14 23:31:11
 ---
