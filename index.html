@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,6 +188,113 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/f6a84eb2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/f6a84eb2.html" class="post-title-link" itemprop="url">大型分布式数据库底层是如何对数据进行建模的 -- 学一下 TiDB 的数据存储方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-24 22:41:21" itemprop="dateCreated datePublished" datetime="2023-10-24T22:41:21+08:00">2023-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-25 21:49:04" itemprop="dateModified" datetime="2023-10-25T21:49:04+08:00">2023-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近准备搞一些自建数据库相关的项目，偶然看到 TiDB的文档里面有介绍如何使用 Key-Value（键值对）来存储关系型数据库的表数据，我们跟着文档来过一遍这里的设计，也可以为我们自己的实现提供一些参考。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/f6a84eb2.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/c8fa70e0.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -224,7 +331,16 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 21:17:28" itemprop="dateModified" datetime="2023-10-18T21:17:28+08:00">2023-10-18</time>
+      <time title="修改时间：2023-10-25 21:49:04" itemprop="dateModified" datetime="2023-10-25T21:49:04+08:00">2023-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+        </span>
     </span>
 
   
@@ -331,7 +447,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 21:17:29" itemprop="dateModified" datetime="2023-10-18T21:17:29+08:00">2023-10-18</time>
+      <time title="修改时间：2023-10-25 21:49:04" itemprop="dateModified" datetime="2023-10-25T21:49:04+08:00">2023-10-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -438,7 +554,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 21:17:28" itemprop="dateModified" datetime="2023-10-18T21:17:28+08:00">2023-10-18</time>
+      <time title="修改时间：2023-10-25 21:49:03" itemprop="dateModified" datetime="2023-10-25T21:49:03+08:00">2023-10-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -571,7 +687,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 21:17:28" itemprop="dateModified" datetime="2023-10-18T21:17:28+08:00">2023-10-18</time>
+      <time title="修改时间：2023-10-25 21:49:04" itemprop="dateModified" datetime="2023-10-25T21:49:04+08:00">2023-10-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -651,125 +767,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/b0cb3be9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/b0cb3be9.html" class="post-title-link" itemprop="url">读《OceanBase 数据库源码解析》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-08-29 21:31:16" itemprop="dateCreated datePublished" datetime="2023-08-29T21:31:16+08:00">2023-08-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 21:17:28" itemprop="dateModified" datetime="2023-10-18T21:17:28+08:00">2023-10-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>22k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1:21</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这本书才出来几个月的时间，刚好看到微信读书上已经有了，这两天就花一点时间把这本书读完，话不多说，开始。</p>
-<p>这本书整个有九章，各章节如下：</p>
-<ul>
-<li>OceanBase 概述</li>
-<li>OceanBase 的架构</li>
-<li>OBServer</li>
-<li>存储引擎</li>
-<li>SQL 引擎</li>
-<li>事务引擎</li>
-<li>高可用</li>
-<li>多租户</li>
-<li>安全管理</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/b0cb3be9.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -794,14 +791,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">105k</span>
+    <span title="站点总字数">107k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:21</span>
+    <span title="站点阅读时长">6:29</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
