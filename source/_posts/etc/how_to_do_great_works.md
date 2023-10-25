@@ -4,6 +4,7 @@ tags:
     - "杂谈" 
     - "生活" 
     - "阅读"
+categories: 技术杂谈
 abbrlink: 7b67d6ae
 date: 2023-08-21 01:33:02
 ---
