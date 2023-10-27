@@ -21,31 +21,35 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="其实我们真的是个数据库。">
+    <meta name="description" content="一提到限流算法，大家肯定就是要聊时间窗口、漏斗桶、令牌桶之类的，今天跟着Azure的文档来看看限流器在生产环境怎么搭建和使用。 什么是Rate limiting？假如现在有一个线上的服务，由于业务的增长或者调用方的不正确操作产生了大量的流量，如果我们直接拒绝过量的请求，那么会出现以下的情况： 以Azure Cosmos DB为例，假设我们有一个应用现在要尝试将数据写入Cosmos DB：  应用需">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Active Directory 介绍">
-<meta property="og:url" content="https://liang7878.github.io/posts/1f41e82f.html">
+<meta property="og:title" content="“Azure设计模式 -- 如何设计一个请求速率限制器”">
+<meta property="og:url" content="https://liang7878.github.io/posts/6f202b0d.html">
 <meta property="og:site_name" content="小良的分布式之路">
-<meta property="og:description" content="其实我们真的是个数据库。">
+<meta property="og:description" content="一提到限流算法，大家肯定就是要聊时间窗口、漏斗桶、令牌桶之类的，今天跟着Azure的文档来看看限流器在生产环境怎么搭建和使用。 什么是Rate limiting？假如现在有一个线上的服务，由于业务的增长或者调用方的不正确操作产生了大量的流量，如果我们直接拒绝过量的请求，那么会出现以下的情况： 以Azure Cosmos DB为例，假设我们有一个应用现在要尝试将数据写入Cosmos DB：  应用需">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.ccf65c10-edb1-4a3a-ad87-38775ee43b8a(ws.10).gif">
-<meta property="og:image" content="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/image2s/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif">
-<meta property="article:published_time" content="2023-07-30T02:10:33.000Z">
-<meta property="article:modified_time" content="2023-10-27T14:04:48.989Z">
+<meta property="og:image" content="https://liang7878.github.io/posts/6f202b0d/durable_msging_service.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6f202b0d/rate_limited_flow.png">
+<meta property="og:image" content="https://liang7878.github.io/posts/6f202b0d/azure_blob_storate.png">
+<meta property="article:published_time" content="2023-10-27T12:22:30.000Z">
+<meta property="article:modified_time" content="2023-10-27T14:04:49.025Z">
 <meta property="article:author" content="Chengliang">
-<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="阅读">
+<meta property="article:tag" content="技术杂谈">
+<meta property="article:tag" content="Azure">
+<meta property="article:tag" content="分布式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.ccf65c10-edb1-4a3a-ad87-38775ee43b8a(ws.10).gif">
+<meta name="twitter:image" content="https://liang7878.github.io/posts/6f202b0d/durable_msging_service.png">
 
 
-<link rel="canonical" href="https://liang7878.github.io/posts/1f41e82f.html">
+<link rel="canonical" href="https://liang7878.github.io/posts/6f202b0d.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/1f41e82f.html","path":"posts/1f41e82f.html","title":"Active Directory 介绍"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/6f202b0d.html","path":"posts/6f202b0d.html","title":"“Azure设计模式 -- 如何设计一个请求速率限制器”"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Active Directory 介绍 | 小良的分布式之路</title>
+<title>“Azure设计模式 -- 如何设计一个请求速率限制器” | 小良的分布式之路</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
@@ -121,7 +125,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AD-%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">AD 的整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AD%E7%9A%84%E8%A7%92%E8%89%B2"><span class="nav-number">2.</span> <span class="nav-text">AD的角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AD-%E7%9A%84-schema-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">AD 的 schema 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AD-%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E5%92%8C%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE"><span class="nav-number">4.</span> <span class="nav-text">AD 如何存储和访问数据</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFRate-limiting%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是Rate limiting？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9D%A5%E5%81%9A%E8%AF%B7%E6%B1%82%E9%80%9F%E7%8E%87%E9%99%90%E5%88%B6%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">如何来做请求速率限制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -189,7 +193,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/1f41e82f.html">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/6f202b0d.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,12 +206,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Active Directory 介绍 | 小良的分布式之路">
+      <meta itemprop="name" content="“Azure设计模式 -- 如何设计一个请求速率限制器” | 小良的分布式之路">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Active Directory 介绍
+          “Azure设计模式 -- 如何设计一个请求速率限制器”
         </h1>
 
         <div class="post-meta-container">
@@ -217,15 +221,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-07-30 10:10:33" itemprop="dateCreated datePublished" datetime="2023-07-30T10:10:33+08:00">2023-07-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-27 22:04:48" itemprop="dateModified" datetime="2023-10-27T22:04:48+08:00">2023-10-27</time>
+      <time title="创建时间：2023-10-27 20:22:30 / 修改时间：22:04:49" itemprop="dateCreated datePublished" datetime="2023-10-27T20:22:30+08:00">2023-10-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -244,14 +242,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -261,45 +259,56 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>其实我们真的是个数据库。</p>
-<span id="more"></span>
-
-<p>每次和朋友聊到我们使用的数据库，他们都会一脸问号。什么是 <span class="exturl" data-url="aHR0cHM6Ly9sZWFybi5taWNyb3NvZnQuY29tL2VuLXVzL3dpbmRvd3Mtc2VydmVyL2lkZW50aXR5L2FkLWRzL2dldC1zdGFydGVkL3ZpcnR1YWwtZGMvYWN0aXZlLWRpcmVjdG9yeS1kb21haW4tc2VydmljZXMtb3ZlcnZpZXc=">Active Directory(AD)<i class="fa fa-external-link-alt"></i></span>？AD 不是用来做权限管理的吗？每次我都要解释，我们是一个非关系型数据库，是构建在 ESE 引擎上，支持 LDAP 协议的一个数据库，数据的逻辑视图是树形层次结构的。其实我自己对 AD 的了解也仅限与此，更多一点，可能知道AD 可以提供 DNS 服务，可以提供 Kerberos 验证。今天这篇文章，我就大概先讲一下什么是 AD，内容会有一些中英夹杂，因为很多单词翻译出来和我在工作中的表达方式有所不同，翻译之后会略显生硬，所以使用英文以保留其原意。</p>
-<p>维基百科对 AD 的解释是<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQWN0aXZlX0RpcmVjdG9yeQ==">“Active Directory (AD) is a directory service developed by Microsoft for Windows domain networks. ”<i class="fa fa-external-link-alt"></i></span>。Directory 是一种存储网络对象的层次结构。Directory Service提供了一套存储访问 directory数据的方法，让这些数据能够被网络用户和管理员访问到。</p>
-<p>AD 里面存储这各种各样的数据，比如服务器、打印机、网络用户、计算机账户等各种数据。AD 提供了安全的方式（登录验证、访问控制）让用户来访问这些数据。</p>
-<p>接下来我们从几个方面讲一下 AD：</p>
+    <div class="post-body" itemprop="articleBody"><p>一提到限流算法，大家肯定就是要聊时间窗口、漏斗桶、令牌桶之类的，今天跟着Azure的文档来看看限流器在生产环境怎么搭建和使用。</p>
+<h2 id="什么是Rate-limiting？"><a href="#什么是Rate-limiting？" class="headerlink" title="什么是Rate limiting？"></a>什么是Rate limiting？</h2><p>假如现在有一个线上的服务，由于业务的增长或者调用方的不正确操作产生了大量的流量，如果我们直接拒绝过量的请求，那么会出现以下的情况：</p>
+<p>以Azure Cosmos DB为例，假设我们有一个应用现在要尝试将数据写入Cosmos DB：</p>
+<ol>
+<li>应用需要将10k条记录写入Cosmos DB，每条记录消耗10个请求单元，我们一共需要100k个请求单元来完成整个写入的工作</li>
+<li>此时Cosmos DB仅有20k个请求单元可供服务</li>
+<li>当10k的记录发送到DB时，由于负载容量有限，仅有2k条记录被成功写入，但8k条记录被拒绝</li>
+<li>接着8k的记录被发送到DB,2k写入，6k拒绝</li>
+<li>接着6k的记录被发送，2k写入，4k拒绝</li>
+<li>接着4k的记录被发送，2k写入，2k拒绝</li>
+<li>最后2k的记录被发送，全部记录写入完成</li>
+</ol>
+<p>可以发现，应用总共发送了30k的记录，但是只有10k的数据被写入DB。这产生了大量额外的请求开销。</p>
+<p>与此同时，由于大量请求被拒绝，应用中需要处理20k个错误信息，这也会带来内存、存储等多方面的开销。</p>
+<p>由于不知道DB端的限流策略，这种单纯重试的方式也无法给调用方一个预期多久可以完成所有数据的写入。</p>
+<p>因此我们需要速率限制器，帮助我们控制一定时间周期内发送到我们服务中的请求数量。</p>
+<h2 id="如何来做请求速率限制器"><a href="#如何来做请求速率限制器" class="headerlink" title="如何来做请求速率限制器"></a>如何来做请求速率限制器</h2><p>我们可以基于不同的指标来决定如何限制请求的速率：</p>
 <ul>
-<li>AD 的整体结构</li>
-<li>AD 里有哪些角色</li>
-<li>AD 的 schema是什么</li>
-<li>AD 如何存储和访问数据</li>
+<li>可以是请求的数量，比如每秒20个请求</li>
+<li>可以是数据的大小，比如每分钟3个GB</li>
+<li>也可以是操作的开销，比如每秒钟20k个请求单元</li>
 </ul>
-<h2 id="AD-的整体结构"><a href="#AD-的整体结构" class="headerlink" title="AD 的整体结构"></a>AD 的整体结构</h2><p>从存储结构来讲，AD 里面主要包含四个部分：</p>
-<ul>
-<li>AD 的 domain 和 forest。forest 是 AD 里面的安全边界，domain、forest 和 organizational unit 是 AD 逻辑结构的核心元素</li>
-<li>DNS。AD 还提供了DNS 域名解析服务</li>
-<li>Schema。数据的 schema</li>
-<li>Data store. 负责 AD 里面的数据存储和检索。</li>
-</ul>
-<p><img src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.ccf65c10-edb1-4a3a-ad87-38775ee43b8a(ws.10).gif" alt="Active Directory Data Structure and Storage Architecture"></p>
-<p>在 forest 下面还有 domain，domain 可以把 forest 中的数据几家看进一步的分割，这样可以更灵活地控制数据的复制同步，这部分我们在下次可以详细讲一下。而 OU 则可以将 domain 下的资源进一步分割，便于更加灵活的管理。下面这张图是forest、domain、OU 的逻辑结构</p>
-<p><img src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/image2s/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif" alt="Logical Structure Architecture"></p>
-<h2 id="AD的角色"><a href="#AD的角色" class="headerlink" title="AD的角色"></a>AD的角色</h2><p>通常来讲，一个安装有 AD 服务的windows 服务器就被称为一个 domain controller，简称 DC。正常来说，DC 上面存有其所在 domain下面一个 domain partition的所有数据。事实上一台 DC 可以保存一个或者多个 domain partition。其实有一些DC会扮演特殊的角色，提供一些特殊的功能，主要分两大类，一是 Global Catalog Server，另外就是各种 Operation Master。</p>
-<p>首先我们来看看 Global Catalog Server，简称 GC。如上文所说，一个 DC 里面存有其所在 domain 里面的所有数据，而 GC 则活跃在 forest 层面。G 上一般保存着它自己所在 domain 的所有的可写的 replica 数据，和部分forest 内其他 domain 的可读数据。GC 里面的数据由 AD 的 replication 机制来自动复制。这些可读数据可以用来搜索到对应的对象。可读数据一般是一个 object 的某些 attribute，这个可以通过修改 schema 来进行配置。一般来讲，一个 forest 里面的第一台 DC 会被自动配置成 GC，在加入更多DC 之后，我们也可以指定其他 DC 来作为 GC。</p>
-<p>另一类就是各种 master 了，这些 master 负责执行一些任务来保证特定数据的一致性。AD 的 master 主要有五个：schema master、domain naming master、relative identifier（RID）master、primary domain controller（PDC）emulateor 和 infrastructure master。我们把它们叫做 FSMO(Flexible Single Master Operation) roles。</p>
-<p>AD 是一个多主数据库，非常灵活，我们可以在 forest 里任何一台 dc 上做数据的更新，但是，这同样也导致了一些数据冲突的产生。AD 可以通过比较版本号和时间戳的方式来解决一些冲突，但是有时候也会出现无法解决冲突的情况。所以在执行一些特殊的操作，比如说 domain 的添加和删除、或者密码修改的时候，AD 会以一种单主的方式来运行。在单主模式下，只有一台 DC 被允许执行更新的过程。上面提到的各种 master 就是在这个时候用到，用来负责处理不同类型的更新。</p>
-<p>下面讲一下不同的 master 的职责:</p>
-<ul>
-<li>Schema master。顾名思义，这个角色主要是为了处理一些 schema 上的更新。schema 的更新只能发生在拥有这个角色的机器上，更新完成后被复制到其他的 DC 上。</li>
-<li>Domain naming master。这个角色负责处理 forest 范围内的 domain 更新。</li>
-<li>RID master。负责处理来自domain 下所有 DC 的 RID Pool 请求。当 DC 创建一个安全主体对象（用户或者组）时，它会给这个对象一个唯一的 Security ID(SID)，SID 由两部分组成，一部分是 domain SID，用于区分 domain，另一部分则是一个 relative ID(RID)，用于区分 domain 下的对象。domain 下的每个 DC 都有一个 RID pool，用于给自己创建的对象赋予一个 RID，当 一个 DC 的RID pool 剩余的RID 不够时，会向 domain 的 RID master 申请额外的 RID。每一个 domain 下面有且只有一个 RID master。</li>
-<li>PDC emulator。这个角色主要负责同步时间。Kerberos 协议需要基于时间戳实现，整个组织内部的时间按照层次结构来逐层同步，这个 role 就是整个时间同步结构的根，它会从外部数据源同步时间。在 windows domain 下，这个角色同样还承担着一些其他和 auth相关的功能。</li>
-<li>Infrastructure master。这个角色主要负责更新 object 在跨 domain 对象引用中的 SID 和 DN。</li>
-</ul>
-<h2 id="AD-的-schema-是什么"><a href="#AD-的-schema-是什么" class="headerlink" title="AD 的 schema 是什么"></a>AD 的 schema 是什么</h2><p>AD 里面的数据是以对象为单位来进行存储的。Schema 就是这些对象的格式，我们在存储一个对象之前，需要将这个对象的格式定义在 AD 的 schema 中，每个对象由许多不同的属性组成，比如 name、guid、whenCreated、whenChanged等等。这个有点类似于关系数据库里面对表结构的定义，但是又略有不同。也可以理解为一个 mongoDB，但是里面所有 object 的结构都是预先定义好的。</p>
-<h2 id="AD-如何存储和访问数据"><a href="#AD-如何存储和访问数据" class="headerlink" title="AD 如何存储和访问数据"></a>AD 如何存储和访问数据</h2><p>AD 使用 LDAP 协议来访问数据，在执行搜索时，通过指定 search base，可以将查询范围限定在层次结构的某个对象之下，通过 LDAP filter可以指定对应的查询条件。</p>
-<p>AD 的数据存储在 ESE database中，ESE 全称 Extensible Storage Engine(ESE)，也叫 JET Blue。某种程度上，AD 就是一个访问 ESE 数据库的客户端，以存储计算的方式来分层的话，AD 相当于一个计算层，ESE 作为存储层。AD 还会提供 replication 的能力，将数据在一个 forest 内互相复制、同步。从数据库的架构角度来说，AD 属于 Shared Everything 的结构，不同节点之间并不共享任何计算和存储的资源。与 MySQL等其他数据库类似，ESE 底层使用 B+树组织所有的数据。</p>
-<p>之后我会写几篇文章详细介绍AD 的复制同步和存储是如何实现的。</p>
+<p>以上指标都可以用来实现速率控制器。在我们日常的场景里，往往是应用端会接收到大量的请求，因此如何使用负载有限的服务端是应用端必须解决的问题，我们可以简单地将请求缓存在本地，但这也会有进程崩溃导致请求失败的可能性。为了避免这类风险，我们可以把请求放在一个可靠的消息队列服务中，由作业执行器来以一定的速率来读取请求并发送到后端服务，这样就实现了一个速率控制器，提交请求变成了将请求写入消息队列，作业执行器则只会在能够处理请求的时候将请求从消息队列取出。</p>
+<p><img src="/posts/6f202b0d/durable_msging_service.png" alt="Alt text"></p>
+<p>当你发送记录时，你用于释放记录的时间周期可能比服务进行限流的周期更加精细。系统通常根据你可以轻松理解和处理的时间段来设置限流。然而，对于运行服务的计算机来说，这些时间跨度可能相对较长，与其处理信息的速度相比。例如，系统可能以每秒或每分钟为单位进行限流，但通常代码处理的时间单位是纳秒或毫秒。</p>
+<p>虽然不是必需的，但通常建议更频繁地发送少量记录以提高吞吐量。因此，你可以比每秒或每分钟批量释放记录更加精细地处理，以保持你的资源消耗（内存、CPU、网络等）以更均匀的速率进行，从而防止由于突发请求造成的潜在瓶颈。例如，如果一个服务允许每秒处理100次操作，速率限制器的实现可以通过每200毫秒释放20次操作来平衡请求，如下图所示。</p>
+<p><img src="/posts/6f202b0d/rate_limited_flow.png" alt="Alt text"></p>
+<p>此外，有时需要让多个不协调的进程共享一个受限制的服务。为了在这种情况下实施速率限制，你可以逻辑上将服务的容量分区，然后使用分布式互斥系统在这些分区上管理独占锁。不协调的进程可以在需要容量时竞争这些分区上的锁。对于进程持有锁的每个分区，它被授予一定数量的容量。</p>
+<p>例如，如果受限制的系统允许每秒500个请求，你可以创建20个分区，每个分区允许每秒25个请求。如果一个进程需要发出100个请求，它可能请求分布式互斥系统的四个分区。系统可能授予两个分区的独占锁，持续10秒。然后，该进程的速率限制将为每秒50个请求，任务将在两秒内完成，然后释放锁。</p>
+<p>实现这种模式的一种方法是使用Azure Storage。在这种情况下，你可以在容器中为每个逻辑分区创建一个0字节的blob。然后，你的应用程序可以直接针对这些blob获取短时间（例如15秒）的独占租约。对于每个获得的租约，应用程序将能够使用该分区的容量。应用程序随后需要跟踪租约时间，以便在租约到期时停止使用其被授予的容量。在实现此模式时，通常希望每个进程在需要容量时尝试租用一个随机分区，以进一步降低延迟，你可能会为每个进程分配一小部分独占容量。因此，只有在需要超出其保留容量时，进程才会尝试获得对共享容量的租约。</p>
+<p><img src="/posts/6f202b0d/azure_blob_storate.png" alt="Alt text"></p>
+<p>在决定如何实施这种模式时，请考虑以下因素：</p>
+<ol>
+<li><p>尽管速率限制模式可以减少限制错误的数量，但你的应用程序仍然需要正确处理可能发生的任何限制错误。</p>
+</li>
+<li><p>如果你的应用程序有多个工作流程访问同一个受限制的服务，你需要将它们全部整合到你的速率限制策略中。例如，你可能支持将记录批量加载到数据库中，同时也支持在同一数据库中查询记录。你可以通过确保所有工作流程都通过相同的速率限制机制进行控制，来管理容量。或者，你可以为每个工作流程保留单独的容量池。</p>
+</li>
+<li><p>受限制的服务可能被多个应用程序使用。在某些情况下，可以协调这种使用（如上所示）。如果你开始看到比预期更多的限制错误，这可能是多个应用程序访问服务之间的竞争的迹象。如果是这样，你可能需要考虑在其他应用程序的使用降低之前，暂时减少你的速率限制机制施加的吞吐量。</p>
+</li>
+</ol>
+<p>使用这种模式可以达到以下目的：</p>
+<ol>
+<li><p><strong>减少受限制服务引发的限制错误：</strong> 通过合理的速率限制策略，可以降低受限制服务引发的限制错误。逻辑上将服务的容量分区，并使用分布式互斥系统管理这些分区上的独占锁，可以确保请求在可用的容量内得到处理，从而减少限制错误的发生。</p>
+</li>
+<li><p><strong>减少与简单错误重试方法相比的流量：</strong> 与简单的错误重试方法相比，使用速率限制模式可以减少传输的数据量。通过根据可用容量调整请求的发送频率，可以避免将大量请求同时发送到服务，从而降低了网络流量。</p>
+</li>
+<li><p><strong>减少内存消耗：</strong> 速率限制模式允许在有处理能力的情况下再将记录出队，从而降低了内存的使用。只有当系统有足够的处理能力来处理记录时，才将它们从队列中移除，避免了在内存中保存大量未处理的记录，节省了内存资源。</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <span class="exturl" data-url="aHR0cHM6Ly9sZWFybi5taWNyb3NvZnQuY29tL2VuLXVzL2F6dXJlL2FyY2hpdGVjdHVyZS9wYXR0ZXJucy9yYXRlLWxpbWl0aW5nLXBhdHRlcm4=">https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
@@ -309,21 +318,21 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/%E9%98%85%E8%AF%BB/" rel="tag"># 阅读</a>
+              <a href="/tags/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" rel="tag"># 技术杂谈</a>
+              <a href="/tags/Azure/" rel="tag"># Azure</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/b13c4ce6.html" rel="prev" title="Berkeley DB -- 软件设计的十点经验">
-                  <i class="fa fa-angle-left"></i> Berkeley DB -- 软件设计的十点经验
+                <a href="/posts/f6a84eb2.html" rel="prev" title="大型分布式数据库底层是如何对数据进行建模的 -- 学一下 TiDB 的数据存储方案">
+                  <i class="fa fa-angle-left"></i> 大型分布式数据库底层是如何对数据进行建模的 -- 学一下 TiDB 的数据存储方案
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/a536f4da.html" rel="next" title="OceanBase: A 707 Million tpmC Distributed Relational Database System">
-                  OceanBase: A 707 Million tpmC Distributed Relational Database System <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -406,7 +415,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3d8acf058bd8dfeb37c24210cc5add49"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f7f3b57bbba842aafd9e2a6486b60efb"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
