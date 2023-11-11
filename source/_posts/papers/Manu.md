@@ -1,6 +1,11 @@
 ---
 title: '(Paper Reading) Manu: A Cloud Native Vector Database Management System'
-tags: Paper Reading
+tags: 
+   - Paper Reading
+   - 数据库
+   - 云原生
+   - 向量数据库
+   - 大模型
 categories: 论文阅读
 abbrlink: f946ba86
 date: 2023-07-30 10:10:33

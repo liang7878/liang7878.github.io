@@ -1,0 +1,159 @@
+{
+  "main": {
+    "id": "38b73d2bfdd6f74b",
+    "type": "split",
+    "children": [
+      {
+        "id": "820bbcdf46aed41e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e88787aab15c329e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_posts/papers/citus.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "97b7bed4d56336e5",
+    "type": "split",
+    "children": [
+      {
+        "id": "328e1eb9d0a8b431",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7e6fb79ebdd3ccaa",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f1a057ea744be9be",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d39ee21d883723f1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "997d73b713fb0931",
+    "type": "split",
+    "children": [
+      {
+        "id": "fb210816c956cc02",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ce4caee838b9264b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "_posts/papers/citus.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3d998f08b847275f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "_posts/papers/citus.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "0df6949264a5ac56",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "302206831dd5d6b7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "_posts/papers/citus.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "e88787aab15c329e",
+  "lastOpenFiles": [
+    "_posts/papers/citus/ycsb_benchmark.png",
+    "_posts/papers/Oceanbase.md",
+    "_posts/papers/citus.md",
+    "_posts/papers/citus/tps_benchmark.png",
+    "_posts/papers/citus/data_warehouse_benchmark.png",
+    "_posts/papers/citus/github_benchmark.png",
+    "Untitled.canvas"
+  ]
+}

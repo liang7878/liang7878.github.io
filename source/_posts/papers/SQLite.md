@@ -1,6 +1,8 @@
 ---
 title: '(Paper Reading) SQLite: Past, Present, Future'
-tags: Paper Reading
+tags: 
+   - Paper Reading
+   - 数据库
 categories: 论文阅读
 abbrlink: 292f3805
 date: 2023-07-30 10:10:33
