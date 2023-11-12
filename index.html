@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -147,7 +147,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -188,6 +188,208 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/455069a2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/455069a2.html" class="post-title-link" itemprop="url">我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-27 23:26:53" itemprop="dateCreated datePublished" datetime="2023-10-27T23:26:53+08:00">2023-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文阅读</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>30 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近一些工作会稍微用到 Citus 相关的产品，想起早年在实验室做数据库开发的时候也稍微了解过一些，这次稍微搜了一下，发现 Citus 团队在 21 年的时候发了一篇 SIGMOD，正好也就顺便看了一下。简单来说，PostgreSQL本身是一个单机数据库，虽然也提供主从复制的高可用方案，但是并没有原生的分库分表方案。 正好，PG 本身提供了大量的扩展开发接口，Citus 团队以 PG 扩展的方式构建了一个分库分表的方案，这就是 Citus 最开始的应用场景。</p>
+<p>下面我们来看看论文，跟着论文一起了解一下 Citus 主要的应用场景和对应场景的解决方案。基于 Citus 论文的结构，我们这篇文章会分为一下几个模块：</p>
+<ul>
+<li>Citus 简介</li>
+<li>Citus 的应用场景</li>
+<li>Citus 的整体架构实现</li>
+<li>Citus 的性能评测结果</li>
+</ul>
+<p>由于是 industry track，论文整体理解起来也比较简单，我们来过一下。</p>
+<h2 id="Citus-简介"><a href="#Citus-简介" class="headerlink" title="Citus 简介"></a>Citus 简介</h2><p>作为一个非常著名的开源数据库，PostgreSQL应用于许多的商业场景，这也催生了将其由单机数据库扩展为多机器的分布式数据库的需求。以可扩展性为目的，Citus 基于 PostgreSQL的插件开发接口构建了分片层、分布式查询计划生成器和执行器、以及分布式事务。同时由于其完全基于扩展接口开发，它依然保留了 PG 本身的各种功能。</p>
+<p>文章基于 Citus 本身的应用，归纳总结了四种需要扩展 PG 的应用场景，并介绍了这四种场景下对分布式数据库的功能需求。接着，文章介绍了 Citus 是如何基于 PG 的扩展接口构建一个分布式数据库系统，并介绍了它是如何解决各类应用场景下的需求。</p>
+<h2 id="四种典型的应用场景及其需求"><a href="#四种典型的应用场景及其需求" class="headerlink" title="四种典型的应用场景及其需求"></a>四种典型的应用场景及其需求</h2><p>扩展PG 的四种应用场景：多租户、实时分析、高性能增删改查、数据仓库。</p>
+<p><img src="/posts/455069a2/workloads.png" alt="Alt text"></p>
+<h3 id="多租户"><a href="#多租户" class="headerlink" title="多租户"></a>多租户</h3><p>多租户的场景是一个很典型的需要多数据进行分片的场景，最传统的方式是对租户的数据进行手动分片，将不同租户的数据放到不同的分片下，以实现资源的隔离。（我们的数据库就是这种方式）。还有一种方式是通过 tenant ID 列来对数据进行分片，Citus 采用的就是这种方式，这种方式下，往往需要不同租户采用相同的数据表模式，但事实上用户会希望针对不同租户设置特定的数据表模式。针对这一需求，作者简易可以使用 JSONB 数据类型累进行扩展。同时，客户也需要能够控制租户数据的位置，这样可以在监控到热点的时候对数据进行迁移。</p>
+<h3 id="实时分析"><a href="#实时分析" class="headerlink" title="实时分析"></a>实时分析</h3><p>实时分析是为了对大规模流数据进行及时的分析。主要的流数据包括 event 数据和时间序列数据，这些数据往往是用来进行系统监控、异常检测等。这种场景下，数据库需要能够承受很高的写请求的吞吐，同时还要接收每秒数百个的读请求，用于查询数据。这类场景下，查询往往是基于预先定义好的一些索引、物化视图以及其他的一些数据转换请求，数据库需要高效地将最新的数据增量更新到上述结构中。 </p>
+<p>对于这类场景，PG 本身也有很好的支持，通过 COPY 语句可以实现非常快的数据导入，它的 MVCC 允许在写入的同时服务大量的读请求。 PG 也能支持许多复杂的数据类型。其唯一的缺点在于，这类场景下，数据往往会很快达到单机的存储极限。</p>
+<p>为了应对这类场景，数据库系统需要能够将数据分发到不同的机器上，同时支持并行的批量加载以读取这些数据。我们之前也提到，Citus 可以实现分库分表的操作，能够将写入的数据进行分发。后面也会讲到这种情况下 Citus 如何支持高效的查询，包括比较复制的跨节点 join 等操作。</p>
+<h3 id="高性能增删改查"><a href="#高性能增删改查" class="headerlink" title="高性能增删改查"></a>高性能增删改查</h3><p>高性能的CRUD（创建、读取、更新、删除）场景会涉及许多相对独立修改的对象&#x2F;文档。应用程序主要通过简单的CRUD操作访问数据，但也可能对对象发出更复杂的查询。这些对象通常遵循类似JSON的非结构化数据格式。PG 可以支持针对 JSON 的查询，一台大型的PostgreSQL服务器可以处理每秒数十万次的写入操作和数百万次的读取操作。不过，这里存在一些限制，PostgreSQL的MVCC（多版本并发控制）模型需要写入一个新的副本，然后在之后通过自动清理（auto-vacuuming）来回收空间。如果自动清理无法跟上，这可能导致性能下降。另一个限制是，由于采用每个连接一个进程的架构以及进程的相对高内存开销，PostgreSQL只能处理有限数量的（空闲）连接。</p>
+<h3 id="数据仓库"><a href="#数据仓库" class="headerlink" title="数据仓库"></a>数据仓库</h3><p>数据仓库将来自不同来源的数据合并到单个数据库系统中，以生成即时的分析报告。该应用程序通常不需要低延迟或高吞吐量，但查询可能需要扫描非常大量的数据。数据库需要支持非常快速的扫描，并能够为涉及任意连接的手写SQL找到高效的查询计划。 </p>
+<p>一般来说，PostgreSQL在合理的时间内执行非常大的扫描时，缺乏扫描性能和并行性。另一方面，它的性能特性、全面的SQL支持和生态系统仍然使其成为分析的吸引人选择。</p>
+<p>为了扩展数据仓库应用程序，需要通过并行、分布式SELECT和列式存储来加速扫描。应选择分布列以最大程度地增加共同分布连接的数量，但数据库还需要通过重新分配或在网络上传播数据来支持有效的非共同分布连接。查询优化器需要决定最小化网络流量的连接顺序。</p>
+<h2 id="Citus-架构"><a href="#Citus-架构" class="headerlink" title="Citus 架构"></a>Citus 架构</h2><p>在Citus集群中，所有服务器都运行带有Citus扩展以及任意数量其他扩展的PG实例。Citus使用PG扩展API来以两种方式改变数据库的行为：首先，Citus将数据库对象（如自定义类型和函数）复制到所有服务器。其次，Citus添加了两种新的表类型来利用外部服务器。</p>
+<p><img src="/posts/455069a2/deployment.png" alt="Alt text"></p>
+<h3 id="Citus-是如何修改-PG-本身的行为的"><a href="#Citus-是如何修改-PG-本身的行为的" class="headerlink" title="Citus 是如何修改 PG 本身的行为的"></a>Citus 是如何修改 PG 本身的行为的</h3><p>了解过 PG 扩展开发的同学多少都知道，PG 本身提供大量的编程接口，我们可以在扩展插件中编写自己的方法来调整数据库的行为。 Citus主要使用了以下几个接口：</p>
+<p>User-defined functions (UDFs) 可以在 SQL 查询时作为事务一部分被调用，主要用于操作Citus元数据以及执行 RPC。</p>
+<p>查询计划器和执行器的 hook 本身是一组全局函数指针，允许扩展提供替代的查询计划和执行方法。在PG解析查询后，Citus 会检查查询是否涉及Citus表。如果是的话，Citus会生成一个包含CustomScan节点的计划树，该节点封装了分布式查询计划。</p>
+<p>CustomScan是PG查询计划中的执行节点，它保存自定义状态并通过自定义函数指针返回元组。Citus CustomScan调用分布式查询执行器，该执行器将查询发送到其他服务器，并在将结果返回给PG执行器之前收集这些结果。</p>
+<p>Transaction callbacks在事务的生命周期中的关键点（例如预提交、后提交、中止）被调用。Citus使用这些回调来实现分布式事务。</p>
+<p>Utility hook 在解析不经过常规查询计划器的任何命令后被调用。Citus用这些 hook 来执行Citus表相关的DDL和COPY命令。</p>
+<p>Background workers在单独的进程中运行用户提供的代码。Citus使用此API运行维护守护进程。该守护进程执行分布式死锁检测、两阶段提交准备事务恢复和清理。</p>
+<p>通过这些钩子，Citus可以拦截客户端和涉及 Citus 表的 PG 引擎之间的任何交互，并替换或增强PG的行为。</p>
+<h3 id="Citus-的整体架构"><a href="#Citus-的整体架构" class="headerlink" title="Citus 的整体架构"></a>Citus 的整体架构</h3><p>Citus部署通常包括一个coordinator和多个worker，coordinator存有分布式表的元数据，客户端通常连接到协调器。当用户通过Citus UDF添加工作节点时，一个PG服务器隐式地成为协调器。worker存储包含实际数据的分片。当集群规模较小时，协调器本身也可以用作工作节点，因此最小可能的Citus集群是一个单独的服务器。</p>
+<p>将单个coordinator作为入口点的好处在于，PG库和工具可以与Citus集群交互，就好像它是一个普通的PG服务器。由于分布式查询的开销与查询执行相比较小，一个大型协调器节点可以处理每秒数十万次的事务或通过PG的COPY命令每秒摄入数百万行的数据。</p>
+<p>在这种架构下，很显然 coordinator 节点很容易成为整个系统的瓶颈，Citus 也有相对应的解决方案，通过将元数据分发到 worker 节点，Citus 能够降低coordinator 的查询压力，coordinator则只负责 DDL 语句的执行，由于 DDL 语句的执行量很少，这几乎不会导致coordinator 的瓶颈问题。然而，这种方案会导致 client 端连接 citus 集群时创建更多的连接，大量的连接则会导致另一个瓶颈。</p>
+<h3 id="Citus-的表类型"><a href="#Citus-的表类型" class="headerlink" title="Citus 的表类型"></a>Citus 的表类型</h3><p>Citus 有两种表，分布表和引用表。在创建普通的 PG 本地表之后，我们可以通过执行 Citus 定义的方法来将本地表转换为 Citus 表，之后，Citus 会接管所有和这个表相关的操作。 通过真分区键进行哈希，Citus 可以将表上的数据均匀分布到 worker 节点上。Citus 可以保证相同范围的哈希值对应的数据都在相同的 worker 节点上，因此，在执行 join 等操作时，citus 不需要进行跨节点通信。</p>
+<p>分布表和引用表的区别在于，分布表的数据通过哈希分片到不同 worker 节点上，但引用表会在所有节点上复制同步。这样，当分布表和引用表发生 join 时，worker 只需要执行针对本地的分片来执行join 。</p>
+<h3 id="数据再平衡"><a href="#数据再平衡" class="headerlink" title="数据再平衡"></a>数据再平衡</h3><p>可以想象，当单个 worker 节点的数据达到负载极限时，我们需要将数据移动到新的节点，从而实现整体的负载均衡。 Citus 提供一个 rebalancer 来执行移动数据的操作，在执行 rebalance 操作时，rebalancer 会选取一个分片和与之相关的其他数据，通过 PG 的逻辑复制进行移动，这时，分片依然可以接收读写请求。在完成所有存量和增量的复制后，Citus 会对分片加上写锁来等待所有复制完成，并执行分布表的元数据更改。这时一般会有几秒的写宕机。</p>
+<h3 id="分布式查询计划器"><a href="#分布式查询计划器" class="headerlink" title="分布式查询计划器"></a>分布式查询计划器</h3><p>在客户端请求查询 Citus 相关的数据表时，Citus 会生成一个包含有分布式查询计划的 Custom-Scan节点，Citus 有不同的查询计划器，以应对不同场景下的查询请求。如下图所示：</p>
+<p><img src="/posts/455069a2/query_planner.png" alt="Alt text"></p>
+<p>Fast path planner 快速路径规划器处理的是针对单个表的简单CRUD查询，并且该表只有一个分布列的取值。它直接从查询中的过滤条件中提取分布列的值，并确定与该值匹配的分片。然后，规划器将表名重写为分片名，以构建在工作节点上运行的查询，这可以在CPU开销极小的情况下完成。因此，快速路径规划器支持高吞吐量的CRUD工作负载。</p>
+<p> Router planner 路由规划器处理的是可以限定在一组共同分布的分片上的任意复杂查询。路由规划器会检查或推断所有分布表是否具有相同的分布列过滤条件。如果是这样，查询中的表名将被重写为与分布列值匹配的共同分布分片的名称。路由规划器隐式支持PostgreSQL支持的所有SQL特性，因为它会将完整的查询委托给另一个PostgreSQL服务器。因此，路由规划器使多租户SaaS应用能够在最小开销下使用所有SQL特性。</p>
+<p>Logical planner 逻辑规划器通过构建多关系代数树来处理跨分片的查询。多关系代数形式化了两个在PostgreSQL中不可用的分布式执行原语，用于收集和重新分区数据。这种差异影响了路由规划器和逻辑规划器之间的分离。</p>
+<p>逻辑规划器的目标是在结果在coordinator上合并之前，将尽可能多的计算推送到工作节点。这里有两种不同的逻辑规划策略：</p>
+<ol>
+<li><strong>逻辑下推规划器</strong>：检测连接树是否可以完全下推。这要求所有分布表之间具有共同分布的连接，并且子查询不需要全局合并步骤（例如，GROUP BY必须包含分布列）。如果是这样，规划器可以基本上不关心连接树中使用的SQL构造，因为它们完全委托给工作节点，分布式查询计划变得非常容易并行化。</li>
+<li><strong>逻辑连接顺序规划器</strong>：确定涉及非共同分布连接的连接树的最佳执行顺序。它使用共同分布连接、广播连接和重新分区连接来评估分布表和子查询之间所有可能的连接顺序，并选择最小化网络流量的顺序。广播连接和重新分区连接会导致带有过滤器和投影的子计划被推送到子计划中。</li>
+</ol>
+<p>对于每个查询，Citus会按照最低到最高开销的顺序遍历这四个规划器。如果某个特定规划器可以为查询生成计划，Citus就会使用它。在特定场景下，相比执行而言，查询计划的生成在时间开销上很低。</p>
+<h3 id="分布式查询执行器"><a href="#分布式查询执行器" class="headerlink" title="分布式查询执行器"></a>分布式查询执行器</h3><p>PG 的查询计划是一个由多个执行节点组成的执行树，每个节点都有一个返回一个元组的函数。 Citus 生成的 CustomScan 就是其中的一个节点。 PG 的执行器进入 CustomScan函数后，Citus 会执行各个子计划，然后把执行移交给 adaptive executor自适应执行器。自适应执行器可以通过单工作节点多路连接的方式并行执行查询任务。这种多路实现的方式需要管理过程中建立连接，以及并行处理过程中的额外开销。</p>
+<p>自适应执行器需要权衡并行执行的延迟与各类开销。这里提出了一个“slow start”慢启动的方案。查询开始时，执行器对每个工作节点只建立一个连接，接下来，每 10ms，执行器会给每个工作节点的连接数（n）加一。如果有 t 个等待交给某个工作节点执行的任务没有被分配到可用的连接， 那么执行器就会为这个工作节点创建 min(n, t) 个连接，并放入连接池中。这种方案的原因在于，一个简单的内存中基于索引的查询往往只需要不到 1ms 的时间，所以一般来说节点上的所有任务会在执行器尝试打开连接之前完成。此外，分析型任务往往需要数百毫秒，尽管连接建立有一定的延迟，但是在整体的时间开销里几乎可以忽略。当然，这种方案下，执行器仍然需要管理与各个节点的连接数。</p>
+<p>在执行连接上的任务分配时，由于每个连接到分片上执行查询时访问的是不同的数据，并在多语句事务的情况下保持未提交的写入和锁定。因此，对于每个连接，Citus会跟踪已访问的分片，以确保相同的连接将在同一事务中对同一组共同分布的分片进行任何后续访问。在开始执行语句时，如果在事务中已经访问了分片，则将任务分配给对应的连接，否则将其分配给工作节点的通用池。当连接准备就绪时，执行器首先从其队列中获取一个已分配的任务，否则从通用池中获取任务。</p>
+<p>通过结合慢启动、共享连接限制和任务分配算法，自适应执行器可以处理各种工作负载模式，即使它们在单个数据库集群上并发运行，并支持复杂的交互式事务块而不损失并行性。</p>
+<h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><p>Citus 中的事务主要分两种，一种是在 coordinator 上的事务，一种是在工作节点上的事务。对于仅仅涉及单个工作节点的事务，工作节点全权负责整个事务；对于涉及多个节点的事务则通过两阶段提交来保证原子性。单节点事务其实比较简单，我们主要看看多节点的事务如何基于两阶段提交来实现。</p>
+<p>对于涉及多个节点的写事务，执行器在工作节点上开启事务块，并在提交时对它们执行两阶段提交（2PC）。PostgreSQL实现了准备事务状态的命令，以一种保留锁并在重新启动和恢复时保留状态的方式。这使得稍后可以提交或中止已准备好的事务。Citus使用这些命令来实现完整的2PC协议。</p>
+<p>当协调器上的事务即将提交时，预提交回调通过所有与开启事务块的工作节点的连接发送“准备事务”命令。如果成功，协调器为每个已准备好的事务在Citus元数据中写入一个提交记录，然后本地事务提交，确保提交记录被耐久存储。在提交后和中止回调中，已准备好的事务将尽力提交或中止。</p>
+<p>当一个或多个已准备好的事务无法提交或中止时，将使用Citus元数据中的提交记录确定事务的结果。后台守护进程定期比较每个工作节点上待处理的准备好的事务列表和本地的提交记录。如果存在已准备好的事务的提交记录（即：可见），则协调器已经提交，因此已准备好的事务也必须提交。反之，如果一个已结束的事务没有记录存在，那么已准备好的事务必须中止。当存在多个协调器时，每个协调器为其启动的事务执行2PC恢复。由于提交记录和已准备好的事务都存储在预写式日志中，这种方法对涉及的任何节点的故障是强大的。</p>
+<p>另一个关键点在于如何处理分布式死锁，特别是在多语句事务之间。为了解决这个问题，可以使用死锁预防或死锁检测方法。死锁预防技术（例如Wound-Wait）需要一定百分比的事务重新启动。PostgreSQL具有交互式协议，这意味着在重新启动发生之前可能将结果返回给客户端，而且不希望客户端重试事务。因此，Wound-Wait对于Citus来说不太适用。为了保持与PostgreSQL的兼容性，Citus实现了分布式死锁检测，当事务陷入实际死锁时，会中止事务。</p>
+<p>PostgreSQL已经在单节点上提供了死锁检测。Citus通过在协调器节点上运行的后台守护程序扩展了这一逻辑。该守护程序每2秒轮询所有工作节点，以获取其锁图中的边缘（进程a等待进程b），然后合并在同一分布式事务中参与的图中的所有进程。如果生成的图包含一个环路，那么将向属于环路中最年轻的分布式事务的进程发送取消命令，以中止事务。</p>
+<p>除非存在实际死锁，否则在典型的（分布式）数据库工作负载中，只有少数事务会在等待锁。因此，分布式死锁检测的开销很小。当分布式死锁经常发生时，建议用户更改其事务中语句的顺序。</p>
+<p>Citus中的多节点事务提供了原子性、一致性和持久性的保证，但不提供分布式快照隔离的保证。并发的多节点查询可能在一个节点上提交之前获取本地MVCC快照，而在另一个节点上提交之后获取快照。解决这个问题需要对PostgreSQL进行更改，使快照管理器可扩展。在实践中，我们在这四种工作负载模式中并没有发现对分布式快照隔离的强烈需求，客户目前也没有表达对此的需求。在多租户和CRUD应用程序中，大多数事务范围仅限于单个节点，这意味着它们在该节点上获得了隔离保证。分析应用程序之间的事务没有强依赖关系，因此对宽松的保证更具宽容性。</p>
+<p>在某些混合场景中，分布式快照隔离可能很重要。然而，现有的分布式快照隔离技术由于需要额外的网络往返或等待时钟而具有显著的性能成本，这会增加响应时间并降低可实现的吞吐量。在同步的PostgreSQL协议的背景下，吞吐量最终受到#连接数&#x2F;响应时间的限制。由于从应用程序的角度来看，建立大量的数据库连接通常是不切实际的，因此低响应时间是实现高吞吐量的唯一途径。因此，如果将来实施分布式快照隔离，我们可能会将其作为可选项。</p>
+<h3 id="其他场景的分布式处理"><a href="#其他场景的分布式处理" class="headerlink" title="其他场景的分布式处理"></a>其他场景的分布式处理</h3><p>除了简单的 SELECT 语句和其他 DML 命令外，Citus 还提供其他语句的支持</p>
+<ul>
+<li>DDL 命令在 PG 里面是在线处理的具有事务性的操作，Citus 同样通过加锁来保持相同的特性，并通过执行器将命令发送到 worker 节点</li>
+<li>COPY 命令在 PG 里面可以被用来导入 CSV 格式的数据，这个过程在 PG 里面是单线程的实现，并需要更新索引、检查各类约束条件。在 citus 里面，coordinator 会在每一个分片和数据流上异步开启 COPY命令，这样写操作也可以并行执行。</li>
+<li>跨分布表的INSERT…SELECT命令往往采用以下三种步骤之一去执行：<ul>
+<li>如果SELECT操作在协调器上需要执行合并步骤，则该命令在内部作为分布式SELECT执行，然后将结果COPY到目标表中。</li>
+<li>如果没有合并步骤，但源表和目标表不是共位的，则INSERT..SELECT在将SELECT结果插入目标表之前执行分布式重新分区。</li>
+<li>如果源表和目标表是共位的，则INSERT..SELECT直接在并行的共位分片上执行。</li>
+</ul>
+</li>
+<li>在Citus中，存储过程可以基于分布参数和一个共位的分布表被委托给工作节点，以避免协调器和工作节点之间的网络往返。工作节点可以在不进行网络往返的情况下在本地执行大多数操作，但在必要时也可以在工作节点之间执行分布式事务。这种方法有助于在分布式环境中优化存储过程的性能。</li>
+</ul>
+<h3 id="高可用和备份"><a href="#高可用和备份" class="headerlink" title="高可用和备份"></a>高可用和备份</h3><p>在Citus中，HA主要在服务器层使用现有的PostgreSQL复制进行处理。在HA设置中，集群中的每个节点都有一个或多个热备份节点，并使用同步、异步或quorum来复制其写前日志（WAL）。当一个节点失败时，集群协调器会提升一个备用节点，并更新Citus元数据、DNS记录或虚拟IP。整个故障切换过程需要20-30秒，在此期间涉及该节点的分布式事务会回滚。coordinator通常是托管服务中的控制面的一部分，但本地用户可以使用pg_auto_failover扩展来执行相同的功能。</p>
+<p>备份也主要在服务器级别进行，通过创建周期性的磁盘快照或数据库目录的副本，并在每个服务器中将WAL持续存档到远程存储来实现。Citus支持定期创建一致的还原点，即每个节点的WAL记录。还原点是在将写操作阻塞到 coordinator上的提交记录表时创建的，这可以防止在创建还原点时进行中的两阶段提交。将所有服务器还原到相同的还原点可以保证在恢复的集群中，所有多节点事务要么完全提交要么中止，或者可以通过协调器在启动时执行2PC恢复来完成。</p>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>Benchmark 部分，作者的实验基本围绕着不同场景下 PG 单机和 Citus 不同部署模型下的性能差距，包括 latency 、 QPS 、 TPS 等等。这里我就不详细展开了，贴几张图，感兴趣的同学可以直接看原文。</p>
+<p>![[github_benchmark.png]]<br>![[data_warehouse_benchmark.png]]<br>![[tps_benchmark.png]]<br>![[ycsb_benchmark.png]]</p>
+<h2 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h2><p>这部分介绍了 Citus 在微软内部的使用，这一场景主要是一个数据分析场景，数据来自全球数亿台 windows 设备，指标显示在一个名为“Release Quality View”（RQV）的实时分析仪表板上，该仪表板帮助Windows工程团队评估每个Windows版本的客户体验质量。</p>
+<p>RQV的底层数据存储，代号为VeniceDB，由两个在Microsoft Azure上运行的超过1000核心的Citus集群提供支持，存储了超过一PB的数据。虽然对于VeniceDB评估了许多不同的分布式数据库和数据处理系统，但只有Citus能够满足与PB级VeniceDB工作负载相关的特定要求，包括：</p>
+<ul>
+<li>对于每天超过6百万次查询，p95下的小于一秒的响应时间</li>
+<li>每天约10TB的新数据</li>
+<li>在RQV中显示新的数据需要在20分钟内完成</li>
+<li>具有高基数group by的嵌套子查询</li>
+<li>高级二级索引（例如部分索引、GiST索引）以高效查找沿各个维度的报告</li>
+<li>高级数据类型（例如数组、HyperLogLog）以在SQL中实现复杂的分析算法</li>
+<li>通过增量聚合减少行数</li>
+<li>在节点间进行原子更新以清理错误数据</li>
+</ul>
+<p>在Citus集群中，原始数据存储在名为measures的表中，该表按设备ID进行分布，并使用PostgreSQL中内置的分区功能按时间进行磁盘分区。使用COPY命令来并行化将传入的JSON数据导入分布式表。使用分布式INSERT..SELECT命令来执行设备级别的对传入数据进行预聚合，并将其放入几个具有不同索引的reports表中。reports表也按设备ID进行分布，并与measures表共位，以便Citus可以完全并行化INSERT..SELECT。</p>
+<p>这里给出了一个典型的查询语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT ..., avg(device_avg)</span><br><span class="line">FROM ( </span><br><span class="line">  SELECT deviceid, ..., avg(metric) as device_avg</span><br><span class="line">  FROM reports WHERE ...</span><br><span class="line">GROUP BY deviceid, &lt;time period&gt; , &lt;other dimensions&gt; ) AS subq  </span><br><span class="line">GROUP BY &lt;time period&gt;, &lt;other dimensions&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>这些查询通过多个维度进行过滤（例如测量、时间范围、Windows版本），以找到数据的重要子集。嵌套的子查询首先通过设备ID对报告进行聚合，这对于按设备而不是按报告数量来衡量整体平均值是必要的。每个查询可能涉及数千万台设备，这使得按deviceid进行GROUP BY的计算变得具有挑战性。由于子查询按照分布列进行分组，Citus中的逻辑推送计划器认识到它可以将整个子查询推送到所有工作节点以进行并行化。然后，工作节点使用仅索引扫描按设备ID顺序读取数据，并最小化GROUP BY的磁盘I&#x2F;O和内存占用。最后，Citus通过在工作节点上计算部分聚合并在协调器上合并这些部分聚合来分发外部聚合步骤，以生成最终结果。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p>这部分大体介绍了当前市面上常见的分布式数据库解决方案：</p>
+<ul>
+<li>针对MySQL的类似于 Citus 的方案Vitess，采取了和 Citus 相似的实现方案</li>
+<li>基于 PG 的解决方案 Greenplum and Redshift，相比 Citus 而言对分析场景具有更好的支持，比如采用列存来实现快速 scan，通过数据 shuffle 来优化 join 性能等</li>
+<li>Aurora同样也对 PG 进行了支持，通过分布式存储的实现，Aurora 采用了存算分离、共享存储的方案，这种方案的好处在于调用端不需要做许多分布式场景下的决策，可以直接把 Aurora 当做单机 DB 来使用。 Citus 则需要调用方对分布方案有足够的理解和干预。</li>
+<li>Spanner ，CockroachDB  和 Yugabyte 主要面向需要分布式事务支持的场景。CockroachDB 和 Yugabyte 也部分支持 PostgreSQL 协议。与 Citus 相比，这些系统的一个显著的架构差异在于它们提供了分布式快照隔离，并使用了”等待-等待”（wound-wait）而不是死锁检测。分布式快照隔离的一个优点是它避免了数据建模的约束。Citus 用户需要使用邻近数据存储和引用表，以将事务范围限制到单个节点，以获得完整的 ACID 保证。另一方面，这些技术还能实现高效的连接和外键，因此它们对于扩展复杂的关系数据库工作负载是至关重要的。</li>
+<li>TimescaleDB 是一个为时间序列数据优化的 PostgreSQL 扩展。它使用与 Citus 相似的钩子来引入“超级表”（hypertable）的概念，该表会根据时间自动进行分区。按时间对表进行分区对于限制索引大小以保持时间序列工作负载的高写入性能，以及通过时间范围进行分区修剪以加速查询是有用的。由于对 PostgreSQL 钩子的冲突使用，目前 Citus 和 TimescaleDB 不兼容，但 Citus 可以与 pg_partman 一起使用，后者是一个更简单的时间分区扩展。许多使用 Citus 的实时分析应用程序也会在分布式表的基础上使用 pg_partman，在这种情况下，各个分片会被本地分区，以获得分布式表和时间分区的双重优势。</li>
+</ul>
+<p>整体而言，Citus 的分布式解决方案需要用户直接介入数据切片、数据同步、数据存储等多个过程，对于使用者而言需要一定背景知识。这一实现方案的好处在于 Citus 可以快速发布支持最新版本 PG 的新版本。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/6f202b0d.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -216,9 +418,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-10-27 20:22:30 / 修改时间：22:04:49" itemprop="dateCreated datePublished" datetime="2023-10-27T20:22:30+08:00">2023-10-27</time>
+      <time title="创建时间：2023-10-27 20:22:30" itemprop="dateCreated datePublished" datetime="2023-10-27T20:22:30+08:00">2023-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -367,7 +575,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-27 22:04:49" itemprop="dateModified" datetime="2023-10-27T22:04:49+08:00">2023-10-27</time>
+      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -474,7 +682,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-27 22:04:49" itemprop="dateModified" datetime="2023-10-27T22:04:49+08:00">2023-10-27</time>
+      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -590,7 +798,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-27 22:04:49" itemprop="dateModified" datetime="2023-10-27T22:04:49+08:00">2023-10-27</time>
+      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -653,139 +861,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/a2161837.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/a2161837.html" class="post-title-link" itemprop="url">读《云原生分布式存储基石：etcd 深入解析》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-10-09 23:59:02" itemprop="dateCreated datePublished" datetime="2023-10-09T23:59:02+08:00">2023-10-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-27 22:04:48" itemprop="dateModified" datetime="2023-10-27T22:04:48+08:00">2023-10-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近一个月时间一直都在忙着搬家，国庆又带老婆回家待了几天，一直都没什么时间静下心来看看书，终于国庆过完了，又开一个新坑。这本书是华为做容器服务的团队写的，etcd 的源码大家多多少少都看过一些，这本书系统过了一下整个 etcd 的设计和一些重要的设计亮点和实现原理，对于我们自己对 etcd 的理解也能有一个梳理和印证。</p>
-<p>本书分为三个大部分，分布式基础、 etcd 实战以及源码分析，总共十二章。</p>
-<h2 id="分布式基础"><a href="#分布式基础" class="headerlink" title="分布式基础"></a>分布式基础</h2><p>分布式系统的设计目标主要有以下几个方面:</p>
-<ul>
-<li>可用性：可用性是分布式系统的核心需求，其用于衡量一个分布式系统持续对外提供服务的能力。可用性方面，主要是通过系统冗余（备份、多节点）来保证容灾。</li>
-<li>可扩展性：增加机器后不会改变或极少改变系统行为，并且能获得近似线性的性能提升。这一点对于业务增长来说十分重要。</li>
-<li>容错性：系统发生错误时，具有对错误进行规避以及从错误中恢复的能力。数据中心能够出现的错误往往超过你的想象，怎么在出现错误时提供稳定的服务，这一点在设计时也需要深入思考。</li>
-<li>性能：对外服务的响应延时和吞吐率要能满足用户的需求。这点就不多说了，尤其是 ToC的业务，系统响应往往决定了用户的留存。</li>
-</ul>
-<p>这里又要老生常谈 CAP 了，我们复习一下，CAP 分别是一致性（Consistency）、可用性（Availability）和分区容忍性（Tolerance to the partition of network）。分布式环境下网络分区是常态，所以分布式系统往往是AP 或者 CP，要么提高可用性降低一致性需求，要么要求强一致性但是可用性会降低。一般除了一些特定的场景（比如金融业务）会要求 CP，其他基本都是以 AP 为主，满足最终一致性即可。</p>
-<p>我们重点聊聊一致性，首先什么是一致性，在分布式场景下，用通俗的话来说，就是怎么保证多个副本的数据是否一致，或者说系统对外呈现的状态是否一致。对于一致性，可以分别从客户端和服务端两个不同的视角来理解。从客户端来看，一致性主要是指多并发访问时如何获取更新过的数据的问题。从服务端来看，则是更新如何复制分布到整个系统，以保证数据最终的一致性。因此，可以从两个角度来查看一致性模型：以数据为中心的一致性模型和以用户为中心的一致性模型。</p>
-<p>以数据为中心的一致性模型有强一致性（Strong Consistency）、顺序一致性（Sequential Consistency）、因果一致性（Causal Consistency）、可串行化一致性（Serializable Consistency）</p>
-<p>强一致性（Strong Consistency），顺序一致性（Sequential Consistency），因果一致性（Causal Consistency），和可串行化一致性（Serializable Consistency）是分布式系统中描述不同一致性级别的概念。它们之间的区别主要在于对于并发操作的处理和数据操作顺序的要求。</p>
-<ol>
-<li><p><strong>强一致性（Strong Consistency）：</strong> 在一个强一致性系统中，任何时刻，客户端读取的数据都是最新的，而且所有节点上的数据副本都是完全一致的。强一致性要求系统保证所有节点上的读操作都能够读取到最近一次的写操作结果。这种一致性保证通常需要在分布式系统中采用复杂的同步和协调机制，因此可能会影响系统的性能和可用性。</p>
-</li>
-<li><p><strong>顺序一致性（Sequential Consistency）：</strong> 顺序一致性保证所有节点上的操作都会被按照相对于其他操作的发生顺序来进行。也就是说，如果一个操作在系统中发生在另一个操作之前，那么所有节点上的观察结果都应该反映这个发生顺序。不过，顺序一致性并不要求所有节点上的操作立即被所有其他节点看到，可能会有一定的延迟。</p>
-</li>
-<li><p><strong>因果一致性（Causal Consistency）：</strong> 因果一致性是一种比顺序一致性更弱的一致性模型。在因果一致性下，系统保证具有因果关系的操作会被按照其发生的顺序来进行，但不保证并发操作之间的顺序。如果一个事件A影响了事件B，那么观察到事件A的节点在事件B之前就应该知道事件A发生了。</p>
-</li>
-<li><p><strong>可串行化一致性（Serializable Consistency）：</strong> 可串行化一致性是一种强一致性模型，它要求系统的执行序列等价于某个串行执行序列（即在一个时刻只有一个操作被执行）。这意味着系统的并发操作不能产生与某个串行执行序列不一致的结果。可串行化一致性是一种非常严格的一致性模型，通常需要使用各种事务处理技术来实现。</p>
-</li>
-</ol>
-<p>以用户为中心的一致性模型主要是指实际业务需求中需要满足针对某个用户业务的一致性，比如最终一致性，即允许一个不一致性窗口，只要最终所有副本达到一致性即可。</p>
-<p>当同一份数据存在多个副本时，我们通过复制状态机来管理它们。复制状态机（Replicated State Machine）是一种分布式系统的设计模式，用于确保在多个节点上保持相同的状态副本。在复制状态机模型中，多个服务器节点通过相互通信和协作来保持一致的状态，并且客户端可以向任意一个节点发送请求，系统会确保处理请求的顺序和结果在所有节点上都是一致的。</p>
-<p>复制状态机的核心思想是将分布式系统中的状态看作是一个状态机，这个状态机会接收客户端的请求并且按照特定的顺序进行处理，从而达到一致的状态。为了实现复制状态机，通常会使用一种称为共识算法（Consensus Algorithm）的技术，例如Paxos、Raft等。这些共识算法可以确保系统中的节点在面对故障和网络分区等问题时，依然能够保持一致的状态。</p>
-<p>FLP（Fisher, Lynch, Paterson）定理是分布式计算领域的一个基本定理，指出在异步网络中，当存在一个或多个节点发生故障时，不可能设计一个算法，能够在有限的时间内，保证所有节点对一个共享的变量（例如确定某个决策）达成一致的协议。简而言之，FLP定理指出，在异步网络中，不可能同时满足一致性（Consistency）、可用性（Availability）和分区容忍性（Partition Tolerance）这三个分布式系统设计的基本要求。</p>
-<p>具体来说，FLP定理的内容是：在一个异步网络中，如果有一个或多个节点可能发生故障，且网络不提供时钟同步（即消息传递没有上限，消息可能在任何时间间隔内被传递），那么在有限的时间内不可能设计一个分布式算法，能够确保所有节点对某个共享的变量达成一致的协议。</p>
-<p>这个定理的结论有重要的实际意义，它告诉我们，在异步网络环境下，无法设计一个能够在所有情况下都保证一致性的分布式算法。因此，在实际系统设计中，需要根据具体需求和系统特性，权衡一致性、可用性和分区容忍性，选择适当的系统模型和算法。根据FLP定理，实际的一致性协议（Paxos、Raft等）在理论上都是有缺陷的，最大的问题是理论上存在不可终止性！至于Paxos和Raft协议在工程的实现上都做了哪些调整（例如，Paxos和Raft都通过随机的方式显著降低了发生算法无法终止的概率），从而规避了理论上存在的哪些问题，下文将会有详细的解释。</p>
-<p>书中接下来讲到了 Paxos 、 Raft算法，这两个协议在网上都有大量的介绍，我们不多赘述，只简单说一下 Raft，Raft把一致性问题分解成了领袖选举（leader election）、日志复制（log replication）、安全性（safety）和成员关系变化（membership changes）这几个子问题，我们在面试时候如果聊到 Raft 可以从这几个角度逐一介绍。</p>
-<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><p>为什么使用 etcd？在聊到 etcd 的时候，我们往往会聊到类似的其他系统，比如 zookeeper，与 zookeeper 相比，etcd 更加稳定可靠。在服务发现的实现上，etcd使用的是节点租约(Lease)，并且 支持Group(多key);而ZooKeeper使用的是临时节点。etcd支持稳定的watch，而不是ZooKeeper一样简单的单次触发式 (one time trigger)watch。etcd支持MVCC(多版本并发控制)，因为有协同系统需要无锁操作。 etcd 支持更大的数据规模，支持百万到千万级别的 key。 etcd 性能更好，在 3 台八核云服务器上部署的 etcd v3 可以实现每秒数万次的写操作和数十万次的读操作。</p>
-<p>etcd 的官方定义是“A distributed, reliable key-value store for the most critical data of a distributed system.”本质上是为了提供可靠的分布式键值存储，用来存储分布式系统中的最关键的数据。 etcd 的常见使用场景有：服务发现、分布式锁、分布式数据队列、分布式通知和协调、主备选举等。（p.s.我自己就是做服务发现相关的业务，不过是在一个没有强一致性的环境，在这种场景下怎么保证服务发现的一致性其实也是一个很有意思的问题，我们在生产环境做了大量的 workaround，这个以后有机会可以聊一下）</p>
-<p>etcd 基于 Raft 协议，通过日志复制来保证数据的强一致性，简单来说，客户端在写一个 key 的时候，首先会存储到 etcd 的 leader 节点上，接着通过 Raft 协议同步到集群中所有成员中，以此维护各成员的一致性。准确地说，只有在多数节点 ack 了这个写操作，这个写操作才算成功。etcd 能够容忍集群中(n-1)&#x2F;2 个节点的故障。 etcd 的数据通过 WAL 来持久化，数据操作先写 WAL，再做提交。 etcd 通过快照来记录某一时刻的所有数据，默认每一万条数据做一次快照，快照后 WAL 即可删除。</p>
-<p>etcd 单实例支持每秒一千次以上的写操作，极限情况下 QPS 可以达到 10k 。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -810,14 +885,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">109k</span>
+    <span title="站点总字数">117k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:37</span>
+    <span title="站点阅读时长">7:07</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
