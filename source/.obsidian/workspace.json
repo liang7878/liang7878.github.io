@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "820bbcdf46aed41e",
+        "id": "1b61cbfac1643cf8",
         "type": "tabs",
         "children": [
           {
-            "id": "e88787aab15c329e",
+            "id": "098f2237e2d7abcb",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/papers/citus.md",
+                "file": "_posts/papers/llm_survey.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_posts/papers/citus.md",
+                "file": "_posts/papers/llm_survey.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_posts/papers/citus.md",
+                "file": "_posts/papers/llm_survey.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "_posts/papers/citus.md"
+                "file": "_posts/papers/llm_survey.md"
               }
             }
           }
@@ -146,14 +146,29 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e88787aab15c329e",
+  "active": "7e6fb79ebdd3ccaa",
   "lastOpenFiles": [
-    "_posts/papers/citus/ycsb_benchmark.png",
-    "_posts/papers/Oceanbase.md",
+    "_posts/papers/llm_survey/Pasted image 20231210104338.png",
+    "_posts/papers/llm_survey/Pasted image 20231209115716.png",
     "_posts/papers/citus.md",
+    "_posts/papers/llm_survey.md",
+    "_posts/papers/llm_survey",
+    "Excalidraw/GeoGauss.excalidraw.md",
+    "_posts/papers/geogauss.md",
+    "_posts/papers/geogauss/paper_arch.png",
+    "_posts/papers/geogauss/geodb_solution.png",
+    "_posts/papers/Oceanbase.md",
+    "Excalidraw",
+    "_posts/papers/Manu.md",
+    "_posts/papers/geogauss",
+    "_posts/papers/citus/ycsb_benchmark.png",
+    "_posts/papers/citus/workloads.png",
     "_posts/papers/citus/tps_benchmark.png",
-    "_posts/papers/citus/data_warehouse_benchmark.png",
+    "_posts/papers/citus/query_planner.png",
     "_posts/papers/citus/github_benchmark.png",
+    "_posts/papers/citus/deployment.png",
+    "_posts/papers/citus/data_warehouse_benchmark.png",
+    "_posts/papers/citus",
     "Untitled.canvas"
   ]
 }
