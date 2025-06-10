@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "source/_posts/papers/citus.md",
+                "file": "source/_posts/llm/sglang_01.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "source/_posts/papers/citus.md",
+                "file": "source/_posts/llm/sglang_01.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "source/_posts/papers/citus.md",
+                "file": "source/_posts/llm/sglang_01.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "source/_posts/papers/citus.md"
+                "file": "source/_posts/llm/sglang_01.md"
               }
             }
           }
@@ -143,13 +143,28 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "ec567d1ee02fa03e",
+  "active": "839b4d81bc40838d",
   "lastOpenFiles": [
-    "source/_posts/papers/Oceanbase.md",
+    "lab/leetcode/1071/__debug_bin17293281",
+    "lab/leetcode/1071/__debug_bin2766394926",
+    "lab/leetcode/1071/1071_test.go",
+    "lab/leetcode/1071/1071.go",
+    "lab/leetcode/1071",
+    "go.mod",
+    "lab/leetcode/773/773_test.go",
+    "lab/leetcode/773/773_tests.go",
+    "lab/leetcode/773/773.go",
+    "lab/leetcode/773",
+    "lab/leetcode",
+    "source/_posts/papers/citus.md",
+    "source/_posts/llm/sglang_01.md",
+    "source/_posts/etc/volcengine_ml_platform.md",
     "Untitled.canvas",
-    "source/_posts/papers/citus.md"
+    "Excalidraw/Drawing 2024-01-23 21.31.17.excalidraw.md",
+    "source/_posts/papers/Oceanbase.md"
   ]
 }
