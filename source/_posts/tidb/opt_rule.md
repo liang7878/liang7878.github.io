@@ -1,5 +1,6 @@
 ---
 title: 查询优化大揭秘 TiDB的查询优化规则有哪些？
+description: "根据源码中的optRuleList列表来看，TiDB 的逻辑计划优化规则总共有22种，下面是源码："
 tags: TiDB
 categories: 源码分析
 date: 2023-08-02 22:52:52

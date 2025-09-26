@@ -1,5 +1,6 @@
 ---
 title: 'OceanBase: A 707 Million tpmC Distributed Relational Database System'
+description: "时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。"
 tags:
   - 数据库
   - Paper Reading
@@ -63,7 +64,7 @@ OB 的设计目标是为了在商用级硬件上构建可快速伸缩的高性�
 
 下面我们来看下基础架构，OB 支持 shared-nothing 架构，如下图所示，这其实是一个很标准的存算分离的架构。应用层发送请求到 proxy 层，由 proxy 层转发到对应的 db 节点，db 节点主要负责计算逻辑，由存储引擎访问底层的存储集群。
 
-![Alt text](/images/ob_arch.png)
+![OceanBase 架构总体设计图](/images/ob_arch.png)
 
 每个 OB 集群由多个不同的 zone 组成，不同的 zone 可以部署到单个 region 或者多个 region。在单个 zone 内，OB 是以 shared-nothing 的方式来部署的。Database 被切割成多个分片，这些分片是数据分布和负载均衡的基本单元。每个 partition 在每个 zone 都有一个副本，zone 与 zone 之间通过 Paxos 来同步。
 
@@ -101,12 +102,12 @@ SQL引擎是数据库计算层的主要组成部分，SQL 请求到达时，一�
 ## 存储引擎
 
 OB使用的是非常流行的基于 LSM tree的存储引擎，这段的实现是一个非常标准的 LSM tree 实现，没有什么特别神奇的地方。文中提到了一个非对称读写，其实就是对读写配置不同大小的基本单元，读使用小的数据块，写使用大的数据块，这里其实我没太明白，说多个小的数据块能够合并成一个大的数据块，从而优化磁盘利用，以应对更大的写放大。接着就是 LSM tree 的compaction，这里做了一个优化就是只对写操作的数据块做 compaction，其他就是常规的 LSM tree 的 compaction，感觉没有什么特别的地方。OB 里面有多种不同的 replica，包括 full replica、data replica 和 log replica，下面是一个对比表：
-![Alt text](/images/ob_replica_type.png)
+![OceanBase 副本角色类型对比图](/images/ob_replica_type.png)
 
 ## 事务处理引擎
 这一段应该说是 OB 主要的卖点了，数据分片是数据分布、负载均衡、Paxos 同步的基本单位。每个数据分片（partition）有一个 Paxos 组，如下图所示：
 
-![Alt text](/images/ob_paxos.png)
+![OceanBase Paxos 副本复制流程图](/images/ob_paxos.png)
 
 为了提供高可用的时间戳服务，OB 也将 Paxos 利用到了时间戳服务中，Paxos leader 通常位于数据表分片的相同 region 中，向 OB 的节点提供时间戳服务。
 
@@ -141,7 +142,7 @@ OB 的事务处理使用了一个典型的两阶段提交协议（2PC），两�
 
 OB 把 Paxos 引入到两阶段提交中，如下图所示，在 OB 中，每个 2PC 的参与者都有一个 Paxos集群，在 2PC 过程中，如果某个参与者 fail 了，它可以直接切到自己的另一个 replica。这里还提到了一个优化，在传统 2PC 中，需要所有的参与者提交完成才能够返回提交成功，但是在OB 中，由于 Paxos 保证了参与者数据状态的可用性，OB 就可以在 Prepare 阶段完成之后就向 caller 返回成功，又 OB自己异步的完成 commit 阶段的工作。OB 支持读已提交和快照隔离的事务隔离级别。
 
-![Alt text](/images/ob_2pc.png)
+![OceanBase 两阶段提交流程图](/images/ob_2pc.png)
 
 ## OB 的设计经验
 
@@ -194,6 +195,6 @@ OB 把 Paxos 引入到两阶段提交中，如下图所示，在 OB 中，每个
     互联网公司面临更多的高并发场景，所以对数据库产品的性能需求会高很多，OB 避免传统数据库的一次性升级，转而采用灰度升级的方式来削弱风险。其实这个地方的描述有点灌水的感觉了，现在只要是大规模集群，基本都会采用灰度发布的方式。当然，不排除还有一些传统公司仍然使用单点数据库服务。
 
 下图是 OB 的演进历史，大家可以看一下，以作了解：
-![Alt text](/images/ob_evo.png)
+![OceanBase 系统演进里程碑图](/images/ob_evo.png)
 
 文中还描述了 OB 做的 TPC-C 实验的具体数据，感兴趣的同学可以看看原文。

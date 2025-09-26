@@ -9,6 +9,9 @@ tags:
 categories: 论文阅读
 abbrlink: f946ba86
 date: 2023-07-30 10:10:33
+updated: 2023-07-30 10:10:33
+description: '总结 VLDB 论文 Manu 在云原生向量数据库架构、调度与存储上的设计思路'
+cover: /images/logo.png
 ---
 
 这篇文章同样是 VLDB 的一篇文章，讲的是云原生向量数据库。
@@ -97,7 +100,7 @@ Manu 数据库的设计目标主要有五个：
 - Segment：Segment 组成 Shard，其实也很好理解，类似于 LSM tree 中的SSTable，生成块的策略是基于块的大小或者一定时间，为了避免有些块过小，Manu 还会将一些小的块合并成大块。
 
 接着是整体系统的设计，如下图所示：
-![Alt text](../images/manu_arch.png)
+![Manu 云原生向量数据库整体架构图](../images/manu_arch.png)
 
 Manu总共分四层：访问层、协调层、工作层和存储层。
 
@@ -110,7 +113,7 @@ Manu 遵循“log as data”的设计理念，所以日志系统是 Manu 的核�
 
 Manu 会在日志中记录所有更改系统的操作，比如数据定义请求、数据操作请求、系统协调请求等。Manu 使用的是逻辑日志，而非物理日志，逻辑日志记录的是数据操作的事件，而非物理数据页面的操作。日志系统的结构如下：
 
-![Alt text](../images/manu_log_system.png)
+![Manu 向量日志系统设计图](../images/manu_log_system.png)
 
 可以看出，这里用到了一致性哈希，插入请求中的 entity 会被哈希到哈希环上的一个节点。当 logger 接收到一个请求时，它会先验证请求的合法性，TSO（time service oracle）会给这个 entity 提供一个 ID，用于决定这个 entity 应该放在哪个 segment 上，并将这个 entity 写入 WAL 日志。logger 同时也会将这个 entity ID 到 segment ID 的映射写入本地的 LSM tree 中，并周期性将 LSM tree 的增量部分刷入对象存储中。每个 logger 都缓存了它所管理的 shard 的 mapping 关系。
 
@@ -135,7 +138,7 @@ Note: 读放大（Read Amplification）和写放大（Write Amplification）是�
 接下来我们来看一下这篇论文提到的另一个关键点，可调的一致性。用户可以通过指定查询和数据的时间偏移量来定义“staleness tolerance”。为了满足用户使用物理时间来定义偏移量的需求，Manu 使用TSO 中的混合逻辑时钟来生成时间戳，每个时间戳包含两个部分，物理部分用于表示物理时间，逻辑部分用于表示时间的顺序。逻辑时间戳用于物理时间相同时判断不同时间的顺序。这里物理时间的时间戳是 Manu 收到这个请求的物理时间。对于一个日志订阅者而言，要实现可调的一致性，需要知道三个值：用户设置容忍的时间偏移值、最后一个数据更新的时间和查询请求签发的时间。基于这三个时间，Manu 可以决定是否需要等待最后一个数据更新的到达用户可容忍的时间区间。在强一致性下，用户可容忍的时间偏移值为 0，在最终一致性下，用户可容忍的时间偏移值为无限长。
 
 接着我们来谈谈索引构建，Manu 支持的索引类型如下：
-![Alt text](../images/manu_index.png)
+![Manu 多层索引结构示意图](../images/manu_index.png)
 
 Vector Quantization 能够压缩向量以降低内存占用，同时能够降低向量距离和相似度的计算。Inverted index 能够将向量分组到不同聚簇，这样在查询时就只需要查询最符合期望的聚簇。Proximity Graph能够将相似的向量构建成一个图，在高内存消耗的情况下实现高准确性和低延迟。
 
@@ -154,19 +157,19 @@ Manu支持传统向量搜索、属性过滤和多向量搜索。传统向量搜�
 下面是论文中几个实验的性能数据，贴上来给大家参考。
 
 下图是电商推荐场景不同吞吐量下的查询召回率。
-![Alt text](../images/manu_recommendation_recall.png)
+![Manu 推荐场景召回流程图](../images/manu_recommendation_recall.png)
 
 下图是 24 小时内真实电商流量下的 QPS 和 latency，不同颜色表示使用不同数量的查询节点。
-![Alt text](../images/manu_e_commer_real_traffic.png)
+![Manu 在电商真实流量下的评测结果](../images/manu_e_commer_real_traffic.png)
 
 下面两个图则分别展示了查询节点数量和数据规模对QPS 的影响
 
-![Alt text](../images/manu_query_node.png)
+![Manu 查询节点组件拆分图](../images/manu_query_node.png)
 
 下图展示的是所谓可调节的一致性对查询延迟的影响，可以看出查询延迟容忍越低，查询延迟越大。
 
-![Alt text](../images/manu_grace_time.png)
+![Manu 索引构建与查询并行调度时间线](../images/manu_grace_time.png)
 
 最后是不同数据规模下索引构建时间
 
-![Alt text](../images/manu_index_build.png)
+![Manu 索引构建流水线示意图](../images/manu_index_build.png)

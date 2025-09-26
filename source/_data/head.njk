@@ -1,0 +1,188 @@
+{# Custom SEO meta tags and structured data #}
+{% set site_url = (config.url or '') | replace(r'/$', '') %}
+{% macro resolve_url(path) %}
+  {% set cleaned = (path or '') | trim %}
+  {% if not cleaned %}
+    {{ site_url }}
+  {% elif cleaned | slice(0, 4) == 'http' %}
+    {{ cleaned }}
+  {% elif cleaned | slice(0, 1) == '/' %}
+    {{ site_url }}{{ cleaned }}
+  {% else %}
+    {{ site_url }}/{{ cleaned }}
+  {% endif %}
+{% endmacro %}
+
+{% macro social_same_as() %}
+  {% if theme.social %}
+    {% set comma = joiner(', ') %}
+    {% for name, entry in theme.social %}
+      {% if entry %}
+        {% if entry is string %}
+          {% set social_raw = entry %}
+        {% else %}
+          {% set social_raw = '' %}
+        {% endif %}
+        {% if social_raw %}
+          {% set social_url = social_raw.split('||')[0] | trim %}
+        {% else %}
+          {% set social_url = '' %}
+        {% endif %}
+        {% if social_url %}
+          {{ comma() }}"{{ social_url }}"
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+
+{% set canonical_url = page.permalink or url %}
+{% set meta_description = '' %}
+{% set description_source = page.description or page.excerpt or config.description %}
+{% if description_source %}
+  {% set meta_description = description_source | striptags | replace('\n', ' ') | replace('\r', ' ') | trim | truncate(160, true, '...') %}
+  <meta name="description" content="{{ meta_description }}">
+{% endif %}
+{% if page.keywords and page.keywords.length %}
+  <meta name="keywords" content="{% for keyword in page.keywords %}{{ keyword }}{% if not loop.last %}, {% endif %}{% endfor %}">
+{% elif page.tags and page.tags.length %}
+  <meta name="keywords" content="{% for tag in page.tags.toArray() %}{{ tag.name }}{% if not loop.last %}, {% endif %}{% endfor %}">
+{% elif config.keywords %}
+  <meta name="keywords" content="{% for keyword in config.keywords %}{{ keyword }}{% if not loop.last %}, {% endif %}{% endfor %}">
+{% endif %}
+<meta name="author" content="{{ page.author or config.author }}">
+<meta name="publisher" content="{{ config.title }}">
+<meta name="application-name" content="{{ config.title }}">
+<meta name="apple-mobile-web-app-title" content="{{ config.title }}">
+
+{% set logo_path = theme.favicon.medium or theme.favicon.small or '/images/logo.png' %}
+{% set logo_url = resolve_url(logo_path) %}
+{% set language = (page.lang or page.language or config.language or 'zh-CN') | replace('_', '-') %}
+{% set image_candidate = page.cover or page.thumbnail %}
+{% if not image_candidate and page.photos and (page.photos | length) %}
+  {% set image_candidate = page.photos[0] %}
+{% endif %}
+{% if not image_candidate %}
+  {% if theme.open_graph and theme.open_graph.options and theme.open_graph.options.image %}
+    {% set image_candidate = theme.open_graph.options.image %}
+  {% else %}
+    {% set image_candidate = '/images/logo.png' %}
+  {% endif %}
+{% endif %}
+{% set featured_image = resolve_url(image_candidate) %}
+{% set search_enabled = (theme.algolia_search and theme.algolia_search.enable) or (theme.local_search and theme.local_search.enable) %}
+{% set author_url = page.author_url or config.url %}
+{% set social_same_as_content = social_same_as() | trim %}
+{% set search_path = (config.search and config.search.path) or '' %}
+{% set has_search_page = false %}
+{% if search_path %}
+  {% set normalized_search_path = search_path | trim %}
+  {% if normalized_search_path and normalized_search_path | replace('.html', '') != normalized_search_path %}
+    {% set has_search_page = true %}
+  {% endif %}
+{% endif %}
+
+{% if page.layout === 'post' %}
+  {% set main_category = '' %}
+  {% if page.categories and page.categories.length %}
+    {% set main_category = (page.categories.toArray() | first).name %}
+  {% endif %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ canonical_url }}"
+    },
+    "headline": "{{ page.title | striptags | trim }}",
+    {% if meta_description %}
+    "description": "{{ meta_description }}",
+    {% endif %}
+    "inLanguage": "{{ language }}",
+    "image": {
+      "@type": "ImageObject",
+      "url": "{{ featured_image }}"
+    },
+    "datePublished": "{{ moment(page.date).format() }}",
+    "dateModified": "{{ moment(page.updated).format() }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ page.author or config.author }}"{% if author_url %},
+      "url": "{{ author_url }}"{% endif %}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ config.title }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ logo_url }}"
+      }{% if social_same_as_content %},
+      "sameAs": [{{ social_same_as_content }}]{% endif %}
+    }{% if main_category %},
+    "articleSection": "{{ main_category }}"{% endif %}{% if page.tags and page.tags.length %},
+    "keywords": "{% for item in page.tags.toArray() %}{{ item.name }}{% if not loop.last %}, {% endif %}{% endfor %}"{% elif page.keywords %},
+    "keywords": "{% if page.keywords is string %}{{ page.keywords | trim }}{% else %}{% for item in page.keywords %}{{ item }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}"{% endif %}
+  }
+  </script>
+
+  {% set breadcrumb_has_categories = page.categories and page.categories.length %}
+  {% set category_count = breadcrumb_has_categories and page.categories.length or 0 %}
+  {% set breadcrumb_post_position = category_count + 2 %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "{{ config.title }}",
+        "item": "{{ resolve_url('/') }}"
+      }{% if breadcrumb_has_categories %}{% for cat in page.categories.toArray() %},
+      {
+        "@type": "ListItem",
+        "position": {{ loop.index + 1 }},
+        "name": "{{ cat.name }}",
+        "item": "{{ resolve_url(cat.path) }}"
+      }{% endfor %}{% endif %},
+      {
+        "@type": "ListItem",
+        "position": {{ breadcrumb_post_position }},
+        "name": "{{ page.title | striptags | trim }}",
+        "item": "{{ canonical_url }}"
+      }
+    ]
+  }
+  </script>
+{% else %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ config.title }}",
+    "url": "{{ config.url }}",
+    "@id": "{{ resolve_url('/') }}#website",
+    {% if meta_description %}
+    "description": "{{ meta_description }}",
+    {% endif %}
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ config.title }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ logo_url }}"
+      }{% if social_same_as_content %},
+      "sameAs": [{{ social_same_as_content }}]{% endif %}
+    }{% if social_same_as_content %},
+    "sameAs": [{{ social_same_as_content }}]{% endif %}{% if search_enabled and has_search_page %},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ resolve_url(search_path) }}?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+    {% endif %}
+  }
+  </script>
+{% endif %}

@@ -19,7 +19,7 @@ minify: false
 # Define custom file paths.
 # Create your custom files in site directory `source/_data` and uncomment needed files below.
 custom_file_path:
-  #head: source/_data/head.njk
+  head: source/_data/head.njk
   #header: source/_data/header.njk
   #sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
@@ -78,13 +78,9 @@ creative_commons:
 open_graph:
   enable: true
   options:
-    #twitter_card: <twitter:card>
-    #twitter_id: <twitter:creator>
-    #twitter_site: <twitter:site>
-    #twitter_image: <twitter:image>
-    #google_plus: <g+:profile_link>
-    #fb_admins: <fb:admin_id>
-    #fb_app_id: <fb:app_id>
+    image: /images/logo.png
+    twitter_card: summary_large_image
+    twitter_image: /images/logo.png
 
 
 # ---------------------------------------------------------------
@@ -337,7 +333,7 @@ calendar:
 
 # Preload styles and preconnect CDN for fonts and plugins.
 # For more information: https://www.w3.org/TR/resource-hints/#preconnect
-preconnect: false
+preconnect: true
 
 # Set the text alignment in posts / pages.
 text_align:
@@ -470,7 +466,7 @@ font:
 index_with_subtitle: true
 
 # Automatically add external URL with Base64 encrypt & decrypt.
-exturl: true
+exturl: false
 # If true, an icon will be attached to each external URL
 exturl_icon: true
 
@@ -855,7 +851,7 @@ algolia_search:
 # Local Search
 # Dependencies: https://github.com/next-theme/hexo-generator-searchdb
 local_search:
-  enable: false
+  enable: true
   # If auto, trigger search by changing input.
   # If manual, trigger search by pressing enter key or search button.
   trigger: auto

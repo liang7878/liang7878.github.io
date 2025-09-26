@@ -7,6 +7,9 @@ tags:
 categories: 技术书籍
 abbrlink: 6429ef26
 date: 2023-08-21 22:16:46
+updated: 2023-08-21 22:16:46
+description: '阅读《Systems Performance》时整理的性能分析方法、指标与工具要点'
+cover: /images/logo.png
 ---
 
 《Systems Performance》这本书可以说是做性能调优的必读书目了，不仅仅是因为它有很多关于性能调优的理论知识，还因为它有很多关于性能调优的实例和思考。其实这本书我几年前就读过了，这次重新回顾一下，可以记录一些重要的知识点。话不多说，开始读起来。
@@ -47,7 +50,7 @@ date: 2023-08-21 22:16:46
 
 各种系统延时：
 
-![Alt text](system_latency.png)
+![系统延时层级示意图](system_latency.png)
 
 在计算机性能领域，profiling通常是按照特定的时间间隔对系统的状态进行采样，然后对这些样本进行研究。
 
@@ -230,11 +233,11 @@ mutex 锁可以用库或内核实现成为自适应mutex 锁（adaptive mutex lo
 
 CPU 架构
 
-![Alt text](cpu_arch.png)
+![现代 CPU 架构示意图](cpu_arch.png)
 
 CPU 内存缓存
 
-![Alt text](cpu_cache.png)
+![CPU 缓存层级结构示意图](cpu_cache.png)
 
 正在排队和就绪运行的软件线程数量是一个很重要的性能指标，表示了CPU 的饱和度
 
@@ -271,7 +274,7 @@ I/O 密集的应用程序的系统调用频率较高，通过执行内核代码�
 
 多进程 vs 多线程
 
-![Alt text](multi_process_vs_multi_thread.png)
+![多进程与多线程对比图](multi_process_vs_multi_thread.png)
 
 处理器是围绕最大字长设计的——32 位或者64 位——这是整数大小和寄存器宽度。
 
@@ -428,7 +431,7 @@ CPU 分析和调优的方法：
 这样，即便应用程序只执行了一个字节的写操作，磁盘也承担了多次读（共128KB）和更多的写（超过128KB）操作。
 
 一些操作的性能数据：
-![Alt text](store_benchmark.png)
+![存储基准测试结果图表](store_benchmark.png)
 
 页缓存缓存了虚拟内存的页面，包括文件系统的页面，提升了文件和目录的性能。页缓存大小是动态的，它会不断增长消耗可用的内存，并在应用程序需要的时候释放
 
@@ -492,7 +495,7 @@ OS 虚拟化将操作系统划分为形同分隔的访客服务器且能独立�
 
 另一类硬件虚拟化，混合虚拟化，同时利用硬件辅助的虚拟化和更高效的半虚拟化调用，以期提供最佳性能。最常见的半虚拟化的目标是如网络板卡和存储控制器等的虚拟设备。
 
-![Alt text](virtual_type.png)
+![虚拟化类型分类示意图](virtual_type.png)
 
 图中展示了两种类型的虚拟机管理程序：
 
@@ -501,4 +504,4 @@ OS 虚拟化将操作系统划分为形同分隔的访客服务器且能独立�
 
 虚拟化技术的比较：
 
-![Alt text](virtual_comparsion.png)
+![不同虚拟化技术对比表](virtual_comparsion.png)

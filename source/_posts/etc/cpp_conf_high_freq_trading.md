@@ -1,5 +1,6 @@
 ---
 title: "CppCon 2017: When a Microsecond Is an Eternity: High Performance Trading Systems in C++"
+description: "这是今天刷 v2ex 的时候看到的一个 tech talk，讲的是 c++在高频交易下的使用，我以前看过《漫步华尔街》，了解过一点高频交易的原理，这个tech talk 主要讲了一下什么是电子做市，有哪些技术挑战，以及如何利用 c++ 解决这些挑战。"
 tags:
   - CppCon
   - C++
@@ -50,7 +51,7 @@ C++能够以接近于 0 的开销实现对硬件层的抽象。但是在实际�
 
 这里有一个网站（https://godbolt.org/），可以将 C++ 编译成汇编语言，这样我们就能知道这些语句正在做什么。
 
-![Alt text](vector.png)
+![向量容器性能特征图](vector.png)
 
 上图是对 `vector`执行`sort`操作时是否开启超线程的性能对比。可以看到，开启超线程之后，`sort`操作反而变慢了。
 
@@ -96,8 +97,8 @@ else
 
 下一个例子是关于是否使用虚函数来读取配置文件的，虚函数用起来非常方便，但是有时候会带来比较大的开销。因此，一种可能的解决方式是通过模板来实现，这样可以消除一些分支和不被执行的代码。下图是一个例子：
 
-![Alt text](virtual_func.png)
-![Alt text](virtual_func_impl.png)
+![虚函数调用链示意图](virtual_func.png)
+![虚函数实现结构图](virtual_func_impl.png)
 
 采用模版函数来实现能够保证在编译时所有的行为都是确定的。保证函数在运行时的确定性是非常重要的。
 
@@ -107,8 +108,8 @@ C++中的异常本身不会带来太大的开销，如果 exception 不被抛出
 
 在代码编写过程中，尽管分支是一种不可避免的逻辑，我们也应该尽可能避免分支，转而采用模版的方式来实现，下图是一个例子：
 
-![Alt text](if_impl.png)
-![Alt text](if_impl_temp.png)
+![if 分支实现示意图](if_impl.png)
+![模板化 if 实现示意图](if_impl_temp.png)
 
 多线程是一个非常好的工具，但是多线程会带来很大的开销，比如：通过锁来同步数据的开销很大、lock free 的代码在硬件层面依然需要通过锁来实现、并行执行非常复杂、生产者很容易意外地使消费者饱和。如果一定要使用多线程，那么要尽可能少地使用共享数据，尽可能通过数据副本来传递数据而非直接共享，如果不得不共享数据，尽可能不要使用同步。
 
@@ -116,11 +117,11 @@ C++中的异常本身不会带来太大的开销，如果 exception 不被抛出
 
 接下来介绍一下`unordered_map`的使用，大家都知道 map 是通过多个 bucket 来管理 key-value pair，我们应该尽可能保证一个 bucket 只有一个 key-value pair，因为 bucket 下的 node 是通过指针管理的，显然没有连续内存空间的访问效率。我们可以使用一些特殊的 map 实现来替代，比如 Google 的 dense_hash_map，由于其利用的连续的内存空间，整个访问效率会高很多。
 
-![Alt text](dense_hash_map.png)
+![dense_hash_map 内存布局图](dense_hash_map.png)
 
 这里还提到一种方式，可以采用链式访问和连续内存空间的混合方式来实现，从而获得确定性的内存访问行为。下图是具体的实现：
 
-![Alt text](hybrid_hash_map.png)
+![混合哈希表结构图](hybrid_hash_map.png)
 
 这种实现将连续内存空间作为 metadata，存储着指向特定对象的指针，这样可以保证比较确切的一次指针跳转即可获得目标对象。这样可以带来很大的性能提升。
 
@@ -156,12 +157,12 @@ void* Object::operator new(size_t, void* mem) /* can throw */ {
 
 `std::function`也会发生 allocation，可以考虑使用`inplace_function`
 
-![Alt text](function_allocation.png)
-![Alt text](inplace_function.png)
+![函数对象内存分配示意图](function_allocation.png)
+![inplace_function 内部结构图](inplace_function.png)
 
 `std::pow`也会带来比较大的性能影响，当执行 pow 操作时指数变大时，消耗的时间会发生巨大的变化
 
-![Alt text](pow.png)
+![自定义 pow 函数性能对比图](pow.png)
 
 ## 低延迟系统的性能评估
 
@@ -171,5 +172,5 @@ void* Object::operator new(size_t, void* mem) /* can throw */ {
 
 Profiling 可以找到一些非预期的行为，但是 Profiling 中做的优化不一定百分百让系统变快
 
-![Alt text](drawbacks.png)
-![Alt text](best_measurement.png)
+![方案局限性总结图](drawbacks.png)
+![最佳测量实践流程图](best_measurement.png)

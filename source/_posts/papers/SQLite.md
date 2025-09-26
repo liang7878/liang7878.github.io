@@ -1,5 +1,6 @@
 ---
 title: '(Paper Reading) SQLite: Past, Present, Future'
+description: "这篇文章是 22 年 VLDB 的一篇文章，文章主要介绍了 SQLite 的历史沿革及在 OLAP 领域的应用和优化。"
 tags: 
    - Paper Reading
    - 数据库

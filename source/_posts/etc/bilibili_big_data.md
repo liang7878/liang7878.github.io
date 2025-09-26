@@ -1,5 +1,6 @@
 ---
 title: “《B 站大数据体系建设的技术选型与落地实践》直播总结 -- B站大数据离线平台架构演进与实践”
+description: "这篇是上周五 B 站和 deeplus 技术分享的第一个 session，直播的时候我正在上班，基本全程错过，今晚趁这个时间把第一部分先看一下，我们一步一步来。"
 tags:
   - 大数据
   - 技术杂谈
@@ -29,7 +30,7 @@ p.s. 这是在看完视频之后第三遍回顾整个分享的内容，其实分
 
 首先是 B 站离线平台的整体架构，应用层主要有报表平台、查询平台、数据质量和开发平台，中间服务层通过 Dispatcher 做统一的路由，主要使用了 Presto Gateway（后面对接多套 Presto 集群）、 Kyuubi（处理 Spark 相关的查询） 和 HMS，引擎层使用了 Spark、Hive、Presto 和 Flink。ETL 查询由 Spark 承担，Ad-Hoc 查询通过 Presto。资源层由 Yarn 和 K8S 做资源管理。底层存储使用 HDFS/Alluxio。权限管理整体使用Apache Ranger实现。
 
-![Alt text](offline_arch.png)
+![哔哩哔哩离线数仓架构图](offline_arch.png)
 
 ```
 Note: 
@@ -48,7 +49,7 @@ Kyuubi 是网易数帆大数据团队贡献给 Apache 社区的开源项目。Ky
 
 这里其实我有一个困惑就是，为什么引擎层要用这么多不同的服务？我搜了一下，有下面这样一个对比的表格：
 
-![Alt text](hive_spark.png)
+![Hive 与 Spark 作业时序示意图](hive_spark.png)
 
 说到底是为了支持不同的查询场景。（还有个猜测是已经上线的业务已经一定程度上被依赖了，所以直接以兼容的方式演进）
 
@@ -111,11 +112,11 @@ Note: 这里的 NNProxy 说的应该是字节开源的 NameNodeProxy，下面是
 
 下图介绍了如何拆分 ns，通过将一个挂载点映射成两个namespace，老的数据写到老的 namespace ，新写的数据写到新的 namespace，接着通过 snapshot 将数据从老的 ns 异步迁移到到新的 ns。同时可以通过元仓分析找出增长较快的目录来做 ns balancer 的迁移。
 
-![Alt text](merge_fs.png)
+![MergeFS 存储架构图](merge_fs.png)
 
 下图是ns拆分的成果，首先 QPS 有了明显的上涨，NS 数量从 4 组扩容到了 30+组。
 
-![Alt text](merge_fs_result.png)
+![MergeFS 存储节省效果图](merge_fs_result.png)
 
 考虑到 ns 的容量瓶颈，他们上线了 Observer来分担读的压力，基于 RBF 架构，计算引擎通过 CallerContext 透传是否进行 Observer 读请求。
 
@@ -129,7 +130,7 @@ Note：为什么 Alluxio 可以加速呢？
 
 ### HDFS 容量挑战
 
-![Alt text](hdfs_capacity.png)
+![HDFS 容量规划趋势图](hdfs_capacity.png)
 
 首先上线了冷备压缩的解决方法，通过每日分析Fsimage 文件，将 HDFS 审计日志入仓，结合 Hive 的元仓信息得到整个 HDFS 文件信息宽表，为数据治理提供数据指导。
 
@@ -142,29 +143,29 @@ Note: FSImage 是 NameNode 中关于元数据的镜像，一般称为检查点�
 基于 HDFS 元仓自动化数据转化。
 
 冷数据定义：
-![Alt text](cold_data.png)
+![冷数据分层存储策略示意图](cold_data.png)
 
 ### 多机房架构建设
 
 多机房建设的背景
 
-![Alt text](multi_datacenter.png)
+![多数据中心整体部署架构图](multi_datacenter.png)
 
 解决方案
 
-![Alt text](multi_datacenter_solution.png)
+![多数据中心解决方案流程图](multi_datacenter_solution.png)
 
 单元化改造
 
-![Alt text](unit.png)
+![单元化部署拓扑图](unit.png)
 
 数据如何迁移？
 
-![Alt text](data_migration.png)
+![数据迁移流程图](data_migration.png)
 
 数据如何路由？
 
-![Alt text](data_router.png)
+![数据路由架构图](data_router.png)
 
 这里提到了可以通过 IP 位置感知来决定将任务路由到对应机房，这部分的工作我没太明白为什么要这么做。
 
@@ -172,7 +173,7 @@ Note: FSImage 是 NameNode 中关于元数据的镜像，一般称为检查点�
 
 混部架构的背景和挑战
 
-![Alt text](mix_deployment.png)
+![混合部署方案示意图](mix_deployment.png)
 
 B站离线平台资源调度侧的主要挑战有两个方面:
 
@@ -184,39 +185,39 @@ B站离线平台资源调度侧的主要挑战有两个方面:
 
 超配组件所依赖的主要理论是“用户申请的资源量一般大于用户真实使用的资源量”。根据这个理论，实现超配组件的主要思路是，根据当前机器的实际负载情况，向调度组件虚报一定的资源量，使得更多的任务能够被调度到该台机器上运行。然而，这种做法也带来了一定的风险。在极端情况下，机器上运行的大部分任务的用户申请量会接近于用户真实使用的资源量。这种情况下，超配组件需要及时发现并响应，驱逐一定量的任务以保证机器整体的稳定运行。因此，超配组件必须具备智能管理的能力，能够根据机器实际的负载情况和任务的资源需求，动态调整超配量，以保证机器整体的稳定性和可靠性。同时，超配组件还应该具备良好的容错性和监控机制，能够及时发现和处理机器故障或异常情况，保障业务的连续性和稳定性。总之，超配组件虽然能够带来更高的资源利用率，但也需要合理使用和管理，以避免带来潜在的风险和损失。
 
-![Alt text](overload.png)
+![集群过载保护流程图](overload.png)
 
 潮汐混部
 
-![Alt text](tide.png)
+![潮汐资源调度曲线图](tide.png)
 
 ### 计算引擎改造
 
-![Alt text](compute_bg.png)
+![计算平台背景结构图](compute_bg.png)
 
 升级 Spark，这个过程主要做了一个 AB Test，预估迁移后的收益。
 
-![Alt text](ab_test.png)
+![A/B 测试平台架构图](ab_test.png)
 
 基于历史信息的任务参数优化
 
-![Alt text](hbo.png)
+![HBO 资源调度策略示意图](hbo.png)
 
 数据组织
 
-![Alt text](data_strcture.png)
+![数据结构优化示意图](data_strcture.png)
 
 智能诊断
 
-![Alt text](auto_diagnose.png)
+![自动诊断平台组件图](auto_diagnose.png)
 
 HMS 优化
 
-![Alt text](hms.png)
+![Hive Metastore 高可用架构图](hms.png)
 
 ### 未来展望和思考
 
-![Alt text](future.png)
+![后续规划路线图](future.png)
 
 ### Reference
 

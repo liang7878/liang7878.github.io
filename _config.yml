@@ -34,9 +34,11 @@ public_dir: public
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
-code_dir: downloads/code
+code_dir: code
 i18n_dir: :lang
 skip_render:
+  - documents/**
+  - lab/**
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -118,9 +120,24 @@ symbols_count_time:
   symbols: true
   time: true
   total_symbols: true
-  total_time: Trebuchet
+  total_time: true
   awl: 4
   wpm: 275
+
+# Sitemap settings for search engines
+sitemap:
+  path: sitemap.xml
+  rel: true
+  tag: true
+  category: true
+
+baidusitemap:
+  path: baidusitemap.xml
+
+search:
+  path: search.json
+  field: post
+  content: true
 
 # abbrlink config
 abbrlink:
