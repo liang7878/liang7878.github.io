@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
-
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
@@ -16,32 +16,29 @@
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.25.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="最近一些工作会稍微用到 Citus 相关的产品，想起早年在实验室做数据库开发的时候也稍微了解过一些，这次稍微搜了一下，发现 Citus 团队在 21 年的时候发了一篇 SIGMOD，正好也就顺便看了一下。简单来说，PostgreSQL本身是一个单机数据库，虽然也提供主从复制的高可用方案，但是并没有原生的分库分表方案。 正好，PG 本身提供了大量的扩展开发接口，Citus 团队以 PG 扩展的方式构">
+    <meta name="description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications">
 <meta property="og:url" content="https://liang7878.github.io/posts/455069a2.html">
 <meta property="og:site_name" content="小良的分布式之路">
-<meta property="og:description" content="最近一些工作会稍微用到 Citus 相关的产品，想起早年在实验室做数据库开发的时候也稍微了解过一些，这次稍微搜了一下，发现 Citus 团队在 21 年的时候发了一篇 SIGMOD，正好也就顺便看了一下。简单来说，PostgreSQL本身是一个单机数据库，虽然也提供主从复制的高可用方案，但是并没有原生的分库分表方案。 正好，PG 本身提供了大量的扩展开发接口，Citus 团队以 PG 扩展的方式构">
+<meta property="og:description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liang7878.github.io/posts/455069a2/workloads.png">
-<meta property="og:image" content="https://liang7878.github.io/posts/455069a2/deployment.png">
-<meta property="og:image" content="https://liang7878.github.io/posts/455069a2/query_planner.png">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
 <meta property="article:published_time" content="2023-10-27T15:26:53.000Z">
-<meta property="article:modified_time" content="2023-11-12T02:56:13.746Z">
+<meta property="article:modified_time" content="2023-10-27T15:26:53.000Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="Paper Reading">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://liang7878.github.io/posts/455069a2/workloads.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
 
 
 <link rel="canonical" href="https://liang7878.github.io/posts/455069a2.html">
-
 
 
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/posts/455069a2.html","path":"posts/455069a2.html","title":"我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications"}</script>
@@ -50,14 +47,189 @@
 <title>我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications | 小良的分布式之路</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
-  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false}</script>
-  <script src="/js/third-party/analytics/google-analytics.js"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
 
 
 
 
 
 
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <meta name="description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
+
+
+  <meta name="keywords" content="数据库, Paper Reading">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/posts/455069a2.html"
+    },
+    "headline": "我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications",
+    
+    "description": "概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记",
+    
+    "inLanguage": "zh-CN",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2023-10-27T15:26:53+00:00",
+    "dateModified": "2023-10-27T15:26:53+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "论文阅读",
+    "keywords": "数据库, Paper Reading"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "论文阅读",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/论文阅读/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications",
+        "item": "https://liang7878.github.io/posts/455069a2.html"
+      }
+    ]
+  }
+  </script>
 
 
   <noscript>
@@ -91,6 +263,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -99,11 +272,37 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </header>
         
@@ -149,20 +348,20 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
   <div class="links-of-author animated">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878"><i class="fab fa-github fa-fw"></i>GitHub</span>
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="bWFpbHRvOmxpYW5nNzg3OEBob3RtYWlsLmNvbQ==" title="E-Mail → mailto:liang7878@hotmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktY2hlbmctbGlhbmctMzU=" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35"><i class="fab fa-zhihu fa-fw"></i>Zhihu</span>
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
       </span>
   </div>
 
@@ -205,7 +404,7 @@
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications | 小良的分布式之路">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -221,13 +420,6 @@
       <span class="post-meta-item-text">发表于</span>
 
       <time title="创建时间：2023-10-27 23:26:53" itemprop="dateCreated datePublished" datetime="2023-10-27T23:26:53+08:00">2023-10-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-12 10:56:13" itemprop="dateModified" datetime="2023-11-12T10:56:13+08:00">2023-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -257,6 +449,7 @@
     </span>
 </div>
 
+            <div class="post-description">概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记</div>
         </div>
       </header>
 
@@ -275,7 +468,7 @@
 <h2 id="Citus-简介"><a href="#Citus-简介" class="headerlink" title="Citus 简介"></a>Citus 简介</h2><p>作为一个非常著名的开源数据库，PostgreSQL应用于许多的商业场景，这也催生了将其由单机数据库扩展为多机器的分布式数据库的需求。以可扩展性为目的，Citus 基于 PostgreSQL的插件开发接口构建了分片层、分布式查询计划生成器和执行器、以及分布式事务。同时由于其完全基于扩展接口开发，它依然保留了 PG 本身的各种功能。</p>
 <p>文章基于 Citus 本身的应用，归纳总结了四种需要扩展 PG 的应用场景，并介绍了这四种场景下对分布式数据库的功能需求。接着，文章介绍了 Citus 是如何基于 PG 的扩展接口构建一个分布式数据库系统，并介绍了它是如何解决各类应用场景下的需求。</p>
 <h2 id="四种典型的应用场景及其需求"><a href="#四种典型的应用场景及其需求" class="headerlink" title="四种典型的应用场景及其需求"></a>四种典型的应用场景及其需求</h2><p>扩展PG 的四种应用场景：多租户、实时分析、高性能增删改查、数据仓库。</p>
-<p><img src="/posts/455069a2/workloads.png" alt="Alt text"></p>
+<p><img src="/posts/455069a2/workloads.png" alt="Citus 针对四类典型工作负载的示意图"></p>
 <h3 id="多租户"><a href="#多租户" class="headerlink" title="多租户"></a>多租户</h3><p>多租户的场景是一个很典型的需要多数据进行分片的场景，最传统的方式是对租户的数据进行手动分片，将不同租户的数据放到不同的分片下，以实现资源的隔离。（我们的数据库就是这种方式）。还有一种方式是通过 tenant ID 列来对数据进行分片，Citus 采用的就是这种方式，这种方式下，往往需要不同租户采用相同的数据表模式，但事实上用户会希望针对不同租户设置特定的数据表模式。针对这一需求，作者简易可以使用 JSONB 数据类型累进行扩展。同时，客户也需要能够控制租户数据的位置，这样可以在监控到热点的时候对数据进行迁移。</p>
 <h3 id="实时分析"><a href="#实时分析" class="headerlink" title="实时分析"></a>实时分析</h3><p>实时分析是为了对大规模流数据进行及时的分析。主要的流数据包括 event 数据和时间序列数据，这些数据往往是用来进行系统监控、异常检测等。这种场景下，数据库需要能够承受很高的写请求的吞吐，同时还要接收每秒数百个的读请求，用于查询数据。这类场景下，查询往往是基于预先定义好的一些索引、物化视图以及其他的一些数据转换请求，数据库需要高效地将最新的数据增量更新到上述结构中。 </p>
 <p>对于这类场景，PG 本身也有很好的支持，通过 COPY 语句可以实现非常快的数据导入，它的 MVCC 允许在写入的同时服务大量的读请求。 PG 也能支持许多复杂的数据类型。其唯一的缺点在于，这类场景下，数据往往会很快达到单机的存储极限。</p>
@@ -285,7 +478,7 @@
 <p>一般来说，PostgreSQL在合理的时间内执行非常大的扫描时，缺乏扫描性能和并行性。另一方面，它的性能特性、全面的SQL支持和生态系统仍然使其成为分析的吸引人选择。</p>
 <p>为了扩展数据仓库应用程序，需要通过并行、分布式SELECT和列式存储来加速扫描。应选择分布列以最大程度地增加共同分布连接的数量，但数据库还需要通过重新分配或在网络上传播数据来支持有效的非共同分布连接。查询优化器需要决定最小化网络流量的连接顺序。</p>
 <h2 id="Citus-架构"><a href="#Citus-架构" class="headerlink" title="Citus 架构"></a>Citus 架构</h2><p>在Citus集群中，所有服务器都运行带有Citus扩展以及任意数量其他扩展的PG实例。Citus使用PG扩展API来以两种方式改变数据库的行为：首先，Citus将数据库对象（如自定义类型和函数）复制到所有服务器。其次，Citus添加了两种新的表类型来利用外部服务器。</p>
-<p><img src="/posts/455069a2/deployment.png" alt="Alt text"></p>
+<p><img src="/posts/455069a2/deployment.png" alt="Citus 集群部署架构图"></p>
 <h3 id="Citus-是如何修改-PG-本身的行为的"><a href="#Citus-是如何修改-PG-本身的行为的" class="headerlink" title="Citus 是如何修改 PG 本身的行为的"></a>Citus 是如何修改 PG 本身的行为的</h3><p>了解过 PG 扩展开发的同学多少都知道，PG 本身提供大量的编程接口，我们可以在扩展插件中编写自己的方法来调整数据库的行为。 Citus主要使用了以下几个接口：</p>
 <p>User-defined functions (UDFs) 可以在 SQL 查询时作为事务一部分被调用，主要用于操作Citus元数据以及执行 RPC。</p>
 <p>查询计划器和执行器的 hook 本身是一组全局函数指针，允许扩展提供替代的查询计划和执行方法。在PG解析查询后，Citus 会检查查询是否涉及Citus表。如果是的话，Citus会生成一个包含CustomScan节点的计划树，该节点封装了分布式查询计划。</p>
@@ -301,7 +494,7 @@
 <p>分布表和引用表的区别在于，分布表的数据通过哈希分片到不同 worker 节点上，但引用表会在所有节点上复制同步。这样，当分布表和引用表发生 join 时，worker 只需要执行针对本地的分片来执行join 。</p>
 <h3 id="数据再平衡"><a href="#数据再平衡" class="headerlink" title="数据再平衡"></a>数据再平衡</h3><p>可以想象，当单个 worker 节点的数据达到负载极限时，我们需要将数据移动到新的节点，从而实现整体的负载均衡。 Citus 提供一个 rebalancer 来执行移动数据的操作，在执行 rebalance 操作时，rebalancer 会选取一个分片和与之相关的其他数据，通过 PG 的逻辑复制进行移动，这时，分片依然可以接收读写请求。在完成所有存量和增量的复制后，Citus 会对分片加上写锁来等待所有复制完成，并执行分布表的元数据更改。这时一般会有几秒的写宕机。</p>
 <h3 id="分布式查询计划器"><a href="#分布式查询计划器" class="headerlink" title="分布式查询计划器"></a>分布式查询计划器</h3><p>在客户端请求查询 Citus 相关的数据表时，Citus 会生成一个包含有分布式查询计划的 Custom-Scan节点，Citus 有不同的查询计划器，以应对不同场景下的查询请求。如下图所示：</p>
-<p><img src="/posts/455069a2/query_planner.png" alt="Alt text"></p>
+<p><img src="/posts/455069a2/query_planner.png" alt="Citus 查询规划流程图"></p>
 <p>Fast path planner 快速路径规划器处理的是针对单个表的简单CRUD查询，并且该表只有一个分布列的取值。它直接从查询中的过滤条件中提取分布列的值，并确定与该值匹配的分片。然后，规划器将表名重写为分片名，以构建在工作节点上运行的查询，这可以在CPU开销极小的情况下完成。因此，快速路径规划器支持高吞吐量的CRUD工作负载。</p>
 <p> Router planner 路由规划器处理的是可以限定在一组共同分布的分片上的任意复杂查询。路由规划器会检查或推断所有分布表是否具有相同的分布列过滤条件。如果是这样，查询中的表名将被重写为与分布列值匹配的共同分布分片的名称。路由规划器隐式支持PostgreSQL支持的所有SQL特性，因为它会将完整的查询委托给另一个PostgreSQL服务器。因此，路由规划器使多租户SaaS应用能够在最小开销下使用所有SQL特性。</p>
 <p>Logical planner 逻辑规划器通过构建多关系代数树来处理跨分片的查询。多关系代数形式化了两个在PostgreSQL中不可用的分布式执行原语，用于收集和重新分区数据。这种差异影响了路由规划器和逻辑规划器之间的分离。</p>
@@ -408,7 +601,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2023</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -420,17 +613,17 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">117k</span>
+    <span title="站点总字数">120k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:07</span>
+    <span title="站点阅读时长">7:16</span>
   </span>
 </div>
-  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
 
     </div>
@@ -445,33 +638,15 @@
   <div class="sidebar-dimmer"></div>
   <div class="reading-progress-bar"></div>
 
-  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYW5nNzg3OA==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
 <script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1cc355aa6e67d28bae0be7135c079fbd"}</script>
-<script src="/js/third-party/comments/gitalk.js"></script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>
 </html>
