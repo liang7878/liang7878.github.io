@@ -1,16 +1,17 @@
 # Project Spec — AI Engineer's Mental Models
 
-Version: v1.1
+Version: v1.2
 Status: Draft for review
-Supersedes: v1.0 (the original ChatGPT brainstorm)
+Supersedes: v1.1, v1.0 (the original ChatGPT brainstorm)
 
 > 本文件是专栏的"契约"。所有文章、目录、模板、工程落地都以此为准。
+> v1.2 相对 v1.1 的改动集中在第 10、14 节（基于 Phase 0 技术调研，修正了双语目录结构的一个关键错误），并新增 §14.3 双语落地决定。
 > v1.1 相对 v1.0 的改动集中在第 5、6、10、11 节,以及新增第 13、14 节。
-> 每一处与 v1.0 不同的决定，都在 §0 决策矩阵里标注了来源。
+> 每一处与原始 brainstorm 不同的决定，都在 §0 决策矩阵里标注了来源。
 
 ---
 
-## 0. Decision Matrix（v1.1 锁定的决定）
+## 0. Decision Matrix（v1.2 锁定的决定）
 
 这一节是 v1.1 的核心。所有决定均来自与作者的逐条讨论确认。
 
@@ -18,8 +19,11 @@ Supersedes: v1.0 (the original ChatGPT brainstorm)
 |------|------|------|
 | 站点归属 | `liang7878.github.io` 下的新专栏 | 复用现有 Hexo + NexT + gh-pages 部署，不另起独立站点 |
 | 语言 | 中英**双全文** | 每篇真正产出中、英两个完整版本（不是骨架双语） |
-| 双语落地 | **i18n 双目录（方案 B）** | `/mental-models/<slug>/`（中）+ `/en/mental-models/<slug>/`（英），配 `language_switcher` 与 hreflang |
-| URL / slug | 英文 slug + 语义化路径 | 走 `/mental-models/<slug>/`，脱离博客现有 `posts/:abbrlink.html` |
+| 双语落地 | **双内容树（同目录 `.en.md` 兄弟文件）** | 中英都是 `source/_posts/` 下的**真正 post**，靠 per-post `permalink` 造 `/en/` 前缀。⚠️ v1.1 写的 `source/en/_posts/` 经 Phase 0 调研证实**错误**（不是真 post），已在 §10/§14 修正 |
+| URL / slug | 英文 slug + 语义化路径 | 走 `/mental-models/<slug>/`，脱离博客现有 `posts/:abbrlink.html`。✅ Phase 0 实测 per-post `permalink` 覆盖全局规则、abbrlink 不受影响 |
+| 中英切换 | **自定义 per-post 切换链接**（注入 `postMeta`） | ⚠️ NexT 原生 `language_switcher` 经调研证实对本方案会生成错误自指 URL 且关闭缓存，**弃用**（§14.3） |
+| 首页/归档混排 | **英文版不进中文首页/归档/搜索** | 按 `lang` 过滤 index，英文只在 `/en/` 下可见（§14.3） |
+| hreflang | 加到现有 `head.njk`（增量） | NexT 不原生支持 hreflang，复用已有自定义 head 注入（§14.3） |
 | 单篇模板 | 13 段完整模板 | 对某模型**不适用的 section 可整段省略**，不强行凑写、不注水 |
 | Related Models | 写在正文，用**站内链接**指向相关模型文章 | 不进 front-matter；为 Phase 4 的"从链接反推图"留后路 |
 | 检索系统 | 4 级 tag（Discipline / AI Domain / Engineering / Application） | 见 §13，负责检索与间隔复习 |
@@ -285,13 +289,19 @@ World → Resources → Systems → Complexity → Agents → Information → De
 
 ---
 
-## 10. Blog Structure（v1.1：i18n 双目录 + 语义化路径）
+## 10. Blog Structure（v1.2：双内容树 + 同目录 `.en.md` 兄弟文件 + 语义化路径）
+
+> ⚠️ **v1.1 修正**：v1.1 此节画的目录是 `source/en/_posts/mental-models/...`。Phase 0 调研从 Hexo 核心源码确认：**Hexo 只把 `source/_posts` 当文章集合**，`source/en/_posts/` 里的文件**不是真正的 post**（没有 tag/category/related/prev-next，不进 `site.posts`）。v1.2 改为：中英文件都放在真正的 `source/_posts/` 下，用 per-post `permalink` 制造 `/en/` 前缀。
 
 ```
-source/_posts/mental-models/          # 中文版（默认语言 zh-CN）
+source/_posts/mental-models/
   resources/
-    jevons-paradox.md                 # → /mental-models/jevons-paradox/
+    jevons-paradox.md         # 中文版：lang: zh-CN  permalink: mental-models/jevons-paradox/
+    jevons-paradox.en.md      # 英文版：lang: en     permalink: en/mental-models/jevons-paradox/
+    jevons-paradox/           #（自动）中文版资源目录（post_asset_folder: true）
+    jevons-paradox.en/        #（自动）英文版资源目录
     opportunity-cost.md
+    opportunity-cost.en.md
   systems/
   complexity/
   agents/
@@ -299,19 +309,20 @@ source/_posts/mental-models/          # 中文版（默认语言 zh-CN）
   decision/
   organization/
   society/
-
-source/en/_posts/mental-models/       # 英文版（en）
-  resources/
-    jevons-paradox.md                 # → /en/mental-models/jevons-paradox/
-  ...
 ```
 
-（具体目录形态以 §14 技术落地验证为准；上图为意向结构。）
+**关键约定（Phase 0 已验证 / 已定）：**
+- 中英是**同目录兄弟文件**：`<slug>.md`（中）+ `<slug>.en.md`（英），便于对照编辑、资源目录不冲突。
+- 两版**同一个英文 slug**，靠 per-post `permalink` 前置字段制造 `/en/` 前缀（✅ 实测覆盖全局 abbrlink 规则、互不影响）。
+- 两版都是**真正的 post**：tag / category / Related / 上下篇导航全部正常工作。
+- `lang` 前置字段**显式声明**（`zh-CN` / `en`），保证 UI 语言、切换链接、hreflang 都确定。
 
-**每篇页面应具备**：上一篇 / 下一篇导航 · Related Reading（即 Related Models 链接）· 语言切换（中⇄英）。
+**每篇页面应具备**：上一篇 / 下一篇导航 · Related Reading（Related Models 链接）· **自定义中⇄英切换链接**（非 NexT 原生 switcher，见 §14.3）。
 
 **专栏门户页**（计划）：
 - `/mental-models/`（中）与 `/en/mental-models/`（英）的索引页：README + Roadmap + 8 层导航。
+
+> 注：英文版**不进**中文首页/归档/搜索（按 `lang` 过滤 index），只在 `/en/` 下可见（§14.3）。
 
 ---
 
@@ -320,10 +331,11 @@ source/en/_posts/mental-models/       # 英文版（en）
 > v1.0 的 Phase 1 直接是"20 篇基础模型"。v1.1 在前面插入 **Phase 0 地基**，理由：用 1 篇标杆把"双语 + 模板 + i18n + mermaid + 部署"整条管线跑通，比先规划 20 篇空标题更能验证模式是否成立。
 
 - **Phase 0 — 地基（Foundation）**
-  - 敲定本 spec v1.1（本文件）。
-  - 搭技术脚手架：i18n 双目录 + 专栏语义化 permalink（与现有 abbrlink 共存）+ 开启 mermaid + 文章 scaffold + 语言切换。
-  - 产出 **1 篇标杆样板**：建议 `Jevons Paradox`（v1.0 中例子最完整），中英双全文，跑通从写作到部署的全流程。
-  - 验收：标杆文章在中英两个 URL 正常渲染、图正常、tag 生效、Related 链接可点、语言可切换、SEO（hreflang/canonical/description）正确。
+  - ✅ 敲定本 spec（当前 v1.2）。
+  - ✅ 技术调研已完成：permalink 共存（实测通过）、NexT i18n 双语方案（已落定，见 §14.3）。
+  - 🟠 搭技术脚手架：`language` 数组 + 专栏语义化 permalink（与 abbrlink 共存）+ 开启 mermaid + 文章 scaffold + 自定义中英切换链接 + head.njk hreflang + 首页过滤英文版。
+  - 🟠 产出 **1 篇标杆样板**：`Jevons Paradox`（例子最完整），中英双全文，跑通从写作到部署的全流程。
+  - 验收：标杆文章在中英两个 URL 正常渲染、mermaid 图正常、tag 生效、Related 链接可点、中英可切换、SEO（hreflang/canonical/description）正确、英文版不出现在中文首页。
 
 - **Phase 1 — 基础模型（~20 篇）**：真正理解世界。优先第一、二、三章里最具代表性的模型。
 
@@ -467,49 +479,105 @@ application: [Learning]
 
 ---
 
-## 14. Technical Landing（v1.1 新增：工程落地与已知约束）
+## 14. Technical Landing（v1.2：Phase 0 调研已落定）
 
-> 本节记录"现有博客里开专栏"涉及的真实技术工作量与约束。这些不阻塞 spec，但 Phase 0 必须逐一验证。
+> v1.2 更新：本节的方案已由 Phase 0 技术调研（NexT/Hexo 源码考证 + 本地实测）确认或修正。状态标记：✅ 已验证 · ⚠️ 修正了 v1.1 的错误假设 · 🟠 已决定待实现。
 
-### 14.1 已知约束（如实告知）
-1. **专栏语义化 permalink 与现有 abbrlink 共存**
-   - 博客其它文章保持 `posts/:abbrlink.html`。
-   - 专栏走 `/mental-models/<slug>/`，需用 per-post `permalink:` front-matter 覆盖或目录级 permalink 规则实现。Hexo 支持，Phase 0 验证配置。
-2. **NexT i18n 双语（方案 B）**
-   - "同一篇文章中英两版互切" 在 Hexo/NexT 中**非开箱即用**，通常靠目录约定 + 自定义 language switcher 链接。
-   - Phase 0 需调研 NexT 8.x i18n 当前最佳实践，确认 `/` 与 `/en/` 的目录、`language: [zh-CN, en]`、`language_switcher`、以及 hreflang 注入的具体落地。
-3. **mermaid 默认关闭**
-   - `_config.next.yml` 中 `mermaid.enable: false`，专栏需开启。
-4. **SEO 衔接**（与上一轮 SEO 优化对齐）
-   - 双语需 `hreflang` 互指；canonical 各自指向本语言 URL；feed/sitemap 已就绪（上一轮已配置 `hexo-generator-feed` + sitemap + lazyload）。
-   - 自定义 `source/_data/head.njk` 已承载 JSON-LD/OG，专栏文章应复用；如需 hreflang，可能在 head.njk 增量。
+### 14.1 已验证 / 已修正的约束
 
-### 14.2 Front-matter 模板（意向，Phase 0 定稿）
+1. **✅ 专栏语义化 permalink 与现有 abbrlink 共存 —— 实测通过**
+   - 机制：per-post `permalink:` 前置字段。Hexo 核心 `post_permalink.js` 在应用全局规则**之前**就对带 `permalink` 的文章直接返回，短路掉 `posts/:abbrlink.html`。
+   - 实测：建测试文章 `permalink: mental-models/jevons-paradox/` → 生成在 `/mental-models/jevons-paradox/`，canonical 正确；现有 abbrlink 文章（如 `aa4eb107`）完全不受影响。
+   - `hexo-abbrlink` 只写 `abbrlink` 字段、从不碰 `permalink`，两者无冲突。
+   - ⚠️ 副作用（无害）：abbrlink 会给专栏文章也注入一个**用不到的** `abbrlink:` 字段并改写 `.md`。建议专栏文章**显式写 `categories:`**，避免 `auto_category` 意外。
+
+2. **⚠️ 双语目录结构 —— v1.1 写错了，已修正（见 §10）**
+   - v1.1 的 `source/en/_posts/` **不是真 post**（Hexo 只认 `source/_posts`）。
+   - v1.2 改为：中英都在 `source/_posts/` 下，同目录 `<slug>.md` + `<slug>.en.md`，靠 per-post `permalink` 造 `/en/` 前缀。
+
+3. **🟠 mermaid 默认关闭** —— `_config.next.yml` 中 `mermaid.enable: false`，搭脚手架时开启。图中文字 label 中英两版分别用对应语言。
+
+4. **🟠 SEO 衔接** —— 复用上一轮已配好的 `hexo-generator-feed` + sitemap + lazyload + `head.njk`（JSON-LD/OG）。双语新增 hreflang（§14.3）。
+
+5. **🟡 NexT 版本漂移** —— `package.json` 写 `^8.17.1` 但实际装的是 **8.27.0**（caret 浮上去了）。建议 pin 死 `"hexo-theme-next": "8.27.0"` 保证可复现，或在调整版本时重新核对 i18n 相关的三个源文件。
+
+### 14.2 Front-matter 模板（v1.2 定稿）
+
+中文版（`jevons-paradox.md`）：
 ```yaml
-title: "Jevons Paradox"
-layer: Resources                    # §5 的唯一主分类（→ category）
-slug: jevons-paradox                # 英文 slug，中英两版一致
-lang: zh-CN                         # 英文版为 en
-permalink: mental-models/jevons-paradox/   # 英文版加 /en 前缀
+---
+title: 杰文斯悖论
+lang: zh-CN
+permalink: mental-models/jevons-paradox/
+categories: [<layer>]                          # 显式写，别依赖 abbrlink auto_category
 discipline: [Economics, Complexity Science]
 ai_domain:  [Inference, AI Infrastructure, GPU Scheduling]
 engineering: [Resource Allocation, Scalability]
 application: [Investing, Product Design]
+alternate: /en/mental-models/jevons-paradox/   # 指向英文版，供切换链接 + hreflang
 date: 2026-xx-xx
+---
 ```
-> 注：是否用 `categories: [Mental Models, Resources]` 形成两级分类，Phase 0 定。tag 字段名（discipline/ai_domain/...）是否合并进 NexT 的 `tags` 还是作为自定义 taxonomy，Phase 0 验证。
+英文版（`jevons-paradox.en.md`）：
+```yaml
+---
+title: Jevons Paradox
+lang: en
+permalink: en/mental-models/jevons-paradox/
+categories: [<layer>]
+discipline: [Economics, Complexity Science]
+ai_domain:  [Inference, AI Infrastructure, GPU Scheduling]
+engineering: [Resource Allocation, Scalability]
+application: [Investing, Product Design]
+alternate: /mental-models/jevons-paradox/      # 指向中文版
+date: 2026-xx-xx
+---
+```
+> `alternate` 字段是中英互链的"显式契约"——比靠路径字符串拼接更稳（即使将来某篇 slug 不一致也不会断）。切换链接和 hreflang 都读它。
+
+### 14.3 双语落地决定（v1.2 新增，基于 Phase 0 调研）
+
+1. **`_config.yml`：`language` 改为数组**
+   ```yaml
+   language:
+     - zh-CN      # 默认/第一个 = zh-CN，博客其余部分仍是中文
+     - en
+   ```
+   作用：`/en/...` 页面的 NexT UI 字符串自动渲染成英文（因为 NexT 自带 `en.yml`）。**全局 permalink 不变**。
+
+2. **中英切换：弃用 NexT 原生 `language_switcher`，改自定义**
+   - 调研确认原生 `i18n_path` 对"只在一个 segment 加 `/en/` 前缀"的方案会算出**错误的自指 URL**；且开启它会**静默关闭 NexT 缓存**。
+   - 方案：保持 `language_switcher: false`；自定义一个 per-post 中⇄英链接，通过 `custom_file_path.postMeta`（`source/_data/post-meta.njk`）注入到标题下方，读 `alternate` 前置字段指向对应版本。
+   - 仅对专栏文章渲染（gate 条件：`page.permalink` 含 `mental-models/` 或加 `column: mental-models` 标记）。
+
+3. **hreflang：加到现有 `head.njk`（纯增量）**
+   - NexT 不原生支持 hreflang。复用已有的 `source/_data/head.njk` 注入点，对专栏文章 emit 中/英/x-default 三条 `<link rel="alternate" hreflang=...>`，用 `alternate` 字段算对应 URL（绝对地址用 `page.permalink`）。
+   - x-default 指向中文版（主受众）。
+
+4. **首页/归档/搜索：英文版不进中文流**
+   - Hexo 的 index/archive/search 生成器不分语言，默认会把英文版混进中文首页。
+   - 决定：按 `lang` 过滤，英文版**只在 `/en/` 下可见**，不进中文首页/归档/`search.json`。sitemap/feed 可保留双语（利于 SEO 收录），但首页 UX 不混排。
+   - 具体实现（过滤方式）在搭脚手架时定。
+
+### 14.4 自定义注入清单（都走已有的 `custom_file_path` 机制）
+| 注入点 | 文件 | 作用 | 状态 |
+|--------|------|------|------|
+| `head` | `source/_data/head.njk`（已存在） | 增量加 hreflang 块 | 已控制，增量 |
+| `postMeta` | `source/_data/post-meta.njk`（新建） | per-post 中⇄英切换链接 | 新建 |
+| 自定义翻译 | `source/_data/languages.yml`（可选） | 本地化切换按钮文案 | 可选 |
 
 ---
 
-## 15. Open Questions（留待 Phase 0 解决，不阻塞当前）
-1. NexT i18n 的具体落地路径（方案 B 的工程细节）。
-2. 4 级 tag 用 Hexo 原生 `tags` 扁平承载，还是注册自定义 taxonomy？前者简单、后者更结构化。
-3. 专栏门户页（`/mental-models/` 索引）的形态与生成方式。
-4. `categories` 两级结构（Mental Models / <layer>）是否与现有博客分类体系冲突。
-5. 双语 sitemap / hreflang 的注入点（head.njk 还是插件）。
+## 15. Open Questions（留待搭脚手架时解决，不阻塞当前）
+1. **首页/归档过滤英文版的具体实现方式**（generator 配置 vs 小脚本 vs front-matter 标记）。
+2. **4 级 tag 用 Hexo 原生 `tags` 扁平承载，还是注册自定义 taxonomy？** 前者简单、后者更结构化——影响所有文章 front-matter 写法。
+3. 专栏门户页（`/mental-models/` 索引）的形态与生成方式（含 `/en/` 索引）。
+4. `categories` 两级结构（`Mental Models / <layer>`）是否与现有博客分类体系冲突。
+5. 是否 pin NexT 到 `8.27.0`（建议 pin）。
 
 ---
 
 ## Changelog
-- **v1.1** — 锁定 11 项核心决定（§0）；§5 去重并指定一模型一主 layer；§6 改为"完整模板可省略不适用段"；§9 "Knowledge Graph"→"Knowledge Linking"并如实说明取舍；§10 改为 i18n 双目录 + 语义化路径；§11 新增 Phase 0 地基；§13 采纳 4 级 tag 系统；新增 §14 技术落地与约束、§15 待解问题。
+- **v1.2** — 基于 Phase 0 技术调研更新：§10 修正双语目录结构（`source/en/_posts/` 错误 → 同目录 `.en.md` 兄弟文件 + per-post permalink）；§14 重写为"已验证/已修正"，新增 §14.3 双语落地决定（language 数组 / 弃用原生 switcher 改自定义 / hreflang 加 head.njk / 英文版不进中文首页）、§14.4 注入清单；§0 决策矩阵相应更新（permalink 实测✅、切换/hreflang/首页过滤新决定）。
+- **v1.1** — 锁定 11 项核心决定（§0）；§5 去重并指定一模型一主 layer；§6 改为"完整模板可省略不适用段"；§9 "Knowledge Graph"→"Knowledge Linking"并如实说明取舍；§10 改为双目录 + 语义化路径；§11 新增 Phase 0 地基；§13 采纳 4 级 tag 系统；新增 §14 技术落地与约束、§15 待解问题。
 - **v1.0** — 初始 brainstorm（作者 × ChatGPT）。
