@@ -1,6 +1,6 @@
 ---
 title: 大型分布式数据库底层是如何对数据进行建模的 -- 学一下 TiDB 的数据存储方案
-description: "最近准备搞一些自建数据库相关的项目，偶然看到 TiDB的文档里面有介绍如何使用 Key-Value（键值对）来存储关系型数据库的表数据，我们跟着文档来过一遍这里的设计，也可以为我们自己的实现提供一些参考。"
+description: "解析 TiDB 如何用 Key-Value 为关系型数据建模：通过 t/r/i 前缀编码表行数据、主键与唯一/非唯一二级索引，兼顾 OLTP 与 OLAP，并介绍 TiKV/RocksDB 底层排序、TiFlash 列存、谓词下推以及 PD Server 元信息与 Online Schema 版本管理。"
 tags:
   - TiDB
   - 数据库

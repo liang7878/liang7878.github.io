@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Allow: /archives/
-Allow: /categories/
-Allow: /tags/
+
 Sitemap: https://liang7878.github.io/sitemap.xml
+Sitemap: https://liang7878.github.io/baidusitemap.xml

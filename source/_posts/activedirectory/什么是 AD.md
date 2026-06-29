@@ -1,6 +1,6 @@
 ---
 title: Active Directory 介绍
-description: "其实我们真的是个数据库。"
+description: "从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest/domain/OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。"
 tags:
   - 数据库
 categories: '工作分享'

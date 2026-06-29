@@ -1,6 +1,6 @@
 ---
 title: TiDB 存储接口设计
-description: "今天开始一个新的系列，分析 TiDB的源码。TiDB是目前开源做的比较好的一个数据库，目前商用做的也挺好的，项目影响力很大。因为是 Go语言实现的，读起来也没有什么太大的门槛。考虑到之后可能会参考 TiDB…"
+description: "TiDB 源码分析之存储接口设计：剖析 store 与 kv 模块如何与 TiKV 交互，包括 Driver 注册与 Open、Storage 接口的 Begin/GetSnapshot/GetClient 等方法，以及 tikv_driver.go 中 PD client、SafePointKV、Coprocessor store 与全局事务的实现。"
 tags:
   - TiDB
   - 数据库

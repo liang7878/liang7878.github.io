@@ -1,6 +1,6 @@
 ---
 title: 'OceanBase: A 707 Million tpmC Distributed Relational Database System'
-description: "时隔几周，又来更新了。这几周时间比较碎片，没有找到比较好的机会写文。话不多说，开整。"
+description: "VLDB 论文《OceanBase: A 707 Million tpmC Distributed Relational Database System》精读，剖析 OceanBase 的设计目标、shared-nothing 架构、SQL 引擎与多租户隔离、基于 LSM-tree 的存储引擎，以及结合 Paxos 的两阶段提交事务处理与 TPC-C 实践经验。"
 tags:
   - 数据库
   - Paper Reading

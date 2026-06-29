@@ -139,6 +139,47 @@ search:
   field: post
   content: true
 
+# RSS / Atom feed for subscriptions and search-engine discovery
+# Docs: https://github.com/hexojs/hexo-generator-feed
+feed:
+  enable: true
+  type:
+    - atom
+    - rss2
+  path:
+    - atom.xml
+    - rss2.xml
+  limit: 20
+  hub:
+  content: true
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+  icon: images/logo.png
+  autodiscovery: true
+
+# Related posts (internal linking) via TF/IDF + tag/category/title similarity.
+# Docs: https://github.com/sergeyzwezdin/hexo-related-posts
+# NOTE: This block (root _config.yml) drives the PLUGIN; the matching block in
+# _config.next.yml only toggles NexT's rendering of the related-posts section.
+# Weights are tuned for Chinese content: the default config leans almost entirely
+# on `text` TF/IDF, which tokenizes Chinese poorly, so we boost tags/categories/
+# title/description (language-independent exact/cosine match) and lower the
+# threshold so posts sharing tags/categories actually surface as related.
+related_posts:
+  enabled: true
+  filter_threshold: 0.01
+  related_count: 5
+  weight:
+    title: 0.4
+    description: 0.3
+    keywords: 0.1
+    tags: 1
+    categories: 0.6
+    text: 1
+  stemmers:
+    - en
+
 # abbrlink config
 abbrlink:
   alg: crc32      #support crc16(default) and crc32

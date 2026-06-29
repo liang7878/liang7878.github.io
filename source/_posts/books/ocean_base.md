@@ -1,6 +1,6 @@
 ---
 title: 读《OceanBase 数据库源码解析》
-description: "这本书才出来几个月的时间，刚好看到微信读书上已经有了，这两天就花一点时间把这本书读完，话不多说，开始。"
+description: "《OceanBase 数据库源码解析》读书笔记，按概述、架构、OBServer、存储引擎、SQL 引擎、事务引擎、高可用、多租户、安全九章梳理 OB 的 Shared-Nothing 与 Paxos 复制组、RootService 总控、LSM-Tree 存储与多级缓存、查询优化与并行执行、两阶段提交事务及多租户资源隔离。"
 tags:
   - 数据库
   - 阅读

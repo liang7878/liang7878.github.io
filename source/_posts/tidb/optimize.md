@@ -1,6 +1,6 @@
 ---
 title: TiDB 查询计划优化，Optimize 是怎么实现的
-description: "查询优化器可以说是 DBMS 的灵魂模块了，这篇文章会简单讲一下 TiDB 的查询优化模块，从planner/optimize.go的 Optimize方法出发，逐步拆解 TiDB 查询优化的整个过程。"
+description: "TiDB 源码分析：从 planner/optimize.go 的 Optimize 方法入手，拆解查询优化全流程，涵盖 plan cache 命中、PointGetPlan 快速路径、SQL binding、buildLogicalPlan 构建逻辑计划、Cascades 瀑布优化器 FindBestPlan 三阶段以及 DoOptimize 生成物理计划。"
 tags:
   - TiDB
   - 数据库

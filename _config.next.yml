@@ -276,15 +276,19 @@ reward:
 # Subscribe through Telegram Channel, Twitter, etc.
 # Usage: `Key: permalink || icon` (Font Awesome)
 follow_me:
+  RSS: /atom.xml || fa fa-rss
   #Twitter: https://twitter.com/username || fab fa-twitter
   #Telegram: https://t.me/channel_name || fab fa-telegram
   #WeChat: /images/wechat_channel.png || fab fa-weixin
-  #RSS: /atom.xml || fa fa-rss
 
 # Related popular posts
 # Dependencies: https://github.com/sergeyzwezdin/hexo-related-posts
 related_posts:
-  enable: false
+  enable: true
+  title: 相关文章
+  display_in_home: false
+  params:
+    maxCount: 5
   icon: fa fa-signs-post
 
 # Post edit
@@ -476,6 +480,7 @@ google_site_verification: DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0
 
 # Bing Webmaster tools verification.
 # See: https://www.bing.com/webmasters
+# TODO: register at Bing Webmaster Tools, then paste the meta verification code here.
 bing_site_verification:
 
 # Yandex Webmaster tools verification.
@@ -484,6 +489,7 @@ yandex_site_verification:
 
 # Baidu Webmaster tools verification.
 # See: https://ziyuan.baidu.com/site
+# TODO: register at 百度搜索资源平台, then paste the meta verification code here.
 baidu_site_verification:
 
 
@@ -584,7 +590,7 @@ mediumzoom: false
 
 # Vanilla JavaScript plugin for lazyloading images.
 # For more information: https://apoorv.pro/lozad.js/demo/
-lazyload: false
+lazyload: true
 
 # Automatically insert whitespace between CJK and half-width characters.
 # For more information: https://github.com/vinta/pangu.js

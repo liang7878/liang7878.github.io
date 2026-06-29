@@ -38,11 +38,15 @@
 
 
 {% set canonical_url = page.permalink or url %}
+{# NOTE: <meta name="description"> is intentionally NOT emitted here.
+   NexT's head-unique.njk already calls Hexo's open_graph() helper, which emits
+   a <meta name="description"> by default (source: page.description / excerpt /
+   config.description). Emitting another one here would create a duplicate tag.
+   We still compute meta_description below for reuse in the JSON-LD structured data. #}
 {% set meta_description = '' %}
 {% set description_source = page.description or page.excerpt or config.description %}
 {% if description_source %}
   {% set meta_description = description_source | striptags | replace('\n', ' ') | replace('\r', ' ') | trim | truncate(160, true, '...') %}
-  <meta name="description" content="{{ meta_description }}">
 {% endif %}
 {% if page.keywords and page.keywords.length %}
   <meta name="keywords" content="{% for keyword in page.keywords %}{{ keyword }}{% if not loop.last %}, {% endif %}{% endfor %}">
