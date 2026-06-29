@@ -19,18 +19,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="其实我们真的是个数据库。">
+    <meta name="description" content="从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest&#x2F;domain&#x2F;OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Active Directory 介绍">
 <meta property="og:url" content="https://liang7878.github.io/posts/1f41e82f.html">
 <meta property="og:site_name" content="小良的分布式之路">
-<meta property="og:description" content="其实我们真的是个数据库。">
+<meta property="og:description" content="从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest&#x2F;domain&#x2F;OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liang7878.github.io/images/logo.png">
 <meta property="article:published_time" content="2023-07-30T02:10:33.000Z">
-<meta property="article:modified_time" content="2025-11-05T07:15:58.523Z">
+<meta property="article:modified_time" content="2026-06-29T15:00:20.175Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
@@ -58,6 +58,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -85,8 +86,8 @@
 
 
 
+
   
-  <meta name="description" content="其实我们真的是个数据库。">
 
 
   <meta name="keywords" content="数据库">
@@ -132,7 +133,7 @@
     },
     "headline": "Active Directory 介绍",
     
-    "description": "其实我们真的是个数据库。",
+    "description": "从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest/domain/OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。",
     
     "inLanguage": "zh-CN",
     "image": {
@@ -144,8 +145,8 @@
   
 "
     },
-    "datePublished": "2023-07-30T02:10:33+00:00",
-    "dateModified": "2025-11-05T07:15:58+00:00",
+    "datePublished": "2023-07-30T10:10:33+08:00",
+    "dateModified": "2026-06-29T15:00:20+00:00",
     "author": {
       "@type": "Person",
       "name": "Chengliang",
@@ -238,6 +239,8 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -377,6 +380,51 @@
     </div>
 
     
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/1ec0428.html" rel="bookmark">
+        <time class="popular-posts-time">2022-07-30</time>
+        <br>
+      Kerberos 详解
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/8a34612.html" rel="bookmark">
+        <time class="popular-posts-time">2022-07-30</time>
+        <br>
+      AD 的 Replication
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/edcfded2.html" rel="bookmark">
+        <time class="popular-posts-time">2022-07-30</time>
+        <br>
+      ESE 源码分析
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a536f4da.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      OceanBase: A 707 Million tpmC Distributed Relational Database System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/292f3805.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      (Paper Reading) SQLite: Past, Present, Future
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
   </aside>
 
 
@@ -407,7 +455,7 @@
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="Active Directory 介绍 | 小良的分布式之路">
-      <meta itemprop="description" content="其实我们真的是个数据库。">
+      <meta itemprop="description" content="从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest&#x2F;domain&#x2F;OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -429,7 +477,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-11-05 15:15:58" itemprop="dateModified" datetime="2025-11-05T15:15:58+08:00">2025-11-05</time>
+      <time title="修改时间：2026-06-29 23:00:20" itemprop="dateModified" datetime="2026-06-29T23:00:20+08:00">2026-06-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -459,7 +507,7 @@
     </span>
 </div>
 
-            <div class="post-description">其实我们真的是个数据库。</div>
+            <div class="post-description">从数据库视角解析微软 Active Directory（AD）：基于 ESE 引擎、支持 LDAP 协议的树形层次目录服务，详解 forest/domain/OU 整体结构、DC 与 GC 角色、FSMO 五大 Operation Master、schema 定义以及 Kerberos、DNS 等能力。</div>
         </div>
       </header>
 
@@ -486,9 +534,9 @@
 <li>Schema。数据的 schema</li>
 <li>Data store. 负责 AD 里面的数据存储和检索。</li>
 </ul>
-<p><img src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.ccf65c10-edb1-4a3a-ad87-38775ee43b8a(ws.10).gif" alt="Active Directory Data Structure and Storage Architecture"></p>
+<p><img data-src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/images/cc759186.ccf65c10-edb1-4a3a-ad87-38775ee43b8a(ws.10).gif" alt="Active Directory Data Structure and Storage Architecture"></p>
 <p>在 forest 下面还有 domain，domain 可以把 forest 中的数据几家看进一步的分割，这样可以更灵活地控制数据的复制同步，这部分我们在下次可以详细讲一下。而 OU 则可以将 domain 下的资源进一步分割，便于更加灵活的管理。下面这张图是forest、domain、OU 的逻辑结构</p>
-<p><img src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/image2s/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif" alt="Logical Structure Architecture"></p>
+<p><img data-src="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/image2s/cc759186.a55b8656-0958-4681-88bd-86a6f27a4451(ws.10).gif" alt="Logical Structure Architecture"></p>
 <h2 id="AD的角色"><a href="#AD的角色" class="headerlink" title="AD的角色"></a>AD的角色</h2><p>通常来讲，一个安装有 AD 服务的windows 服务器就被称为一个 domain controller，简称 DC。正常来说，DC 上面存有其所在 domain下面一个 domain partition的所有数据。事实上一台 DC 可以保存一个或者多个 domain partition。其实有一些DC会扮演特殊的角色，提供一些特殊的功能，主要分两大类，一是 Global Catalog Server，另外就是各种 Operation Master。</p>
 <p>首先我们来看看 Global Catalog Server，简称 GC。如上文所说，一个 DC 里面存有其所在 domain 里面的所有数据，而 GC 则活跃在 forest 层面。G 上一般保存着它自己所在 domain 的所有的可写的 replica 数据，和部分forest 内其他 domain 的可读数据。GC 里面的数据由 AD 的 replication 机制来自动复制。这些可读数据可以用来搜索到对应的对象。可读数据一般是一个 object 的某些 attribute，这个可以通过修改 schema 来进行配置。一般来讲，一个 forest 里面的第一台 DC 会被自动配置成 GC，在加入更多DC 之后，我们也可以指定其他 DC 来作为 GC。</p>
 <p>另一类就是各种 master 了，这些 master 负责执行一些任务来保证特定数据的一致性。AD 的 master 主要有五个：schema master、domain naming master、relative identifier（RID）master、primary domain controller（PDC）emulateor 和 infrastructure master。我们把它们叫做 FSMO(Flexible Single Master Operation) roles。</p>
@@ -513,6 +561,23 @@
     
 
     <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
           </div>
@@ -521,13 +586,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/f946ba86.html" rel="prev" title="(Paper Reading) Manu: A Cloud Native Vector Database Management System">
-                  <i class="fa fa-angle-left"></i> (Paper Reading) Manu: A Cloud Native Vector Database Management System
+                <a href="/posts/b13c4ce6.html" rel="prev" title="Berkeley DB -- 软件设计的十点经验">
+                  <i class="fa fa-angle-left"></i> Berkeley DB -- 软件设计的十点经验
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/b13c4ce6.html" rel="next" title="Berkeley DB -- 软件设计的十点经验">
-                  Berkeley DB -- 软件设计的十点经验 <i class="fa fa-angle-right"></i>
+                <a href="/posts/a536f4da.html" rel="next" title="OceanBase: A 707 Million tpmC Distributed Relational Database System">
+                  OceanBase: A 707 Million tpmC Distributed Relational Database System <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -549,7 +614,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -593,7 +658,7 @@
 </noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3d8acf058bd8dfeb37c24210cc5add49"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3d8acf058bd8dfeb37c24210cc5add49"}</script>
 <script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>

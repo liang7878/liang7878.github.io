@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="这篇文章是 22 年 VLDB 的一篇文章，文章主要介绍了 SQLite 的历史沿革及在 OLAP 领域的应用和优化。">
 <meta property="og:type" content="article">
@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liang7878.github.io/images/logo.png">
 <meta property="article:published_time" content="2023-07-30T02:10:33.000Z">
-<meta property="article:modified_time" content="2025-11-05T07:15:58.558Z">
+<meta property="article:modified_time" content="2026-06-29T15:00:20.209Z">
 <meta property="article:author" content="Chengliang">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="Paper Reading">
@@ -59,6 +59,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -86,8 +87,8 @@
 
 
 
+
   
-  <meta name="description" content="这篇文章是 22 年 VLDB 的一篇文章，文章主要介绍了 SQLite 的历史沿革及在 OLAP 领域的应用和优化。">
 
 
   <meta name="keywords" content="数据库, Paper Reading">
@@ -145,8 +146,8 @@
   
 "
     },
-    "datePublished": "2023-07-30T02:10:33+00:00",
-    "dateModified": "2025-11-05T07:15:58+00:00",
+    "datePublished": "2023-07-30T10:10:33+08:00",
+    "dateModified": "2026-06-29T15:00:20+00:00",
     "author": {
       "@type": "Person",
       "name": "Chengliang",
@@ -239,6 +240,8 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -378,6 +381,51 @@
     </div>
 
     
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a536f4da.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      OceanBase: A 707 Million tpmC Distributed Relational Database System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/455069a2.html" rel="bookmark">
+        <time class="popular-posts-time">2023-10-27</time>
+        <br>
+      我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/f946ba86.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      (Paper Reading) Manu: A Cloud Native Vector Database Management System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/1f41e82f.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      Active Directory 介绍
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/f6a84eb2.html" rel="bookmark">
+        <time class="popular-posts-time">2023-10-24</time>
+        <br>
+      大型分布式数据库底层是如何对数据进行建模的 -- 学一下 TiDB 的数据存储方案
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
   </aside>
 
 
@@ -430,7 +478,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-11-05 15:15:58" itemprop="dateModified" datetime="2025-11-05T15:15:58+08:00">2025-11-05</time>
+      <time title="修改时间：2026-06-29 23:00:20" itemprop="dateModified" datetime="2026-06-29T23:00:20+08:00">2026-06-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -482,7 +530,7 @@
 <li>对未来 SQLite 的进一步性能优化进行了方向性的叙述</li>
 </ul>
 <p>下面按照文章整体脉络梳理一下文章的内容。</p>
-<h2 id="SQLite-的架构"><a href="#SQLite-的架构" class="headerlink" title="SQLite 的架构"></a>SQLite 的架构</h2><p><img src="/images/SQLite_Architecture.png" alt="SQLite 的整体架构"></p>
+<h2 id="SQLite-的架构"><a href="#SQLite-的架构" class="headerlink" title="SQLite 的架构"></a>SQLite 的架构</h2><p><img data-src="/images/SQLite_Architecture.png" alt="SQLite 的整体架构"></p>
 <p>SQLite 主要包括四个大的模块：</p>
 <ul>
 <li>SQL Complier：SQLite 中 SQL 编译模块的运行类似一个编译器，通过词法分析、语法分析和语义分析来编译 SQL 语句，形成一个字节码的可执行程序，由一系列虚拟指令构成。</li>
@@ -521,6 +569,23 @@
     
 
     <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
               <a href="/tags/Paper-Reading/" rel="tag"># Paper Reading</a>
@@ -558,7 +623,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -602,7 +667,7 @@
 </noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"addcf57ce57266372293ca7280ae9bb0"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"addcf57ce57266372293ca7280ae9bb0"}</script>
 <script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>

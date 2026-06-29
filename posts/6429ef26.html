@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="阅读《Systems Performance》时整理的性能分析方法、指标与工具要点">
 <meta property="og:type" content="article">
@@ -60,6 +60,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -87,8 +88,8 @@
 
 
 
+
   
-  <meta name="description" content="阅读《Systems Performance》时整理的性能分析方法、指标与工具要点">
 
 
   <meta name="keywords" content="阅读, 性能, 杂谈">
@@ -142,7 +143,7 @@
   
 "
     },
-    "datePublished": "2023-08-21T14:16:46+00:00",
+    "datePublished": "2023-08-21T22:16:46+08:00",
     "dateModified": "2023-08-21T14:16:46+00:00",
     "author": {
       "@type": "Person",
@@ -236,6 +237,8 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -375,6 +378,51 @@
     </div>
 
     
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/b0cb3be9.html" rel="bookmark">
+        <time class="popular-posts-time">2023-08-29</time>
+        <br>
+      读《OceanBase 数据库源码解析》
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a2161837.html" rel="bookmark">
+        <time class="popular-posts-time">2023-10-09</time>
+        <br>
+      读《云原生分布式存储基石：etcd 深入解析》
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/7b67d6ae.html" rel="bookmark">
+        <time class="popular-posts-time">2023-08-21</time>
+        <br>
+      How To Do Great Work
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/836781f0.html" rel="bookmark">
+        <time class="popular-posts-time">2023-08-15</time>
+        <br>
+      读《C++并发编程实战 -- C++ Concurrency In Action》
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/b13c4ce6.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      Berkeley DB -- 软件设计的十点经验
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
   </aside>
 
 
@@ -477,7 +525,7 @@
 <li>缓存：用于复制或者缓冲一定量数据的高速存储区域，目的是为了避免对较慢的存储层级的直接访问，从而提高性能。出于经济考虑，缓存区的容量要比更慢一级的存储容量要小。</li>
 </ul>
 <p>各种系统延时：</p>
-<p><img src="/posts/6429ef26/system_latency.png" alt="系统延时层级示意图"></p>
+<p><img data-src="/posts/6429ef26/system_latency.png" alt="系统延时层级示意图"></p>
 <p>在计算机性能领域，profiling通常是按照特定的时间间隔对系统的状态进行采样，然后对这些样本进行研究。</p>
 <p>通用的系统性能方法：</p>
 <ul>
@@ -619,9 +667,9 @@
 <li>静态性能调优：重点在于环境配置的问题</li>
 </ul>
 <h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>CPU 架构</p>
-<p><img src="/posts/6429ef26/cpu_arch.png" alt="现代 CPU 架构示意图"></p>
+<p><img data-src="/posts/6429ef26/cpu_arch.png" alt="现代 CPU 架构示意图"></p>
 <p>CPU 内存缓存</p>
-<p><img src="/posts/6429ef26/cpu_cache.png" alt="CPU 缓存层级结构示意图"></p>
+<p><img data-src="/posts/6429ef26/cpu_cache.png" alt="CPU 缓存层级结构示意图"></p>
 <p>正在排队和就绪运行的软件线程数量是一个很重要的性能指标，表示了CPU 的饱和度</p>
 <p>对于多处理器系统，内核通常为每个CPU 提供了一个运行队列，并尽量使得线程每次都被放到同一队列之中。这意味着线程更有可能在同一个CPU 上运行，因为CPU 缓存里保存了它们的数据。</p>
 <p>时钟是一个驱动所有处理器逻辑的数字信号。每个CPU 指令都可能会花费一个或者多个时钟周期（称为CPU 周期）来执行。CPU 以一个特定的时钟频率执行，例如，一个5GHz 的CPU每秒运行五十亿个时钟周期。</p>
@@ -637,7 +685,7 @@
 <p>允许更高优先级的线程抢占当前正在运行的线程，并开始执行自己。这样节省了更高优先级工作的运行队列延时时间，提高了性能。</p>
 <p>优先级反转指的是一个低优先级线程拥有了一项资源，从而阻塞了高优先级线程运行的情况。</p>
 <p>多进程 vs 多线程</p>
-<p><img src="/posts/6429ef26/multi_process_vs_multi_thread.png" alt="多进程与多线程对比图"></p>
+<p><img data-src="/posts/6429ef26/multi_process_vs_multi_thread.png" alt="多进程与多线程对比图"></p>
 <p>处理器是围绕最大字长设计的——32 位或者64 位——这是整数大小和寄存器宽度。</p>
 <p>应用程序在CPU 上的运行时间可以通过编译器选项（包括字长设置）来大幅改进。编译器也频繁地更新以利用最新的CPU 指令集以及其他优化。有时应用程序性能可以通过使用新的编译器显著地提高。</p>
 <p>多级缓存是用来取得大小和延时平衡的最佳配置。一级缓存的访问时间一般是几个CPU 时钟周期，而更大的二级缓存大约是几十个时钟周期。主存大概会花上60ns（对于4GHz 处理器大约是240 个周期），而MMU 的地址转译又会增加延时。</p>
@@ -774,7 +822,7 @@
 <p>内存映射通过系统调用mmap()创建，通过munmap()销毁。如果问题在于磁盘设备的高I&#x2F;O 延时，用mmap()消除小小的系统调用开销，是无济于事的，这时，磁盘设备的高I&#x2F;O 问题并没有解决并仍在拖累性能。</p>
 <p>如果说数据对应了文件和目录的内容，那元数据则对应了有关它们的信息。元数据可能是通过文件系统接口（POSIX）读出的信息，也可能是文件系统实现磁盘布局所需的信息。前者被称为逻辑元数据，后者被称为物理元数据。</p>
 <p>下面这个列举步骤的例子描述了应用程序写入一个字节的背后发生了什么：<br>1.一个应用程序对一个已有的文件发起了一个一字节的写操作。<br>2.文件系统定位了这个地址对应的128KB 数据块，发现它未在缓存中（尽管指向数据块的元数据被缓存了）。<br>3.文件系统请求从磁盘载入那个记录块。<br>4.磁盘设备层把128KB 字节的读请求分拆成适配设备的较小读请求。<br>5.磁盘执行了多次较小的读请求，总共128KB。<br>6.文件系统把要写入的那个字节替换成新的数据。<br>7.一段时间后，文件系统请求把128KB 的“脏”记录写回到磁盘。<br>8.磁盘写入128KB 的记录（如果有需要还要分拆请求）。<br>9.文件系统写入新的元数据，比如引用（为了写时复制）或者访问时间。<br>10.磁盘执行更多的写入操作。<br>这样，即便应用程序只执行了一个字节的写操作，磁盘也承担了多次读（共128KB）和更多的写（超过128KB）操作。</p>
-<p>一些操作的性能数据：<br><img src="/posts/6429ef26/store_benchmark.png" alt="存储基准测试结果图表"></p>
+<p>一些操作的性能数据：<br><img data-src="/posts/6429ef26/store_benchmark.png" alt="存储基准测试结果图表"></p>
 <p>页缓存缓存了虚拟内存的页面，包括文件系统的页面，提升了文件和目录的性能。页缓存大小是动态的，它会不断增长消耗可用的内存，并在应用程序需要的时候释放</p>
 <p>基于块的文件系统把数据存储在固定大小的块里，被存储在元数据块里的指针所引用。对于大文件，这种方法需要大量的块指针和元数据块，而且数据块的摆放可能会变得零零碎碎，造成随机I&#x2F;O。有些基于块的文件系统尝试通过把块连续摆放，来解决这个问题。另一个办法是使用变长的块大小，随着文件的增长采用更大的数据块，也能减小元数据的开销。</p>
 <h2 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h2><ul>
@@ -826,14 +874,14 @@
 <li>半虚拟化：提供了包括使得访客机操作系统更有效地使用宿主资源的接口（通过hypercalls）的一个虚拟系统，而不需要包括所有组件的完整虚拟化。例如，设置计时器通常需要多个必须由虚拟层模拟的特权指令。对于一个半虚拟化的客户机，这能被简化为单个超级调用。半虚拟化可能会利用访客机的半虚拟网络设备驱动将数据包更高效地传递给宿主的物理网络接口。尽管性能有所提升，但它依赖于客户OS 对半虚拟化的支持（Windows 一直以来不提供）。</li>
 </ul>
 <p>另一类硬件虚拟化，混合虚拟化，同时利用硬件辅助的虚拟化和更高效的半虚拟化调用，以期提供最佳性能。最常见的半虚拟化的目标是如网络板卡和存储控制器等的虚拟设备。</p>
-<p><img src="/posts/6429ef26/virtual_type.png" alt="虚拟化类型分类示意图"></p>
+<p><img data-src="/posts/6429ef26/virtual_type.png" alt="虚拟化类型分类示意图"></p>
 <p>图中展示了两种类型的虚拟机管理程序：</p>
 <ul>
 <li>1 型　直接运行于处理器上，并且不属于其他宿主的内核或用户软件。虚拟机管理程序的管理可以由一个特权访客机实现（这里描绘为系统中的第一个：0 号）。它能创建和启动新的访客机。1 型也称为本地虚拟机管理程序或者裸机虚拟机管理程序。这类虚拟机管理程序包括了自带的用于客户VM 的CPU 调度器。</li>
 <li>2 型　由宿主OS 内核运行并且可能由内核级模块和用户级进程组成。宿主OS 有管理虚拟机管理程序和启动新访客机的特权。这类虚拟机管理程序由宿主内核调度器调度。</li>
 </ul>
 <p>虚拟化技术的比较：</p>
-<p><img src="/posts/6429ef26/virtual_comparsion.png" alt="不同虚拟化技术对比表"></p>
+<p><img data-src="/posts/6429ef26/virtual_comparsion.png" alt="不同虚拟化技术对比表"></p>
 
     </div>
 
@@ -842,6 +890,23 @@
     
 
     <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E9%98%85%E8%AF%BB/" rel="tag"># 阅读</a>
               <a href="/tags/%E6%80%A7%E8%83%BD/" rel="tag"># 性能</a>
@@ -880,7 +945,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -924,7 +989,7 @@
 </noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e242df489cdd4b48ca2f440ebcce8a79"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e242df489cdd4b48ca2f440ebcce8a79"}</script>
 <script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>

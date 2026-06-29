@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
 <meta property="og:type" content="article">
@@ -59,6 +59,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -86,8 +87,8 @@
 
 
 
+
   
-  <meta name="description" content="概览 Citus 如何扩展 PostgreSQL 以支撑多租户、实时分析等场景的学习笔记">
 
 
   <meta name="keywords" content="数据库, Paper Reading">
@@ -235,6 +236,8 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -374,6 +377,51 @@
     </div>
 
     
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a536f4da.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      OceanBase: A 707 Million tpmC Distributed Relational Database System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/292f3805.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      (Paper Reading) SQLite: Past, Present, Future
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/f946ba86.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      (Paper Reading) Manu: A Cloud Native Vector Database Management System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/1f41e82f.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      Active Directory 介绍
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a76f0ffc.html" rel="bookmark">
+        <time class="popular-posts-time">2023-08-02</time>
+        <br>
+      TiDB 查询计划优化，Optimize 是怎么实现的
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
   </aside>
 
 
@@ -468,7 +516,7 @@
 <h2 id="Citus-简介"><a href="#Citus-简介" class="headerlink" title="Citus 简介"></a>Citus 简介</h2><p>作为一个非常著名的开源数据库，PostgreSQL应用于许多的商业场景，这也催生了将其由单机数据库扩展为多机器的分布式数据库的需求。以可扩展性为目的，Citus 基于 PostgreSQL的插件开发接口构建了分片层、分布式查询计划生成器和执行器、以及分布式事务。同时由于其完全基于扩展接口开发，它依然保留了 PG 本身的各种功能。</p>
 <p>文章基于 Citus 本身的应用，归纳总结了四种需要扩展 PG 的应用场景，并介绍了这四种场景下对分布式数据库的功能需求。接着，文章介绍了 Citus 是如何基于 PG 的扩展接口构建一个分布式数据库系统，并介绍了它是如何解决各类应用场景下的需求。</p>
 <h2 id="四种典型的应用场景及其需求"><a href="#四种典型的应用场景及其需求" class="headerlink" title="四种典型的应用场景及其需求"></a>四种典型的应用场景及其需求</h2><p>扩展PG 的四种应用场景：多租户、实时分析、高性能增删改查、数据仓库。</p>
-<p><img src="/posts/455069a2/workloads.png" alt="Citus 针对四类典型工作负载的示意图"></p>
+<p><img data-src="/posts/455069a2/workloads.png" alt="Citus 针对四类典型工作负载的示意图"></p>
 <h3 id="多租户"><a href="#多租户" class="headerlink" title="多租户"></a>多租户</h3><p>多租户的场景是一个很典型的需要多数据进行分片的场景，最传统的方式是对租户的数据进行手动分片，将不同租户的数据放到不同的分片下，以实现资源的隔离。（我们的数据库就是这种方式）。还有一种方式是通过 tenant ID 列来对数据进行分片，Citus 采用的就是这种方式，这种方式下，往往需要不同租户采用相同的数据表模式，但事实上用户会希望针对不同租户设置特定的数据表模式。针对这一需求，作者简易可以使用 JSONB 数据类型累进行扩展。同时，客户也需要能够控制租户数据的位置，这样可以在监控到热点的时候对数据进行迁移。</p>
 <h3 id="实时分析"><a href="#实时分析" class="headerlink" title="实时分析"></a>实时分析</h3><p>实时分析是为了对大规模流数据进行及时的分析。主要的流数据包括 event 数据和时间序列数据，这些数据往往是用来进行系统监控、异常检测等。这种场景下，数据库需要能够承受很高的写请求的吞吐，同时还要接收每秒数百个的读请求，用于查询数据。这类场景下，查询往往是基于预先定义好的一些索引、物化视图以及其他的一些数据转换请求，数据库需要高效地将最新的数据增量更新到上述结构中。 </p>
 <p>对于这类场景，PG 本身也有很好的支持，通过 COPY 语句可以实现非常快的数据导入，它的 MVCC 允许在写入的同时服务大量的读请求。 PG 也能支持许多复杂的数据类型。其唯一的缺点在于，这类场景下，数据往往会很快达到单机的存储极限。</p>
@@ -478,7 +526,7 @@
 <p>一般来说，PostgreSQL在合理的时间内执行非常大的扫描时，缺乏扫描性能和并行性。另一方面，它的性能特性、全面的SQL支持和生态系统仍然使其成为分析的吸引人选择。</p>
 <p>为了扩展数据仓库应用程序，需要通过并行、分布式SELECT和列式存储来加速扫描。应选择分布列以最大程度地增加共同分布连接的数量，但数据库还需要通过重新分配或在网络上传播数据来支持有效的非共同分布连接。查询优化器需要决定最小化网络流量的连接顺序。</p>
 <h2 id="Citus-架构"><a href="#Citus-架构" class="headerlink" title="Citus 架构"></a>Citus 架构</h2><p>在Citus集群中，所有服务器都运行带有Citus扩展以及任意数量其他扩展的PG实例。Citus使用PG扩展API来以两种方式改变数据库的行为：首先，Citus将数据库对象（如自定义类型和函数）复制到所有服务器。其次，Citus添加了两种新的表类型来利用外部服务器。</p>
-<p><img src="/posts/455069a2/deployment.png" alt="Citus 集群部署架构图"></p>
+<p><img data-src="/posts/455069a2/deployment.png" alt="Citus 集群部署架构图"></p>
 <h3 id="Citus-是如何修改-PG-本身的行为的"><a href="#Citus-是如何修改-PG-本身的行为的" class="headerlink" title="Citus 是如何修改 PG 本身的行为的"></a>Citus 是如何修改 PG 本身的行为的</h3><p>了解过 PG 扩展开发的同学多少都知道，PG 本身提供大量的编程接口，我们可以在扩展插件中编写自己的方法来调整数据库的行为。 Citus主要使用了以下几个接口：</p>
 <p>User-defined functions (UDFs) 可以在 SQL 查询时作为事务一部分被调用，主要用于操作Citus元数据以及执行 RPC。</p>
 <p>查询计划器和执行器的 hook 本身是一组全局函数指针，允许扩展提供替代的查询计划和执行方法。在PG解析查询后，Citus 会检查查询是否涉及Citus表。如果是的话，Citus会生成一个包含CustomScan节点的计划树，该节点封装了分布式查询计划。</p>
@@ -494,7 +542,7 @@
 <p>分布表和引用表的区别在于，分布表的数据通过哈希分片到不同 worker 节点上，但引用表会在所有节点上复制同步。这样，当分布表和引用表发生 join 时，worker 只需要执行针对本地的分片来执行join 。</p>
 <h3 id="数据再平衡"><a href="#数据再平衡" class="headerlink" title="数据再平衡"></a>数据再平衡</h3><p>可以想象，当单个 worker 节点的数据达到负载极限时，我们需要将数据移动到新的节点，从而实现整体的负载均衡。 Citus 提供一个 rebalancer 来执行移动数据的操作，在执行 rebalance 操作时，rebalancer 会选取一个分片和与之相关的其他数据，通过 PG 的逻辑复制进行移动，这时，分片依然可以接收读写请求。在完成所有存量和增量的复制后，Citus 会对分片加上写锁来等待所有复制完成，并执行分布表的元数据更改。这时一般会有几秒的写宕机。</p>
 <h3 id="分布式查询计划器"><a href="#分布式查询计划器" class="headerlink" title="分布式查询计划器"></a>分布式查询计划器</h3><p>在客户端请求查询 Citus 相关的数据表时，Citus 会生成一个包含有分布式查询计划的 Custom-Scan节点，Citus 有不同的查询计划器，以应对不同场景下的查询请求。如下图所示：</p>
-<p><img src="/posts/455069a2/query_planner.png" alt="Citus 查询规划流程图"></p>
+<p><img data-src="/posts/455069a2/query_planner.png" alt="Citus 查询规划流程图"></p>
 <p>Fast path planner 快速路径规划器处理的是针对单个表的简单CRUD查询，并且该表只有一个分布列的取值。它直接从查询中的过滤条件中提取分布列的值，并确定与该值匹配的分片。然后，规划器将表名重写为分片名，以构建在工作节点上运行的查询，这可以在CPU开销极小的情况下完成。因此，快速路径规划器支持高吞吐量的CRUD工作负载。</p>
 <p> Router planner 路由规划器处理的是可以限定在一组共同分布的分片上的任意复杂查询。路由规划器会检查或推断所有分布表是否具有相同的分布列过滤条件。如果是这样，查询中的表名将被重写为与分布列值匹配的共同分布分片的名称。路由规划器隐式支持PostgreSQL支持的所有SQL特性，因为它会将完整的查询委托给另一个PostgreSQL服务器。因此，路由规划器使多租户SaaS应用能够在最小开销下使用所有SQL特性。</p>
 <p>Logical planner 逻辑规划器通过构建多关系代数树来处理跨分片的查询。多关系代数形式化了两个在PostgreSQL中不可用的分布式执行原语，用于收集和重新分区数据。这种差异影响了路由规划器和逻辑规划器之间的分离。</p>
@@ -567,6 +615,23 @@
     
 
     <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
               <a href="/tags/Paper-Reading/" rel="tag"># Paper Reading</a>
@@ -601,7 +666,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -645,7 +710,7 @@
 </noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1cc355aa6e67d28bae0be7135c079fbd"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1cc355aa6e67d28bae0be7135c079fbd"}</script>
 <script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>

@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="总结 VLDB 论文 Manu 在云原生向量数据库架构、调度与存储上的设计思路">
 <meta property="og:type" content="article">
@@ -62,6 +62,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -89,8 +90,8 @@
 
 
 
+
   
-  <meta name="description" content="总结 VLDB 论文 Manu 在云原生向量数据库架构、调度与存储上的设计思路">
 
 
   <meta name="keywords" content="数据库, Paper Reading, 云原生, 向量数据库, 大模型">
@@ -144,7 +145,7 @@
   
 "
     },
-    "datePublished": "2023-07-30T02:10:33+00:00",
+    "datePublished": "2023-07-30T10:10:33+08:00",
     "dateModified": "2023-07-30T02:10:33+00:00",
     "author": {
       "@type": "Person",
@@ -238,6 +239,8 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -376,6 +379,51 @@
     </div>
 
     
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/a536f4da.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      OceanBase: A 707 Million tpmC Distributed Relational Database System
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/292f3805.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      (Paper Reading) SQLite: Past, Present, Future
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/455069a2.html" rel="bookmark">
+        <time class="popular-posts-time">2023-10-27</time>
+        <br>
+      我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/1f41e82f.html" rel="bookmark">
+        <time class="popular-posts-time">2023-07-30</time>
+        <br>
+      Active Directory 介绍
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/b0cb3be9.html" rel="bookmark">
+        <time class="popular-posts-time">2023-08-29</time>
+        <br>
+      读《OceanBase 数据库源码解析》
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
   </aside>
 
 
@@ -497,7 +545,7 @@
 <li>Shard：Shard 其实就是数据分片，可以基于主键将一些数据哈希到不同的 shard 中</li>
 <li>Segment：Segment 组成 Shard，其实也很好理解，类似于 LSM tree 中的SSTable，生成块的策略是基于块的大小或者一定时间，为了避免有些块过小，Manu 还会将一些小的块合并成大块。</li>
 </ul>
-<p>接着是整体系统的设计，如下图所示：<br><img src="/../images/manu_arch.png" alt="Manu 云原生向量数据库整体架构图"></p>
+<p>接着是整体系统的设计，如下图所示：<br><img data-src="/../images/manu_arch.png" alt="Manu 云原生向量数据库整体架构图"></p>
 <p>Manu总共分四层：访问层、协调层、工作层和存储层。</p>
 <ul>
 <li>访问层：由无状态代理组成，用于提供给用户访问数据库的服务节点。这一层会执行请求分发、结果合并等操作，同时也缓存了一部分元数据，用于验证一些查询请求的合法性（比如表是否存在之类的），保证有问题的请求可以快速失败，从而减少达到下层的请求数量，优化整体的性能</li>
@@ -507,14 +555,14 @@
 </ul>
 <p>Manu 遵循“log as data”的设计理念，所以日志系统是 Manu 的核心，作为 Manu 系统的骨干服务。Manu 将 WAL 和 binlog 暴露出来，作为整个系统的骨干服务。WAL 是负责增量数据，binlog 负责存量数据。Logger 负责将数据写入到 WAL 日志中，数据节点订阅 WAL 日志，将基于行的 WAL 日志转为基于列的 binlog。所有的只读组件（如索引节点和查询节点）缩回分别订阅日志服务来保证数据更新。这种架构完全解耦了读写模块，从而保证各模块可以独立伸缩。</p>
 <p>Manu 会在日志中记录所有更改系统的操作，比如数据定义请求、数据操作请求、系统协调请求等。Manu 使用的是逻辑日志，而非物理日志，逻辑日志记录的是数据操作的事件，而非物理数据页面的操作。日志系统的结构如下：</p>
-<p><img src="/../images/manu_log_system.png" alt="Manu 向量日志系统设计图"></p>
+<p><img data-src="/../images/manu_log_system.png" alt="Manu 向量日志系统设计图"></p>
 <p>可以看出，这里用到了一致性哈希，插入请求中的 entity 会被哈希到哈希环上的一个节点。当 logger 接收到一个请求时，它会先验证请求的合法性，TSO（time service oracle）会给这个 entity 提供一个 ID，用于决定这个 entity 应该放在哪个 segment 上，并将这个 entity 写入 WAL 日志。logger 同时也会将这个 entity ID 到 segment ID 的映射写入本地的 LSM tree 中，并周期性将 LSM tree 的增量部分刷入对象存储中。每个 logger 都缓存了它所管理的 shard 的 mapping 关系。</p>
 <p>Manu 的 WAL 日志试试用消息队列（Kafka or Pulsar）来实现的，这里有多个不同的 logical channel 来处理不同类型的请求，实现资源隔离，同时提高整体的数据吞吐。数据节点则会订阅 WAL，将基于行的 WAL 日志转为基于列的 binlog。列存的 binlog 能够保证单个 field 的批量读写效率，同时提高存储和 IO 的性能。索引节点则只需要读必要的 field 来构建索引，避免读放大。</p>
 <p>系统内的协调通过日志来实现，在关键操作完成时，日志系统会广播这些系统事件，日志的时序性也保证了协调消息的有序性。</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Note: 读放大（Read Amplification）和写放大（Write Amplification）是与数据库存储引擎相关的性能指标。</span><br><span class="line"></span><br><span class="line"><span class="bullet">1.</span> 读放大：读放大指的是实际从磁盘或存储介质中读取的数据量与应用程序所请求的数据量之间的比例关系。当读放大较高时，意味着需要读取更多的数据才能满足应用程序的读取需求，从而增加了磁盘或存储介质的访问负载和读取延迟。</span><br><span class="line"></span><br><span class="line">   读放大通常出现在数据库查询中，特别是在使用索引时。例如，如果查询需要访问多个磁盘块或索引节点才能获取所需的数据，读放大就会增加。</span><br><span class="line"></span><br><span class="line"><span class="bullet">2.</span> 写放大：写放大指的是实际写入到磁盘或存储介质的数据量与应用程序所请求的数据量之间的比例关系。当写放大较高时，意味着需要写入更多的数据才能满足应用程序的写入需求，从而增加了磁盘或存储介质的写入负载和写入延迟。</span><br><span class="line"></span><br><span class="line">   写放大通常出现在数据库的更新操作中，特别是在使用事务或写入频繁的场景中。例如，如果更新操作需要在磁盘上进行多次写入或写入大量冗余数据，写放大就会增加。</span><br><span class="line"></span><br><span class="line">高读放大和写放大会导致存储引擎性能下降、延迟增加和资源利用率降低。数据库存储引擎通过采用各种技术和优化策略来降低读放大和写放大的程度，以提高数据库系统的性能和效率。例如，使用适当的索引、缓存机制、写入合并和压缩等技术可以减少读放大和写放大的影响，提升数据库的整体性能。</span><br></pre></td></tr></table></figure>
 
 <p>接下来我们来看一下这篇论文提到的另一个关键点，可调的一致性。用户可以通过指定查询和数据的时间偏移量来定义“staleness tolerance”。为了满足用户使用物理时间来定义偏移量的需求，Manu 使用TSO 中的混合逻辑时钟来生成时间戳，每个时间戳包含两个部分，物理部分用于表示物理时间，逻辑部分用于表示时间的顺序。逻辑时间戳用于物理时间相同时判断不同时间的顺序。这里物理时间的时间戳是 Manu 收到这个请求的物理时间。对于一个日志订阅者而言，要实现可调的一致性，需要知道三个值：用户设置容忍的时间偏移值、最后一个数据更新的时间和查询请求签发的时间。基于这三个时间，Manu 可以决定是否需要等待最后一个数据更新的到达用户可容忍的时间区间。在强一致性下，用户可容忍的时间偏移值为 0，在最终一致性下，用户可容忍的时间偏移值为无限长。</p>
-<p>接着我们来谈谈索引构建，Manu 支持的索引类型如下：<br><img src="/../images/manu_index.png" alt="Manu 多层索引结构示意图"></p>
+<p>接着我们来谈谈索引构建，Manu 支持的索引类型如下：<br><img data-src="/../images/manu_index.png" alt="Manu 多层索引结构示意图"></p>
 <p>Vector Quantization 能够压缩向量以降低内存占用，同时能够降低向量距离和相似度的计算。Inverted index 能够将向量分组到不同聚簇，这样在查询时就只需要查询最符合期望的聚簇。Proximity Graph能够将相似的向量构建成一个图，在高内存消耗的情况下实现高准确性和低延迟。</p>
 <p>Manu 的索引构建有两类场景，批量索引和流式索引。批量索引是说用户在给整个 collection 构建索引，这个时候index coordinator 需要从data coordinator 那里拿到所有的 这个 collection 的segment 的路径，然后给每个 segment 构建索引。流式索引则是指用户在数据更新时异步构建索引。整个索引过程 index coordinator、data coordinator 会互相协调完成索引构建，构建完成后通知 query coordinator 使用构建好的索引来执行查询。</p>
 <p>Manu支持传统向量搜索、属性过滤和多向量搜索。传统向量搜索里的相似度计算主要使用欧氏距离、内积或者角距离。属性过滤主要用于向量搜索过程中基于某些属性进行过滤，这种其实和传统关系型数据库的实现类似。多向量搜索主要是用于一个实体被编码成多个向量的场景。在执行向量搜索时，由于数据天然使用 segment 进行切片，所以不过查询节点可以处理不同 segment，以达到并发执行的目的，这样基本就不需要查询节点之间进行协调。对于一些需要聚合的操作，比如 top-k 查询，Manu 会对不同 segment 执行 top-k查询，最后将结果进行汇总。查询节点主要从三个数据源获取数据：WAL、索引文件和 binlog。为了提高查询的整体效率，Manu 将每个 segment 划分成多个切片，每个切片包含 10000 个向量，在每个切片满了的时候就为这个切片生成一个临时索引。这个索引能够带来 10 倍的性能提升。当一个 segment 满了之后，索引节点就会真正生成这个 segment 的索引，替换掉每个切片的临时索引。</p>
@@ -527,14 +575,14 @@
 </ul>
 <p>接下来是 Manu 的几个使用案例，比如推荐、多媒体、语言、安全、药品。论文介绍了几个具体的场景，如电商推荐、病毒扫描、视频去重等，具体性能数据可以直接参考论文，这部分就不一一赘述了。</p>
 <p>下面是论文中几个实验的性能数据，贴上来给大家参考。</p>
-<p>下图是电商推荐场景不同吞吐量下的查询召回率。<br><img src="/../images/manu_recommendation_recall.png" alt="Manu 推荐场景召回流程图"></p>
-<p>下图是 24 小时内真实电商流量下的 QPS 和 latency，不同颜色表示使用不同数量的查询节点。<br><img src="/../images/manu_e_commer_real_traffic.png" alt="Manu 在电商真实流量下的评测结果"></p>
+<p>下图是电商推荐场景不同吞吐量下的查询召回率。<br><img data-src="/../images/manu_recommendation_recall.png" alt="Manu 推荐场景召回流程图"></p>
+<p>下图是 24 小时内真实电商流量下的 QPS 和 latency，不同颜色表示使用不同数量的查询节点。<br><img data-src="/../images/manu_e_commer_real_traffic.png" alt="Manu 在电商真实流量下的评测结果"></p>
 <p>下面两个图则分别展示了查询节点数量和数据规模对QPS 的影响</p>
-<p><img src="/../images/manu_query_node.png" alt="Manu 查询节点组件拆分图"></p>
+<p><img data-src="/../images/manu_query_node.png" alt="Manu 查询节点组件拆分图"></p>
 <p>下图展示的是所谓可调节的一致性对查询延迟的影响，可以看出查询延迟容忍越低，查询延迟越大。</p>
-<p><img src="/../images/manu_grace_time.png" alt="Manu 索引构建与查询并行调度时间线"></p>
+<p><img data-src="/../images/manu_grace_time.png" alt="Manu 索引构建与查询并行调度时间线"></p>
 <p>最后是不同数据规模下索引构建时间</p>
-<p><img src="/../images/manu_index_build.png" alt="Manu 索引构建流水线示意图"></p>
+<p><img data-src="/../images/manu_index_build.png" alt="Manu 索引构建流水线示意图"></p>
 
     </div>
 
@@ -543,6 +591,23 @@
     
 
     <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
               <a href="/tags/Paper-Reading/" rel="tag"># Paper Reading</a>
@@ -560,8 +625,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1f41e82f.html" rel="next" title="Active Directory 介绍">
-                  Active Directory 介绍 <i class="fa fa-angle-right"></i>
+                <a href="/posts/b13c4ce6.html" rel="next" title="Berkeley DB -- 软件设计的十点经验">
+                  Berkeley DB -- 软件设计的十点经验 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -583,7 +648,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -627,7 +692,7 @@
 </noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"b114ee59496366855d66deb9166c9708"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"b114ee59496366855d66deb9166c9708"}</script>
 <script src="/js/third-party/comments/gitalk.js" defer></script>
 
 </body>
