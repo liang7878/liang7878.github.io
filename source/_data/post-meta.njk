@@ -1,0 +1,24 @@
+{# Per-post 中⇄英 language toggle for the bilingual "mental-models" column (spec v1.2 §14.3).
+   Renders a small link to the counterpart-language version of the SAME article.
+   - Only renders for column posts (permalink contains "mental-models/").
+   - Counterpart URL: prefer the `alternate` front-matter field; otherwise derive it
+     by swapping the /en/ prefix on the current path.
+   - On a zh post → link points to the English version (label "English").
+     On an en post → link points to the Chinese version (label "中文").
+   This replaces NexT's native language_switcher (which produces wrong URLs for this
+   layout and disables NexT caching). #}
+{% if page.layout === 'post' and page.permalink and 'mental-models/' in page.permalink %}
+  {%- set is_en = '/en/mental-models/' in page.permalink -%}
+  {%- if page.alternate -%}
+    {%- set target = url_for(page.alternate) -%}
+  {%- elif is_en -%}
+    {%- set target = page.permalink | replace('/en/mental-models/', '/mental-models/') -%}
+  {%- else -%}
+    {%- set target = page.permalink | replace('/mental-models/', '/en/mental-models/') -%}
+  {%- endif -%}
+  {%- set label = '中文' if is_en else 'English' -%}
+  <div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="{{ target }}" rel="alternate" hreflang="{{ 'zh-CN' if is_en else 'en' }}">{{ label }}</a>
+  </div>
+{% endif %}

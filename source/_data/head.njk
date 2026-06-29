@@ -87,6 +87,25 @@
   {% endif %}
 {% endif %}
 
+{# --- hreflang alternates for the bilingual "mental-models" column (spec v1.2 §14.3) ---
+   Link the zh / en versions of each column post. URL math swaps the /en/ prefix on the
+   current absolute permalink (page.permalink is already a clean absolute URL), which
+   guarantees reciprocity and avoids slash issues. Gated to column posts only, so the
+   rest of the blog is untouched. #}
+{% if page.layout === 'post' and page.permalink and 'mental-models/' in page.permalink %}
+  {% set cur_url = page.permalink %}
+  {% if '/en/mental-models/' in cur_url %}
+    {% set en_url = cur_url %}
+    {% set zh_url = cur_url | replace('/en/mental-models/', '/mental-models/') %}
+  {% else %}
+    {% set zh_url = cur_url %}
+    {% set en_url = cur_url | replace('/mental-models/', '/en/mental-models/') %}
+  {% endif %}
+  <link rel="alternate" hreflang="zh-CN" href="{{ zh_url }}">
+  <link rel="alternate" hreflang="en" href="{{ en_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ zh_url }}">
+{% endif %}
+
 {% if page.layout === 'post' %}
   {% set main_category = '' %}
   {% if page.categories and page.categories.length %}
