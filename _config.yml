@@ -15,7 +15,9 @@ keywords:
   - 技术
   - 成长
 author: 'Chengliang'
-language: zh-CN
+language:
+  - zh-CN
+  - en
 timezone: 'Asia/Shanghai'
 
 # URL
