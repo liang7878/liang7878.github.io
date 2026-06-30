@@ -33,59 +33,59 @@ date: {{ date }}
 
 <!-- more -->
 
-## Question
+## 为什么要问这个问题
 
 <!-- 用一个真实的 AI 工程问题开头。例：为什么 GPT 推理越来越便宜，GPU 却越来越紧张？ -->
 
-## Origin
+## 它从哪来
 
 <!-- 谁、何时、为何提出。只写关键背景，不堆历史。不适用可删本段。 -->
 
-## Core Idea
+## 核心直觉
 
-<!-- 为什么会发生？强调直觉，不用数学。建议配一张 Concept Diagram： -->
+<!-- 为什么会发生？强调直觉，不用数学。建议配一张概念图： -->
 
 {% mermaid %}
 graph LR
   A[...] --> B[...]
 {% endmermaid %}
 
-## Real-world Example
+## 现实中的例子
 
 <!-- 经典案例（煤炭 / Uber / 航空 / 互联网…）。不适用可删本段。 -->
 
-## AI Mapping
+## 映射到 AI
 
 <!-- 全篇最重要。从 LLM / Agent / Infrastructure / Product / Evaluation / Training / Inference / Cloud
      中挑“真正贴切的”若干个举例，不要求 8 个全填，牵强的宁可省略。 -->
 
-## Engineering Perspective
+## 工程师视角
 
 <!-- 从 Infra / Agent / PM / Researcher 视角各自“应该想到什么”。不强制 4 角色全写。不适用可删。 -->
 
-## Investment Perspective
+## 投资视角
 
 <!-- 投资领域如何体现。§3.1 护栏：结尾必须绕回“这对设计/运维/评估 AI 系统意味着什么”。不适用可删。 -->
 
-## Life Perspective
+## 生活视角
 
 <!-- 生活案例。同样遵守 §3.1 护栏，绕回 AI。不适用可删。 -->
 
-## Misconceptions
+## 常见误解
 
 <!-- 最容易误解什么。不适用可删。 -->
 
-## When It Doesn't Apply
+## 什么时候不成立
 
 <!-- 何时失效？哪些条件下不成立？培养批判性思维。不适用可删。 -->
 
-## Related Models
+## 相关模型
 
 <!-- 知识关联的主要载体（§9）。每个相关模型都用站内链接指向其文章，而非纯文字： -->
-<!-- - [Opportunity Cost](/mental-models/opportunity-cost/) -->
-<!-- - [Network Effect](/mental-models/network-effect/) -->
+<!-- - [机会成本 / Opportunity Cost](/mental-models/opportunity-cost/) -->
+<!-- - [网络效应 / Network Effect](/mental-models/network-effect/) -->
 
-## Key Takeaway
+## 一句话记住
 
 <!-- 一句值得长期记住的话（中英）。 -->
 > 中文：……
