@@ -1,0 +1,42 @@
+//
+// Custom NexT overrides — loaded last by NexT, so these win without !important.
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// Related Posts (相关文章) sidebar widget — refined hover
+// -----------------------------------------------------------------------------
+// Scope is intentionally limited to .sidebar-post-related so nothing else moves.
+//
+// The default hover swaps the whole link to a flat, edge-to-edge
+// var(--menu-item-bg-color) block: a faint #f5f5f5 bar in light mode but a heavy
+// #555 slab in dark mode — hard corners, no text feedback, uneven weight. A
+// low-opacity tint doesn't help either: 6% of near-white over the #333 dark
+// sidebar is effectively invisible, so the hover "blends into the background".
+//
+// Instead we use a single editorial gesture: a crisp leading accent rail plus a
+// gentle title-color lift — no background fill at all. The rail is the theme's
+// own --link-hover-color, which is contrast-tuned against the content background
+// in both light and dark mode, so it stays clearly visible everywhere without a
+// panel that can muddy the dark sidebar.
+
+.sidebar-post-related {
+  .popular-posts .popular-posts-item {
+    .popular-posts-link {
+      // box-shadow (not border-left) so the rail never shifts the text on hover.
+      transition: box-shadow .2s ease, color .2s ease;
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: inset 3px 0 0 0 var(--link-hover-color);
+        color: var(--link-hover-color);
+      }
+    }
+
+    // Keep the date quiet so the post title stays the focus of the hover.
+    .popular-posts-time {
+      color: var(--text-color);
+      opacity: .6;
+    }
+  }
+}
