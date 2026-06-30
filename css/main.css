@@ -1420,7 +1420,7 @@ pre code {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #46ff7a;
+  background: #f2ffff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2933,4 +2933,16 @@ header.header {
   .sidebar-active .footer-fixed {
     left: 320px;
   }
+}
+.sidebar-post-related .popular-posts .popular-posts-item .popular-posts-link {
+  transition: box-shadow 0.2s ease, color 0.2s ease;
+}
+.sidebar-post-related .popular-posts .popular-posts-item .popular-posts-link:hover,
+.sidebar-post-related .popular-posts .popular-posts-item .popular-posts-link:focus-visible {
+  box-shadow: inset 3px 0 0 0 var(--link-hover-color);
+  color: var(--link-hover-color);
+}
+.sidebar-post-related .popular-posts .popular-posts-item .popular-posts-time {
+  color: var(--text-color);
+  opacity: 0.6;
 }

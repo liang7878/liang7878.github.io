@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="杰文斯悖论 &#x2F; Jevons Paradox中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。EN: Make something cheaper and you usually get more of it consumed, not less.  我们来聊个有点反直觉的事：算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杰文斯悖论：为什么算力会永远不够">
+<meta property="og:url" content="https://liang7878.github.io/mental-models/jevons-paradox/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="杰文斯悖论 &#x2F; Jevons Paradox中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。EN: Make something cheaper and you usually get more of it consumed, not less.  我们来聊个有点反直觉的事：算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-06-30T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-30T09:01:05.513Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Economics">
+<meta property="article:tag" content="Complexity Science">
+<meta property="article:tag" content="Inference">
+<meta property="article:tag" content="AI Infrastructure">
+<meta property="article:tag" content="GPU Scheduling">
+<meta property="article:tag" content="Resource Allocation">
+<meta property="article:tag" content="Scalability">
+<meta property="article:tag" content="Investing">
+<meta property="article:tag" content="Product Design">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/mental-models/jevons-paradox/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/mental-models/jevons-paradox/","path":"/mental-models/jevons-paradox/","title":"杰文斯悖论：为什么算力会永远不够"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>杰文斯悖论：为什么算力会永远不够 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Economics, Complexity Science, Inference, AI Infrastructure, GPU Scheduling, Resource Allocation, Scalability, Investing, Product Design">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/jevons-paradox/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/jevons-paradox/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/jevons-paradox/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/mental-models/jevons-paradox/"
+    },
+    "headline": "杰文斯悖论：为什么算力会永远不够",
+    
+    "description": "杰文斯悖论 &#x2F; Jevons Paradox中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。EN: Make something cheaper and you usually get more of it consumed, not less. 我们来聊个有点反直觉的事：算力一定会越来越便宜，但我...",
+    
+    "inLanguage": "zh-CN",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-06-30T14:00:00+08:00",
+    "dateModified": "2026-06-30T09:01:05+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Economics, Complexity Science, Inference, AI Infrastructure, GPU Scheduling, Resource Allocation, Scalability, Investing, Product Design"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Resources",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Resources/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "杰文斯悖论：为什么算力会永远不够",
+        "item": "https://liang7878.github.io/mental-models/jevons-paradox/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%97%AE%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">为什么要问这个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%83%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="nav-number">2.</span> <span class="nav-text">它从哪来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9B%B4%E8%A7%89"><span class="nav-number">3.</span> <span class="nav-text">核心直觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E5%88%B0-AI%EF%BC%9A%E7%AE%97%E5%8A%9B%E5%B0%B1%E6%98%AF%E4%BB%8A%E5%A4%A9%E7%9A%84%E7%85%A4"><span class="nav-number">4.</span> <span class="nav-text">映射到 AI：算力就是今天的煤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%A7%86%E8%A7%92%EF%BC%9A%E5%88%AB%E6%8B%BF%E2%80%9D%E4%BC%98%E5%8C%96%E7%9C%81%E4%B8%8B%E7%9A%84%E5%AE%B9%E9%87%8F%E2%80%9D%E5%81%9A%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92"><span class="nav-number">5.</span> <span class="nav-text">工程师视角：别拿”优化省下的容量”做容量规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%95%E8%B5%84%E8%A7%86%E8%A7%92%EF%BC%9A%E8%BF%99%E6%9D%A1%E9%93%BE%E8%A7%A3%E9%87%8A%E4%BA%86%E4%B8%80%E4%B8%AA%E7%9F%9B%E7%9B%BE%E7%8E%B0%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text">投资视角：这条链解释了一个矛盾现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%B4%BB%E8%A7%86%E8%A7%92%EF%BC%9A%E4%BD%A0%E6%97%A9%E5%B0%B1%E8%A7%81%E8%BF%87%E5%AE%83%E4%BA%86"><span class="nav-number">7.</span> <span class="nav-text">生活视角：你早就见过它了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="nav-number">8.</span> <span class="nav-text">常见误解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E6%88%90%E7%AB%8B"><span class="nav-number">9.</span> <span class="nav-text">什么时候不成立</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A8%A1%E5%9E%8B"><span class="nav-number">10.</span> <span class="nav-text">相关模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E8%AE%B0%E4%BD%8F"><span class="nav-number">11.</span> <span class="nav-text">一句话记住</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/jevons-paradox/" rel="bookmark">
+        <time class="popular-posts-time">2026-06-30</time>
+        <br>
+      Jevons Paradox: Why Compute Will Never Be Enough
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/5a8a6c8d.html" rel="bookmark">
+        <time class="popular-posts-time">2023-10-11</time>
+        <br>
+      读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/jevons-paradox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="杰文斯悖论：为什么算力会永远不够 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          杰文斯悖论：为什么算力会永远不够
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-06-30 14:00:00 / 修改时间：17:01:05" itemprop="dateCreated datePublished" datetime="2026-06-30T14:00:00+08:00">2026-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Resources/" itemprop="url" rel="index"><span itemprop="name">Resources</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/en/mental-models/jevons-paradox/" rel="alternate" hreflang="en">English</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>杰文斯悖论 &#x2F; Jevons Paradox</strong><br>中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。<br>EN: Make something cheaper and you usually get more of it consumed, not less.</p>
+</blockquote>
+<p>我们来聊个有点反直觉的事：<strong>算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。</strong></p>
+<span id="more"></span>
+
+<h2 id="为什么要问这个问题"><a href="#为什么要问这个问题" class="headerlink" title="为什么要问这个问题"></a>为什么要问这个问题</h2><p>我们先来看一个挺让人困惑的事实。</p>
+<p>过去两年，单位 token 的推理价格大概掉了两个数量级。同样的 GPT-4 级能力，今天的价钱是发布时的几十分之一。按常理，单价跌成这样，GPU 应该没那么紧张了才对（同一块卡现在能干以前好几块卡的活）。</p>
+<p>可你我都知道现实是反的：模型越便宜，H100 越难抢，云上的配额越紧，越来越多团队咬牙自建集群。</p>
+<p><strong>便宜，没有缓解稀缺，反而加剧了稀缺。</strong></p>
+<p>这事听起来违反直觉，但它一点都不新鲜。一个英国人在 1865 年就把它讲透了，讲的还不是芯片，是煤。</p>
+<h2 id="它从哪来"><a href="#它从哪来" class="headerlink" title="它从哪来"></a>它从哪来</h2><p>1865 年，威廉·斯坦利·杰文斯写了《煤炭问题》。</p>
+<p>当时英国正享受蒸汽机效率的飞涨。瓦特那台改良蒸汽机，烧同样的煤能干的活比老式机器多得多。所有人都觉得这是好事，逻辑很顺：机器越省煤，国家烧的煤就越少，英国的煤能用更久。</p>
+<p>杰文斯说，错了，而且错得很彻底。他给出的事实是：<strong>蒸汽机越省煤，英国烧的煤越多。</strong></p>
+<p>不是多一点，是多很多。省煤的技术没有省下煤，它把煤的消耗推上了一个新台阶。</p>
+<p>为什么？这就是整件事的核心。</p>
+<h2 id="核心直觉"><a href="#核心直觉" class="headerlink" title="核心直觉"></a>核心直觉</h2><p>把”效率提升”翻译成”降价”，悖论就不再是悖论。</p>
+<p>蒸汽机变省煤，本质是<strong>用蒸汽干活这件事变便宜了</strong>。东西一便宜，会发生一件关键的事：那些原本因为太贵而根本不会去做的事，突然变得划算了。以前不值得上蒸汽的工厂上了，铺不起的铁路铺了，抽不起水的矿井开始抽水了。</p>
+<p>于是需求不是温和地涨，是<strong>整片整片地被解锁</strong>。新用途冒出来的速度，远远盖过单位能耗下降的速度。</p>
+<p>记一个简单的乘法就够了：</p>
+<blockquote>
+<p>总消耗 ＝ 单次消耗 × 使用次数</p>
+</blockquote>
+<p>效率把左边这个数压下去了，但它通过降价，把右边那个数撑大了好几倍、甚至几十倍。两个一乘，总量不降反升。</p>
+<pre>
+<code class="mermaid">
+
+graph LR
+  A[效率提升 &#x3D; 变便宜] --&gt; B[原本不划算的事变得划算]
+  B --&gt; C[需求被整片解锁]
+  C --&gt; D[使用次数暴涨]
+  D --&gt; E[总消耗反而更高]
+  E -.涨上来的需求又催生新场景.-&gt; B
+</code>
+</pre>
+
+<p>注意那条虚线。这不是一次性的调整（新需求本身会催生更多用途，用途又拉动更多需求），而是个<strong>会自己滚大的循环</strong>，不是踩一脚刹车就能停的事。</p>
+<p>这里有个前提，记住它，后面要用：<strong>这一切只在需求有弹性时成立</strong>。也就是说，降价得真能勾出大量新需求才行。如果一样东西的需求已经到顶（比如你家一年吃多少盐是固定的），再便宜也勾不出新用途，杰文斯效应就不发生。</p>
+<h2 id="映射到-AI：算力就是今天的煤"><a href="#映射到-AI：算力就是今天的煤" class="headerlink" title="映射到 AI：算力就是今天的煤"></a>映射到 AI：算力就是今天的煤</h2><p>把”煤”换成”算力”，杰文斯写的那本书，今天可以一字不改地重印。</p>
+<p>最直接的是<strong>推理</strong>。token 单价崩了，于是从前舍不得调大模型的地方，现在毫不犹豫地调：每个 PR 自动 review，每条日志自动打标，每个用户消息实时摘要。这些在 token 贵的时候想都不会想，现在成了默认操作。</p>
+<p>Agent 把这件事推到了极致。这里有个细节，值得我们盯一下：<strong>一次 Agent 任务背后，藏着几十甚至上百次 LLM 调用</strong>（推理一次、反思一次、调一次工具、失败了再重试几次）。单次调用越便宜，工程师在设计 Agent 时就越敢”多调几次”：多让它反思一轮、多塞点上下文、多兜底重试。于是单次成本下降被调用次数的暴涨吃得干干净净，还倒贴。</p>
+<p>所以开头那个悖论的答案，到这里已经很清楚了：</p>
+<blockquote>
+<p>推理框架每优化一截（量化、KV-cache、投机解码、更好的 batching），单卡吞吐就上一截，单位成本就降一截——然后需求立刻涌上来，把你腾出来的容量吃光。</p>
+</blockquote>
+<p>这就是为什么<strong>我们优化得越好，集群反而越满</strong>。这不怪你，这就是杰文斯。它牵扯到一件对 Infra 工程师特别重要的事，我们单独拎出来讲。</p>
+<h2 id="工程师视角：别拿”优化省下的容量”做容量规划"><a href="#工程师视角：别拿”优化省下的容量”做容量规划" class="headerlink" title="工程师视角：别拿”优化省下的容量”做容量规划"></a>工程师视角：别拿”优化省下的容量”做容量规划</h2><p>前面都在讲道理，这一节落到我们一个具体的动作上。</p>
+<p>很多容量规划是这么算的：当前负载 ÷ 新的单卡效率 ＝ 需要多少卡。优化让效率涨了 30%，于是结论是”我们可以少买 30% 的卡”或者”现有的卡能多扛 30% 的量”。</p>
+<p><strong>这个算法在杰文斯面前几乎一定会翻车。</strong> 因为它假设需求是固定的，而我们刚做完的优化，恰恰会把需求勾上来。实际会发生的是：优化上线，单位成本降了，产品侧（可能就是隔壁组）发现”诶，这能力现在便宜到可以默认全量打开了”，调用量两周内翻几倍，把我们省出来的容量连本带利吃光。</p>
+<p>正确的姿势是：<strong>容量按”这次降价会解锁多少新需求”来估，而不是按”当前负载除以新效率”来估。</strong> 给爆发留 headroom，而不是把省出来的空间当成可以省下的预算。我见过太多”优化完反而更缺卡”的复盘，根因都在这。</p>
+<p>至于 Agent 工程师，同一个道理换个地方咬我们：便宜会诱导我们把 Agent 设计得越来越啰嗦。<strong>记得主动给它设个预算上限</strong>（每个任务最多调几次、上下文最多多大），否则成本会跟着能力一起失控，而且一开始根本察觉不到，等账单来了才知道。</p>
+<h2 id="投资视角：这条链解释了一个矛盾现象"><a href="#投资视角：这条链解释了一个矛盾现象" class="headerlink" title="投资视角：这条链解释了一个矛盾现象"></a>投资视角：这条链解释了一个矛盾现象</h2><p>杰文斯也是理解 AI 算力这门生意的一把钥匙，而且它和”模型都白菜价了，卖铲子的还能有什么搞头”那种直觉正好相反。</p>
+<p>链条是这样的：</p>
+<blockquote>
+<p>推理变便宜 → 调用量暴涨（更多场景、更多 Agent）→ GPU 需求<strong>不降反升</strong> → 云算力需求上升 → 更上游的 HBM、先进封装、甚至电力，跟着一起紧张。</p>
+</blockquote>
+<p>这就解释了那个表面上矛盾的画面：<strong>模型 API 在疯狂降价的同一时间，GPU、云、电力却在持续吃紧。</strong> 降价不是需求的终点，是需求的起点。</p>
+<p>绕回到我们写代码这件事：这条链给工程师的真正启示，不是”该买哪只股票”，而是一个该刻进系统设计里的判断：<strong>算力会长期稀缺，把它当成永久约束，别当成临时困难。</strong> 别写”等卡便宜了、等配额松了再来优化”这种 TODO，那一天不会来。受限才是常态，那就按受限来设计。</p>
+<h2 id="生活视角：你早就见过它了"><a href="#生活视角：你早就见过它了" class="headerlink" title="生活视角：你早就见过它了"></a>生活视角：你早就见过它了</h2><p>这套机制不只在机房里。</p>
+<p>洗碗机省了你洗一次碗的力气，结果你不是省下时间去干别的，而是用更多的碗、洗得更勤，反正”洗碗”这件事变便宜了。修一条更快的路，短期省时间，长期却让大家搬得更远，通勤总时间一点没少（城市规划里管这叫”诱导需求”，本质就是杰文斯）。</p>
+<p>最扎心的一个：你用上了更快的 IDE、更聪明的代码补全，结果不是早点下班，而是被默认”你现在应该能写更多代码了”。</p>
+<p>把这个想明白，对你设计 AI 工具其实很重要：<strong>省下来的产能，会被更高的预期吃掉。</strong> 所以当你做一个”帮工程师提效”的 AI 功能时，值得我们诚实地问自己一句：我到底是在帮人省时间，还是只是在悄悄抬高对他的要求？这个问题的答案，往往决定了这个功能是被爱还是被恨。</p>
+<h2 id="常见误解"><a href="#常见误解" class="headerlink" title="常见误解"></a>常见误解</h2><p>最容易记歪的一点：</p>
+<blockquote>
+<p>杰文斯悖论 <strong>不是</strong>“效率提升一定会让总消耗增加”。</p>
+</blockquote>
+<p>它的准确说法是：<strong>在需求有弹性的前提下，效率提升可能让总消耗增加。</strong> 是”可能”，不是”必然”，而且<strong>挂着条件</strong>。把它当成铁律到处套，会闹笑话。</p>
+<p>另一个误解更危险：把它读成”所以优化没意义”。恰恰相反，优化极其有意义（它解锁了海量原本根本不存在的价值）。杰文斯从来没说”别优化”，它说的是另一件事：<strong>别指望优化能让你少买资源。</strong> 优化的回报是解锁新东西，而不是省下旧开销，这两件事我们得分清楚。</p>
+<h2 id="什么时候不成立"><a href="#什么时候不成立" class="headerlink" title="什么时候不成立"></a>什么时候不成立</h2><p>知道一个模型什么时候<strong>失效</strong>，比记住它本身更值钱。杰文斯不成立的关键，就是<strong>需求没有弹性</strong>，也就是降价勾不出新需求：</p>
+<p>需求已经到顶的时候。盐再便宜你也不会多吃。有些内部工具的调用量就是固定的，模型再降价，调用次数也不会涨，这种场景下，优化是实打实地省钱，没有反噬。</p>
+<p>真正的瓶颈不在你优化的那一环的时候。如果你的系统卡在数据质量、卡在某个牌照、卡在人，那把推理成本压再低，也引爆不了需求，因为用户的脚卡在别处。</p>
+<p>用量被硬封顶的时候。合规要求、预算硬上限、监管配额，需求想涨也涨不上去。</p>
+<p>判断方法简单到一句话：**”这玩意要是再便宜 10 倍，会有人想多用吗？而且想用的地方多吗？”** 答案是”会，而且有的是地方”，杰文斯就成立；答案是”不会，就这么多需求”，就不成立。AI 推理显然是前者，这正是为什么这个一百多年前的悖论，在今天格外刺眼。</p>
+<h2 id="相关模型"><a href="#相关模型" class="headerlink" title="相关模型"></a>相关模型</h2><p>杰文斯不是孤立的，它挂在一张网里。下面这些是同一张网上的邻居（这些文章我会陆续补上）：</p>
+<ul>
+<li><a href="/mental-models/opportunity-cost/">机会成本 &#x2F; Opportunity Cost</a>：算力变便宜，真正改变的是”这块卡该拿去干什么”的排序。</li>
+<li><a href="/mental-models/supply-and-demand/">供需 &#x2F; Supply &amp; Demand</a>：杰文斯说到底，是一个关于需求弹性的故事。</li>
+<li><a href="/mental-models/positive-feedback/">正反馈 &#x2F; Positive Feedback</a>：新需求催生新场景，是个自我放大的环。</li>
+<li><a href="/mental-models/induced-demand/">诱导需求 &#x2F; Induced Demand</a>：修路和扩集群，是同一个剧本。</li>
+</ul>
+<h2 id="一句话记住"><a href="#一句话记住" class="headerlink" title="一句话记住"></a>一句话记住</h2><blockquote>
+<p>中文：效率不会消灭稀缺，它只是把稀缺挪个地方。所以别等算力变便宜——它便宜下来的每一分，都会被你解锁的新需求重新吃掉。<br>EN: Efficiency doesn’t kill scarcity; it just relocates it. So don’t wait for compute to get cheap—every bit of cheapness gets eaten by the new demand you just unlocked.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+              <a href="/tags/Complexity-Science/" rel="tag"># Complexity Science</a>
+              <a href="/tags/Inference/" rel="tag"># Inference</a>
+              <a href="/tags/AI-Infrastructure/" rel="tag"># AI Infrastructure</a>
+              <a href="/tags/GPU-Scheduling/" rel="tag"># GPU Scheduling</a>
+              <a href="/tags/Resource-Allocation/" rel="tag"># Resource Allocation</a>
+              <a href="/tags/Scalability/" rel="tag"># Scalability</a>
+              <a href="/tags/Investing/" rel="tag"># Investing</a>
+              <a href="/tags/Product-Design/" rel="tag"># Product Design</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/455069a2.html" rel="prev" title="我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications">
+                  <i class="fa fa-angle-left"></i> 我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/mental-models/jevons-paradox/" rel="next" title="Jevons Paradox: Why Compute Will Never Be Enough">
+                  Jevons Paradox: Why Compute Will Never Be Enough <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">125k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:34</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"4749c52ded35b0fde7275eda2c7eb1de"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

@@ -15,8 +15,96 @@
     <atom:link href="https://liang7878.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</description>
-    <pubDate>Fri, 27 Oct 2023 15:26:53 GMT</pubDate>
+    <pubDate>Tue, 30 Jun 2026 09:01:05 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Jevons Paradox: Why Compute Will Never Be Enough</title>
+      <link>https://liang7878.github.io/en/mental-models/jevons-paradox/</link>
+      <guid>https://liang7878.github.io/en/mental-models/jevons-paradox/</guid>
+      <pubDate>Tue, 30 Jun 2026 06:00:00 GMT</pubDate>
+      
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Jevons Paradox &amp;#x2F; 杰文斯悖论&lt;/strong&gt;&lt;br&gt;EN: Make something cheaper and you usually get more of it consumed, not less.&lt;br&gt;中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Here’s something that sounds backwards: &lt;strong&gt;compute will keep getting cheaper, and we’ll only feel shorter on it — exactly because it’s getting cheaper.&lt;/strong&gt;&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p><strong>Jevons Paradox &#x2F; 杰文斯悖论</strong><br>EN: Make something cheaper and you usually get more of it consumed, not less.<br>中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。</p></blockquote><p>Here’s something that sounds backwards: <strong>compute will keep getting cheaper, and we’ll only feel shorter on it — exactly because it’s getting cheaper.</strong></p><span id="more"></span><h2 id="Why-this-question-matters"><a href="#Why-this-question-matters" class="headerlink" title="Why this question matters"></a>Why this question matters</h2><p>Let’s start with a fact that confuses a lot of people.</p><p>Over the past two years, the price per token of inference fell by roughly two orders of magnitude. The same GPT-4-class capability now costs a small fraction of what it did at launch. By common sense, with the unit price collapsing like that, GPUs should feel <em>less</em> tight (one card now does the work of several).</p><p>But you and I both know it went the other way: the cheaper models get, the harder H100s are to find, the tighter cloud quotas become, and the more teams grit their teeth and build their own clusters.</p><p><strong>Cheap didn’t ease scarcity. It made scarcity worse.</strong></p><p>This sounds like it should violate common sense, but it’s not new at all. An Englishman nailed it in 1865—and he wasn’t writing about chips. He was writing about coal.</p><h2 id="Where-it-comes-from"><a href="#Where-it-comes-from" class="headerlink" title="Where it comes from"></a>Where it comes from</h2><p>In 1865, William Stanley Jevons wrote <em>The Coal Question</em>.</p><p>Britain was enjoying a surge in steam-engine efficiency. Watt’s improved engine did far more work per lump of coal than the old design. Everyone took this as good news, and the logic was clean: the more efficient the machine, the less coal the nation burns, the longer Britain’s coal lasts.</p><p>Jevons said: wrong—and badly wrong. His fact was this: <strong>the more efficient the steam engine got, the more coal Britain burned.</strong></p><p>Not a little more. A lot more. The coal-saving technology didn’t save coal; it pushed coal consumption onto a whole new plateau.</p><p>Why? That’s the heart of the whole thing.</p><h2 id="The-core-intuition"><a href="#The-core-intuition" class="headerlink" title="The core intuition"></a>The core intuition</h2><p>Translate “efficiency gain” into “price cut,” and the paradox stops being a paradox.</p><p>A more efficient steam engine means <strong>doing work with steam got cheaper</strong>. And when something gets cheaper, one crucial thing happens: things that were never worth doing because they were too expensive suddenly become worth doing. Factories that couldn’t justify steam adopt it; railways that couldn’t be afforded get built; mines that couldn’t afford to pump water start pumping.</p><p>So demand doesn’t rise gently—<strong>whole swaths of it get unlocked at once</strong>. New uses appear faster than energy-per-task falls.</p><p>One simple multiplication is all you need:</p><blockquote><p>Total consumption &#x3D; consumption-per-use × number-of-uses</p></blockquote><p>Efficiency pushes the left number down, but by cutting the price it multiplies the right number several-fold, sometimes many-fold. Multiply the two and the total goes <em>up</em>, not down.</p><pre><code class="mermaid">graph LR  A[Efficiency gain &#x3D; cheaper] --&gt; B[Uneconomic uses become worth it]  B --&gt; C[Whole swaths of demand unlock]  C --&gt; D[Number of uses explodes]  D --&gt; E[Total consumption rises instead]  E -.new demand spawns new use cases.-&gt; B</code></pre><p>Notice that dotted line. This isn’t a one-time adjustment (new demand itself spawns more use cases, which pull in still more demand); it’s <strong>a loop that grows itself</strong>, not something a single tap on the brakes will stop.</p><p>There’s a precondition; hold onto it, we’ll need it later: <strong>all of this only holds when demand is elastic.</strong> The price cut has to actually draw out a lot of new demand. If demand for something is already maxed out (how much salt your household eats in a year is fixed), no price cut will conjure new uses, and the Jevons effect simply doesn’t fire.</p><h2 id="Mapping-to-AI-compute-is-today’s-coal"><a href="#Mapping-to-AI-compute-is-today’s-coal" class="headerlink" title="Mapping to AI: compute is today’s coal"></a>Mapping to AI: compute is today’s coal</h2><p>Swap “coal” for “compute” and the book Jevons wrote could be reprinted today, word for word.</p><p>The most direct case is <strong>inference</strong>. Token prices collapsed, so places you’d never have spent a big model on, you now hit without hesitation: every PR auto-reviewed, every log line auto-tagged, every user message summarized in real time. Back when tokens were expensive, you wouldn’t even consider these. Now they’re the default.</p><p>Agents push this to the limit, and here’s a detail worth fixating on: <strong>a single agent task hides dozens, even hundreds, of LLM calls</strong> (reason once, reflect once, call a tool once, fail and retry a few more times). The cheaper a single call, the more an engineer dares to “just call it a few more times” when designing the agent: one more reflection pass, a bit more context stuffed in, a few more fallback retries. So the drop in per-call cost gets eaten clean by the explosion in call count—and then some.</p><p>Which means the answer to the paradox we opened with is, by now, clear:</p><blockquote><p>Every notch the serving stack is optimized (quantization, KV-cache, speculative decoding, better batching) raises per-card throughput and lowers unit cost—and demand immediately rushes in to eat the capacity you just freed.</p></blockquote><p>This is why <strong>the better we optimize, the fuller the cluster gets</strong>. It’s not that you optimized wrong; this is just Jevons. And it touches something that matters a lot to infra engineers, so let’s pull it out on its own.</p><h2 id="The-engineer’s-view-don’t-plan-capacity-on-the-headroom-an-optimization-“freed”"><a href="#The-engineer’s-view-don’t-plan-capacity-on-the-headroom-an-optimization-“freed”" class="headerlink" title="The engineer’s view: don’t plan capacity on the headroom an optimization “freed”"></a>The engineer’s view: don’t plan capacity on the headroom an optimization “freed”</h2><p>Everything so far has been the why; this section is the one concrete thing we actually do differently.</p><p>A lot of capacity planning goes: current load ÷ new per-card efficiency &#x3D; cards needed. An optimization bumped efficiency 30%, so the conclusion is “we can buy 30% fewer cards” or “our current cards can take 30% more load.”</p><p><strong>That arithmetic will almost always blow up in Jevons’ face.</strong> Because it assumes demand is fixed, and the very optimization we just shipped is what pulls demand up. What actually happens: the optimization ships, unit cost drops, and the product side (maybe the team next door) notices “oh, this is now cheap enough to turn on for everyone by default.” Call volume triples in two weeks and eats the headroom we freed, with interest.</p><p>The right stance: <strong>size capacity by “how much new demand this price cut will unlock,” not by “current load divided by new efficiency.”</strong> Leave headroom for the surge; don’t treat the freed space as a budget you get to save. I’ve sat through too many “we optimized and somehow ended up shorter on cards” retros, and the root cause is always this.</p><p>As for agent engineers, the same truth bites us somewhere else: cheap tempts us into ever-chattier agents. <strong>Set explicit budget ceilings</strong> (max calls per task, max context size), or cost spirals right alongside capability, and you won’t even notice at first, not until the bill arrives.</p><h2 id="The-investor’s-view-this-chain-explains-an-apparent-contradiction"><a href="#The-investor’s-view-this-chain-explains-an-apparent-contradiction" class="headerlink" title="The investor’s view: this chain explains an apparent contradiction"></a>The investor’s view: this chain explains an apparent contradiction</h2><p>Jevons is also a key to AI compute as a business, and it cuts directly against the intuition that “models are dirt cheap now, so what’s left for the shovel-sellers.”</p><p>The chain runs like this:</p><blockquote><p>Inference gets cheaper → call volume explodes (more use cases, more agents) → GPU demand <strong>rises, not falls</strong> → cloud compute demand rises → further upstream, HBM, advanced packaging, even electricity tighten along with it.</p></blockquote><p>This explains that apparently contradictory picture: <strong>model APIs slash prices at the very same time GPUs, cloud, and power stay persistently tight.</strong> A price cut isn’t the end of demand; it’s the start.</p><p>Back to the code we write: the real lesson this chain hands an engineer isn’t “which stock to buy,” but a judgment that should be carved into your system design: <strong>compute will be scarce for a long time; treat it as a permanent constraint, not a temporary inconvenience.</strong> Don’t write TODOs like “optimize once cards get cheap, once quota loosens.” That day isn’t coming. Constraint is the normal state, so design for it.</p><h2 id="The-everyday-view-you’ve-seen-this-already"><a href="#The-everyday-view-you’ve-seen-this-already" class="headerlink" title="The everyday view: you’ve seen this already"></a>The everyday view: you’ve seen this already</h2><p>This machinery isn’t confined to the data center.</p><p>A dishwasher saves the effort of one load, and the result isn’t that you bank the time; it’s that you use more dishes and run it more often, because “washing dishes” got cheaper. Build a faster road and you save time short-term, but long-term people move farther out and total commute time doesn’t budge (urban planners call it “induced demand”—Jevons in disguise).</p><p>The one that stings most: you get a faster IDE and smarter autocomplete, and the result isn’t leaving work earlier; it’s being quietly expected to ship more code.</p><p>Getting this straight actually matters for how you design AI tools: <strong>the capacity you save gets eaten by raised expectations.</strong> So when we build an “AI that makes engineers more productive” feature, it’s worth asking ourselves honestly: am I actually saving someone time, or just quietly raising the bar on them? The answer often decides whether the feature ends up loved or resented.</p><h2 id="Common-misconceptions"><a href="#Common-misconceptions" class="headerlink" title="Common misconceptions"></a>Common misconceptions</h2><p>The easiest thing to remember wrong:</p><blockquote><p>Jevons Paradox is <strong>not</strong> “efficiency always increases total consumption.”</p></blockquote><p>The precise version: <strong>given elastic demand, efficiency <em>can</em> increase total consumption.</strong> It’s “can,” not “must,” and it comes <strong>with conditions attached.</strong> Treat it as an iron law and apply it everywhere, and you’ll embarrass yourself.</p><p>The more dangerous misread: hearing it as “so optimization is pointless.” The opposite is true: optimization is enormously valuable (it unlocks a flood of value that didn’t exist before). Jevons never said “don’t optimize.” It said something else: <strong>don’t expect optimization to let you buy less of the resource.</strong> The payoff of optimization is unlocking new things, not saving on old costs, and we need to keep those two apart.</p><h2 id="When-it-doesn’t-apply"><a href="#When-it-doesn’t-apply" class="headerlink" title="When it doesn’t apply"></a>When it doesn’t apply</h2><p>Knowing when a model <em>fails</em> is worth more than knowing the model itself. Jevons doesn’t hold when <strong>demand is inelastic</strong>—when a price cut draws out no new demand:</p><p>When demand is already maxed out. Cheaper salt won’t make you eat more. Some internal tools have a fixed call volume; no matter how far the model’s price drops, call count won’t rise—and there, optimization genuinely saves money, no backlash.</p><p>When the real bottleneck isn’t the thing you optimized. If your system is stuck on data quality, on a license, on people, then driving inference cost to the floor won’t trigger a demand explosion, because the user’s foot is caught somewhere else.</p><p>When usage is hard-capped. Compliance rules, hard budget ceilings, regulatory quotas—demand can’t rise even if it wants to.</p><p>The test fits in one line: <strong>“if this got 10× cheaper, would anyone want to use more of it—and are there lots of places to use it?”</strong> If it’s “yes, and plenty of places,” Jevons holds; if it’s “no, demand is what it is,” it doesn’t. AI inference is plainly the former, which is exactly why a 150-year-old paradox is so glaring today.</p><h2 id="Related-models"><a href="#Related-models" class="headerlink" title="Related models"></a>Related models</h2><p>Jevons doesn’t stand alone; it hangs in a web. These are its neighbors on that web (articles I’ll add over time):</p><ul><li><a href="/en/mental-models/opportunity-cost/">Opportunity Cost</a>: cheaper compute really changes the ranking of “what should this card be doing instead.”</li><li><a href="/en/mental-models/supply-and-demand/">Supply &amp; Demand</a>: Jevons is, at bottom, a story about the elasticity of demand.</li><li><a href="/en/mental-models/positive-feedback/">Positive Feedback</a>: new demand spawns new use cases—a self-amplifying loop.</li><li><a href="/en/mental-models/induced-demand/">Induced Demand</a>: building roads and scaling clusters are the same script.</li></ul><h2 id="One-line-to-remember"><a href="#One-line-to-remember" class="headerlink" title="One line to remember"></a>One line to remember</h2><blockquote><p>EN: Efficiency doesn’t kill scarcity; it just relocates it. So don’t wait for compute to get cheap—every bit of cheapness gets eaten by the new demand you just unlocked.<br>中文：效率不会消灭稀缺，它只是把稀缺挪个地方。所以别等算力变便宜——它便宜下来的每一分，都会被你解锁的新需求重新吃掉。</p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="https://liang7878.github.io/categories/Mental-Models/">Mental Models</category>
+      
+      <category domain="https://liang7878.github.io/categories/Mental-Models/Resources/">Resources</category>
+      
+      
+      <category domain="https://liang7878.github.io/tags/Economics/">Economics</category>
+      
+      <category domain="https://liang7878.github.io/tags/Complexity-Science/">Complexity Science</category>
+      
+      <category domain="https://liang7878.github.io/tags/Inference/">Inference</category>
+      
+      <category domain="https://liang7878.github.io/tags/AI-Infrastructure/">AI Infrastructure</category>
+      
+      <category domain="https://liang7878.github.io/tags/GPU-Scheduling/">GPU Scheduling</category>
+      
+      <category domain="https://liang7878.github.io/tags/Resource-Allocation/">Resource Allocation</category>
+      
+      <category domain="https://liang7878.github.io/tags/Scalability/">Scalability</category>
+      
+      <category domain="https://liang7878.github.io/tags/Investing/">Investing</category>
+      
+      <category domain="https://liang7878.github.io/tags/Product-Design/">Product Design</category>
+      
+      
+      <comments>https://liang7878.github.io/en/mental-models/jevons-paradox/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>杰文斯悖论：为什么算力会永远不够</title>
+      <link>https://liang7878.github.io/mental-models/jevons-paradox/</link>
+      <guid>https://liang7878.github.io/mental-models/jevons-paradox/</guid>
+      <pubDate>Tue, 30 Jun 2026 06:00:00 GMT</pubDate>
+      
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;杰文斯悖论 &amp;#x2F; Jevons Paradox&lt;/strong&gt;&lt;br&gt;中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。&lt;br&gt;EN: Make something cheaper and you usually get more of it consumed, not less.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们来聊个有点反直觉的事：&lt;strong&gt;算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。&lt;/strong&gt;&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p><strong>杰文斯悖论 &#x2F; Jevons Paradox</strong><br>中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。<br>EN: Make something cheaper and you usually get more of it consumed, not less.</p></blockquote><p>我们来聊个有点反直觉的事：<strong>算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。</strong></p><span id="more"></span><h2 id="为什么要问这个问题"><a href="#为什么要问这个问题" class="headerlink" title="为什么要问这个问题"></a>为什么要问这个问题</h2><p>我们先来看一个挺让人困惑的事实。</p><p>过去两年，单位 token 的推理价格大概掉了两个数量级。同样的 GPT-4 级能力，今天的价钱是发布时的几十分之一。按常理，单价跌成这样，GPU 应该没那么紧张了才对（同一块卡现在能干以前好几块卡的活）。</p><p>可你我都知道现实是反的：模型越便宜，H100 越难抢，云上的配额越紧，越来越多团队咬牙自建集群。</p><p><strong>便宜，没有缓解稀缺，反而加剧了稀缺。</strong></p><p>这事听起来违反直觉，但它一点都不新鲜。一个英国人在 1865 年就把它讲透了，讲的还不是芯片，是煤。</p><h2 id="它从哪来"><a href="#它从哪来" class="headerlink" title="它从哪来"></a>它从哪来</h2><p>1865 年，威廉·斯坦利·杰文斯写了《煤炭问题》。</p><p>当时英国正享受蒸汽机效率的飞涨。瓦特那台改良蒸汽机，烧同样的煤能干的活比老式机器多得多。所有人都觉得这是好事，逻辑很顺：机器越省煤，国家烧的煤就越少，英国的煤能用更久。</p><p>杰文斯说，错了，而且错得很彻底。他给出的事实是：<strong>蒸汽机越省煤，英国烧的煤越多。</strong></p><p>不是多一点，是多很多。省煤的技术没有省下煤，它把煤的消耗推上了一个新台阶。</p><p>为什么？这就是整件事的核心。</p><h2 id="核心直觉"><a href="#核心直觉" class="headerlink" title="核心直觉"></a>核心直觉</h2><p>把”效率提升”翻译成”降价”，悖论就不再是悖论。</p><p>蒸汽机变省煤，本质是<strong>用蒸汽干活这件事变便宜了</strong>。东西一便宜，会发生一件关键的事：那些原本因为太贵而根本不会去做的事，突然变得划算了。以前不值得上蒸汽的工厂上了，铺不起的铁路铺了，抽不起水的矿井开始抽水了。</p><p>于是需求不是温和地涨，是<strong>整片整片地被解锁</strong>。新用途冒出来的速度，远远盖过单位能耗下降的速度。</p><p>记一个简单的乘法就够了：</p><blockquote><p>总消耗 ＝ 单次消耗 × 使用次数</p></blockquote><p>效率把左边这个数压下去了，但它通过降价，把右边那个数撑大了好几倍、甚至几十倍。两个一乘，总量不降反升。</p><pre><code class="mermaid">graph LR  A[效率提升 &#x3D; 变便宜] --&gt; B[原本不划算的事变得划算]  B --&gt; C[需求被整片解锁]  C --&gt; D[使用次数暴涨]  D --&gt; E[总消耗反而更高]  E -.涨上来的需求又催生新场景.-&gt; B</code></pre><p>注意那条虚线。这不是一次性的调整（新需求本身会催生更多用途，用途又拉动更多需求），而是个<strong>会自己滚大的循环</strong>，不是踩一脚刹车就能停的事。</p><p>这里有个前提，记住它，后面要用：<strong>这一切只在需求有弹性时成立</strong>。也就是说，降价得真能勾出大量新需求才行。如果一样东西的需求已经到顶（比如你家一年吃多少盐是固定的），再便宜也勾不出新用途，杰文斯效应就不发生。</p><h2 id="映射到-AI：算力就是今天的煤"><a href="#映射到-AI：算力就是今天的煤" class="headerlink" title="映射到 AI：算力就是今天的煤"></a>映射到 AI：算力就是今天的煤</h2><p>把”煤”换成”算力”，杰文斯写的那本书，今天可以一字不改地重印。</p><p>最直接的是<strong>推理</strong>。token 单价崩了，于是从前舍不得调大模型的地方，现在毫不犹豫地调：每个 PR 自动 review，每条日志自动打标，每个用户消息实时摘要。这些在 token 贵的时候想都不会想，现在成了默认操作。</p><p>Agent 把这件事推到了极致。这里有个细节，值得我们盯一下：<strong>一次 Agent 任务背后，藏着几十甚至上百次 LLM 调用</strong>（推理一次、反思一次、调一次工具、失败了再重试几次）。单次调用越便宜，工程师在设计 Agent 时就越敢”多调几次”：多让它反思一轮、多塞点上下文、多兜底重试。于是单次成本下降被调用次数的暴涨吃得干干净净，还倒贴。</p><p>所以开头那个悖论的答案，到这里已经很清楚了：</p><blockquote><p>推理框架每优化一截（量化、KV-cache、投机解码、更好的 batching），单卡吞吐就上一截，单位成本就降一截——然后需求立刻涌上来，把你腾出来的容量吃光。</p></blockquote><p>这就是为什么<strong>我们优化得越好，集群反而越满</strong>。这不怪你，这就是杰文斯。它牵扯到一件对 Infra 工程师特别重要的事，我们单独拎出来讲。</p><h2 id="工程师视角：别拿”优化省下的容量”做容量规划"><a href="#工程师视角：别拿”优化省下的容量”做容量规划" class="headerlink" title="工程师视角：别拿”优化省下的容量”做容量规划"></a>工程师视角：别拿”优化省下的容量”做容量规划</h2><p>前面都在讲道理，这一节落到我们一个具体的动作上。</p><p>很多容量规划是这么算的：当前负载 ÷ 新的单卡效率 ＝ 需要多少卡。优化让效率涨了 30%，于是结论是”我们可以少买 30% 的卡”或者”现有的卡能多扛 30% 的量”。</p><p><strong>这个算法在杰文斯面前几乎一定会翻车。</strong> 因为它假设需求是固定的，而我们刚做完的优化，恰恰会把需求勾上来。实际会发生的是：优化上线，单位成本降了，产品侧（可能就是隔壁组）发现”诶，这能力现在便宜到可以默认全量打开了”，调用量两周内翻几倍，把我们省出来的容量连本带利吃光。</p><p>正确的姿势是：<strong>容量按”这次降价会解锁多少新需求”来估，而不是按”当前负载除以新效率”来估。</strong> 给爆发留 headroom，而不是把省出来的空间当成可以省下的预算。我见过太多”优化完反而更缺卡”的复盘，根因都在这。</p><p>至于 Agent 工程师，同一个道理换个地方咬我们：便宜会诱导我们把 Agent 设计得越来越啰嗦。<strong>记得主动给它设个预算上限</strong>（每个任务最多调几次、上下文最多多大），否则成本会跟着能力一起失控，而且一开始根本察觉不到，等账单来了才知道。</p><h2 id="投资视角：这条链解释了一个矛盾现象"><a href="#投资视角：这条链解释了一个矛盾现象" class="headerlink" title="投资视角：这条链解释了一个矛盾现象"></a>投资视角：这条链解释了一个矛盾现象</h2><p>杰文斯也是理解 AI 算力这门生意的一把钥匙，而且它和”模型都白菜价了，卖铲子的还能有什么搞头”那种直觉正好相反。</p><p>链条是这样的：</p><blockquote><p>推理变便宜 → 调用量暴涨（更多场景、更多 Agent）→ GPU 需求<strong>不降反升</strong> → 云算力需求上升 → 更上游的 HBM、先进封装、甚至电力，跟着一起紧张。</p></blockquote><p>这就解释了那个表面上矛盾的画面：<strong>模型 API 在疯狂降价的同一时间，GPU、云、电力却在持续吃紧。</strong> 降价不是需求的终点，是需求的起点。</p><p>绕回到我们写代码这件事：这条链给工程师的真正启示，不是”该买哪只股票”，而是一个该刻进系统设计里的判断：<strong>算力会长期稀缺，把它当成永久约束，别当成临时困难。</strong> 别写”等卡便宜了、等配额松了再来优化”这种 TODO，那一天不会来。受限才是常态，那就按受限来设计。</p><h2 id="生活视角：你早就见过它了"><a href="#生活视角：你早就见过它了" class="headerlink" title="生活视角：你早就见过它了"></a>生活视角：你早就见过它了</h2><p>这套机制不只在机房里。</p><p>洗碗机省了你洗一次碗的力气，结果你不是省下时间去干别的，而是用更多的碗、洗得更勤，反正”洗碗”这件事变便宜了。修一条更快的路，短期省时间，长期却让大家搬得更远，通勤总时间一点没少（城市规划里管这叫”诱导需求”，本质就是杰文斯）。</p><p>最扎心的一个：你用上了更快的 IDE、更聪明的代码补全，结果不是早点下班，而是被默认”你现在应该能写更多代码了”。</p><p>把这个想明白，对你设计 AI 工具其实很重要：<strong>省下来的产能，会被更高的预期吃掉。</strong> 所以当你做一个”帮工程师提效”的 AI 功能时，值得我们诚实地问自己一句：我到底是在帮人省时间，还是只是在悄悄抬高对他的要求？这个问题的答案，往往决定了这个功能是被爱还是被恨。</p><h2 id="常见误解"><a href="#常见误解" class="headerlink" title="常见误解"></a>常见误解</h2><p>最容易记歪的一点：</p><blockquote><p>杰文斯悖论 <strong>不是</strong>“效率提升一定会让总消耗增加”。</p></blockquote><p>它的准确说法是：<strong>在需求有弹性的前提下，效率提升可能让总消耗增加。</strong> 是”可能”，不是”必然”，而且<strong>挂着条件</strong>。把它当成铁律到处套，会闹笑话。</p><p>另一个误解更危险：把它读成”所以优化没意义”。恰恰相反，优化极其有意义（它解锁了海量原本根本不存在的价值）。杰文斯从来没说”别优化”，它说的是另一件事：<strong>别指望优化能让你少买资源。</strong> 优化的回报是解锁新东西，而不是省下旧开销，这两件事我们得分清楚。</p><h2 id="什么时候不成立"><a href="#什么时候不成立" class="headerlink" title="什么时候不成立"></a>什么时候不成立</h2><p>知道一个模型什么时候<strong>失效</strong>，比记住它本身更值钱。杰文斯不成立的关键，就是<strong>需求没有弹性</strong>，也就是降价勾不出新需求：</p><p>需求已经到顶的时候。盐再便宜你也不会多吃。有些内部工具的调用量就是固定的，模型再降价，调用次数也不会涨，这种场景下，优化是实打实地省钱，没有反噬。</p><p>真正的瓶颈不在你优化的那一环的时候。如果你的系统卡在数据质量、卡在某个牌照、卡在人，那把推理成本压再低，也引爆不了需求，因为用户的脚卡在别处。</p><p>用量被硬封顶的时候。合规要求、预算硬上限、监管配额，需求想涨也涨不上去。</p><p>判断方法简单到一句话：**”这玩意要是再便宜 10 倍，会有人想多用吗？而且想用的地方多吗？”** 答案是”会，而且有的是地方”，杰文斯就成立；答案是”不会，就这么多需求”，就不成立。AI 推理显然是前者，这正是为什么这个一百多年前的悖论，在今天格外刺眼。</p><h2 id="相关模型"><a href="#相关模型" class="headerlink" title="相关模型"></a>相关模型</h2><p>杰文斯不是孤立的，它挂在一张网里。下面这些是同一张网上的邻居（这些文章我会陆续补上）：</p><ul><li><a href="/mental-models/opportunity-cost/">机会成本 &#x2F; Opportunity Cost</a>：算力变便宜，真正改变的是”这块卡该拿去干什么”的排序。</li><li><a href="/mental-models/supply-and-demand/">供需 &#x2F; Supply &amp; Demand</a>：杰文斯说到底，是一个关于需求弹性的故事。</li><li><a href="/mental-models/positive-feedback/">正反馈 &#x2F; Positive Feedback</a>：新需求催生新场景，是个自我放大的环。</li><li><a href="/mental-models/induced-demand/">诱导需求 &#x2F; Induced Demand</a>：修路和扩集群，是同一个剧本。</li></ul><h2 id="一句话记住"><a href="#一句话记住" class="headerlink" title="一句话记住"></a>一句话记住</h2><blockquote><p>中文：效率不会消灭稀缺，它只是把稀缺挪个地方。所以别等算力变便宜——它便宜下来的每一分，都会被你解锁的新需求重新吃掉。<br>EN: Efficiency doesn’t kill scarcity; it just relocates it. So don’t wait for compute to get cheap—every bit of cheapness gets eaten by the new demand you just unlocked.</p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="https://liang7878.github.io/categories/Mental-Models/">Mental Models</category>
+      
+      <category domain="https://liang7878.github.io/categories/Mental-Models/Resources/">Resources</category>
+      
+      
+      <category domain="https://liang7878.github.io/tags/Economics/">Economics</category>
+      
+      <category domain="https://liang7878.github.io/tags/Complexity-Science/">Complexity Science</category>
+      
+      <category domain="https://liang7878.github.io/tags/Inference/">Inference</category>
+      
+      <category domain="https://liang7878.github.io/tags/AI-Infrastructure/">AI Infrastructure</category>
+      
+      <category domain="https://liang7878.github.io/tags/GPU-Scheduling/">GPU Scheduling</category>
+      
+      <category domain="https://liang7878.github.io/tags/Resource-Allocation/">Resource Allocation</category>
+      
+      <category domain="https://liang7878.github.io/tags/Scalability/">Scalability</category>
+      
+      <category domain="https://liang7878.github.io/tags/Investing/">Investing</category>
+      
+      <category domain="https://liang7878.github.io/tags/Product-Design/">Product Design</category>
+      
+      
+      <comments>https://liang7878.github.io/mental-models/jevons-paradox/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>我的七周七数据库 -- Citus: Distributed PostgreSQL for Data-Intensive Applications</title>
@@ -341,9 +429,9 @@
       
       <category domain="https://liang7878.github.io/tags/%E9%98%85%E8%AF%BB/">阅读</category>
       
-      <category domain="https://liang7878.github.io/tags/%E6%80%A7%E8%83%BD/">性能</category>
-      
       <category domain="https://liang7878.github.io/tags/%E6%9D%82%E8%B0%88/">杂谈</category>
+      
+      <category domain="https://liang7878.github.io/tags/%E6%80%A7%E8%83%BD/">性能</category>
       
       
       <comments>https://liang7878.github.io/posts/6429ef26.html#disqus_thread</comments>
@@ -521,60 +609,6 @@
       
       
       <comments>https://liang7878.github.io/posts/38d9ffd1.html#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>洛谷综合题单 -- P1000超级玛丽游戏</title>
-      <link>https://liang7878.github.io/posts/d27d7a9c.html</link>
-      <guid>https://liang7878.github.io/posts/d27d7a9c.html</guid>
-      <pubDate>Fri, 11 Aug 2023 02:10:33 GMT</pubDate>
-      
-      <description>洛谷 P1000 超级玛丽游戏题解，属于 OI 算法入门试机题，讲解如何用 C++ 字符串数组保存并打印 ASCII 字符画，重点练习标准输出与字符画原样转义输出技巧。</description>
-      
-      
-      
-      <content:encoded><![CDATA[<p>这道题纯粹就是一道试机题，只要正常输出结果就可以了，下面是我的代码：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">string s[] = &#123;<span class="string">&quot;                ********&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ************&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ####....#.&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             #..###.....##....&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             ###.......######              ###            ###&quot;</span>,</span><br><span class="line">              <span class="string">&quot;                ...........               #...#          #...#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;               ##*#######                 #.#.#          #.#.#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;            ####*******######             #.#.#          #.#.#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ...#***.****.*###....          #...#          #...#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ....**********##.....           ###            ###&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ....****    *****....&quot;</span>,</span><br><span class="line">              <span class="string">&quot;             ####        ####&quot;</span>,</span><br><span class="line">              <span class="string">&quot;           ######        ######&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##############################################################&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#...#......#.##...#......#.##...#......#.##------------------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;###########################################------------------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#..#....#....##..#....#....##..#....#....#####################&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#.....#......##.....#......##.....#......#    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;#.#..#....#..##.#..#....#..##.#..#....#..#    #----------#&quot;</span>,</span><br><span class="line">              <span class="string">&quot;##########################################    ############&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (string str : s) &#123;</span><br><span class="line">        cout &lt;&lt; str &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>非常朴实无华地用一个数组把需要输出的字符画保存起来输出就行了。没有什么技巧。</p>]]></content:encoded>
-      
-      
-      <category domain="https://liang7878.github.io/categories/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/">编程进阶</category>
-      
-      
-      <category domain="https://liang7878.github.io/tags/OI/">OI</category>
-      
-      <category domain="https://liang7878.github.io/tags/%E7%AE%97%E6%B3%95/">算法</category>
-      
-      <category domain="https://liang7878.github.io/tags/%E5%88%B7%E9%A2%98/">刷题</category>
-      
-      
-      <comments>https://liang7878.github.io/posts/d27d7a9c.html#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>洛谷综合题单 -- A+B Problem</title>
-      <link>https://liang7878.github.io/posts/2d329e20.html</link>
-      <guid>https://liang7878.github.io/posts/2d329e20.html</guid>
-      <pubDate>Fri, 11 Aug 2023 02:10:33 GMT</pubDate>
-      
-      <description>洛谷 P1001 A+B Problem 题解，面向 OI 算法入门，讲解如何用 C++ 通过 cin/cout 完成两数相加的基础输入输出，是新手熟悉评测环境和标准 IO 的试机入门题。</description>
-      
-      
-      
-      <content:encoded><![CDATA[<p>试机题，直接贴一下题解：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;iostream&quot;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int a, b;</span><br><span class="line">    cin &gt;&gt; a &gt;&gt; b;</span><br><span class="line">    cout &lt;&lt; a + b;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content:encoded>
-      
-      
-      <category domain="https://liang7878.github.io/categories/%E7%BC%96%E7%A8%8B%E8%BF%9B%E9%98%B6/">编程进阶</category>
-      
-      
-      <category domain="https://liang7878.github.io/tags/OI/">OI</category>
-      
-      <category domain="https://liang7878.github.io/tags/%E7%AE%97%E6%B3%95/">算法</category>
-      
-      <category domain="https://liang7878.github.io/tags/%E5%88%B7%E9%A2%98/">刷题</category>
-      
-      
-      <comments>https://liang7878.github.io/posts/2d329e20.html#disqus_thread</comments>
       
     </item>
     
