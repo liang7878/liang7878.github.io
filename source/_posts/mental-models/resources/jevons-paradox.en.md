@@ -1,5 +1,5 @@
 ---
-title: 'Jevons Paradox: Why Cheaper AI Inference Makes GPUs Scarcer'
+title: 'Jevons Paradox: Why Compute Will Never Be Enough'
 lang: en
 permalink: en/mental-models/jevons-paradox/
 alternate: /mental-models/jevons-paradox/
@@ -16,156 +16,149 @@ tags:
   - Scalability
   - Investing
   - Product Design
-abbrlink: fc00c3c5
+abbrlink: fad380b9
 date: 2026-06-30 14:00:00
 ---
 
 > **Jevons Paradox / 杰文斯悖论**
-> EN: Efficiency doesn't eliminate scarcity. It often reshapes it.
-> 中文：效率提升不会消灭稀缺，它往往把稀缺重新塑形。
+> EN: Make something cheaper and you usually get more of it consumed, not less.
+> 中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。
+
+Here's something that sounds backwards: **compute will keep getting cheaper, and we'll only feel shorter on it — exactly because it's getting cheaper.**
 
 <!-- more -->
 
-## Question
+## Why this question matters
 
-Since 2023, the cost per token of inference has dropped by an order of magnitude, then another. GPT-4-class capability today costs a small fraction of what it did at launch.
+Let's start with a fact that confuses a lot of people.
 
-Intuitively, if the unit price fell that far, the pressure on GPU supply should ease. The same card now serves far more requests, so scarcity should go *down*.
+Over the past two years, the price per token of inference fell by roughly two orders of magnitude. The same GPT-4-class capability now costs a small fraction of what it did at launch. By common sense, with the unit price collapsing like that, GPUs should feel *less* tight (one card now does the work of several).
 
-Reality runs the other way. The cheaper models get, the harder H100s are to find, the tighter cloud GPU quotas become, and the more teams stand up their own clusters.
+But you and I both know it went the other way: the cheaper models get, the harder H100s are to find, the tighter cloud quotas become, and the more teams grit their teeth and build their own clusters.
 
-Why does *cheaper* lead to *scarcer*?
+**Cheap didn't ease scarcity. It made scarcity worse.**
 
-This isn't a new problem unique to AI. A hundred and fifty years ago, a British economist watched the exact same plot play out — with coal.
+This sounds like it should violate common sense, but it's not new at all. An Englishman nailed it in 1865—and he wasn't writing about chips. He was writing about coal.
 
-## Origin
+## Where it comes from
 
-In 1865, William Stanley Jevons wrote a book called *The Coal Question*.
+In 1865, William Stanley Jevons wrote *The Coal Question*.
 
-Britain was enjoying rapid gains in steam-engine efficiency. Watt's improved engine burned far less coal than the old Newcomen design — more work from the same lump of coal. The popular, optimistic conclusion was: the more efficient the machine, the *less* coal the nation would burn, and the longer the coal would last.
+Britain was enjoying a surge in steam-engine efficiency. Watt's improved engine did far more work per lump of coal than the old design. Everyone took this as good news, and the logic was clean: the more efficient the machine, the less coal the nation burns, the longer Britain's coal lasts.
 
-Jevons threw cold water on it. What he actually observed was the opposite: **the more efficient the steam engine became, the more total coal Britain burned.**
+Jevons said: wrong—and badly wrong. His fact was this: **the more efficient the steam engine got, the more coal Britain burned.**
 
-His explanation is what we now call Jevons Paradox.
+Not a little more. A lot more. The coal-saving technology didn't save coal; it pushed coal consumption onto a whole new plateau.
 
-## Core Idea
+Why? That's the heart of the whole thing.
 
-The whole thing clicks into place once you think of "efficiency" as a "price cut."
+## The core intuition
 
-A more efficient steam engine means **the cost of doing something with steam power went down**. Once the cost drops, uses that were previously too expensive to be worth it suddenly become worth it: factories can afford steam, railways can afford to be built, mines can afford to pump water.
+Translate "efficiency gain" into "price cut," and the paradox stops being a paradox.
 
-So demand doesn't grow linearly — it **explodes**. New use cases get unlocked faster than the energy-per-task falls.
+A more efficient steam engine means **doing work with steam got cheaper**. And when something gets cheaper, one crucial thing happens: things that were never worth doing because they were too expensive suddenly become worth doing. Factories that couldn't justify steam adopt it; railways that couldn't be afforded get built; mines that couldn't afford to pump water start pumping.
 
-Total consumption = consumption-per-use × number-of-uses. Efficiency shrinks the left-hand factor, but by cutting the price it multiplies the right-hand factor several times over. Multiply them together and the total goes *up*, not down.
+So demand doesn't rise gently—**whole swaths of it get unlocked at once**. New uses appear faster than energy-per-task falls.
+
+One simple multiplication is all you need:
+
+> Total consumption = consumption-per-use × number-of-uses
+
+Efficiency pushes the left number down, but by cutting the price it multiplies the right number several-fold, sometimes many-fold. Multiply the two and the total goes *up*, not down.
 
 {% mermaid %}
 graph LR
-  A[Efficiency improves] --> B[Unit cost drops]
-  B --> C[Previously-uneconomic uses become viable]
-  C --> D[Demand explodes]
-  D --> E[Total consumption rises, not falls]
-  E -.feedback amplifies.-> C
+  A[Efficiency gain = cheaper] --> B[Uneconomic uses become worth it]
+  B --> C[Whole swaths of demand unlock]
+  C --> D[Number of uses explodes]
+  D --> E[Total consumption rises instead]
+  E -.new demand spawns new use cases.-> B
 {% endmermaid %}
 
-The dotted feedback edge is the crux: new demand itself spurs even more use cases into existence. This is a **positive feedback loop**, not a one-time adjustment.
+Notice that dotted line. This isn't a one-time adjustment (new demand itself spawns more use cases, which pull in still more demand); it's **a loop that grows itself**, not something a single tap on the brakes will stop.
 
-When does this happen? There's a precondition: **demand has to be elastic** — a price cut has to actually draw out a lot of new demand. If demand for something is already saturated (table salt, say), making it cheaper won't make anyone consume more, and the Jevons effect doesn't hold. More on that in "When It Doesn't Apply."
+There's a precondition; hold onto it, we'll need it later: **all of this only holds when demand is elastic.** The price cut has to actually draw out a lot of new demand. If demand for something is already maxed out (how much salt your household eats in a year is fixed), no price cut will conjure new uses, and the Jevons effect simply doesn't fire.
 
-## Real-world Example
+## Mapping to AI: compute is today's coal
 
-Coal was just the first. The pattern recurs throughout history:
+Swap "coal" for "compute" and the book Jevons wrote could be reprinted today, word for word.
 
-- **Cars and fuel economy.** Engines keep getting more efficient, yet people buy bigger cars, drive farther, and more households can afford one at all. Total gasoline consumption did not fall just because per-car mileage improved.
-- **Lighting.** From candles to incandescent bulbs to LEDs, the cost per lumen has fallen by orders of magnitude. The result wasn't that we light things more frugally — it's that **light is everywhere**: cityscapes, billboards, screens. Per-capita lighting consumption soared.
-- **Bandwidth.** Cost per unit of traffic keeps falling, so we got 4K video, livestreaming, and cloud gaming. Nobody uses the network *less* because traffic got cheaper.
+The most direct case is **inference**. Token prices collapsed, so places you'd never have spent a big model on, you now hit without hesitation: every PR auto-reviewed, every log line auto-tagged, every user message summarized in real time. Back when tokens were expensive, you wouldn't even consider these. Now they're the default.
 
-Each time, "efficiency" didn't save the resource — it **redistributed the resource to newly unlocked, much larger demand**.
+Agents push this to the limit, and here's a detail worth fixating on: **a single agent task hides dozens, even hundreds, of LLM calls** (reason once, reflect once, call a tool once, fail and retry a few more times). The cheaper a single call, the more an engineer dares to "just call it a few more times" when designing the agent: one more reflection pass, a bit more context stuffed in, a few more fallback retries. So the drop in per-call cost gets eaten clean by the explosion in call count—and then some.
 
-## AI Mapping
+Which means the answer to the paradox we opened with is, by now, clear:
 
-This is the most important section of the piece. Swap "coal" for "compute" and the plot replays word for word in the world of AI.
+> Every notch the serving stack is optimized (quantization, KV-cache, speculative decoding, better batching) raises per-card throughput and lowers unit cost—and demand immediately rushes in to eat the capacity you just freed.
 
-**Inference** — the most direct mapping. Token prices collapse, so:
-- Use cases you'd never have spent a big model on now run constantly: every PR auto-reviewed, every log line auto-tagged, every user message summarized in real time.
-- The rise of agents pours fuel on the fire. A single agent task hides dozens or hundreds of LLM calls (reasoning, reflection, tool calls, retries). **The cheaper a single call, the more calls a task is willing to make.**
-- The result: total inference volume grows much faster than per-token cost falls. **Cheap didn't save GPUs — it fed them to an exploding call volume.**
+This is why **the better we optimize, the fuller the cluster gets**. It's not that you optimized wrong; this is just Jevons. And it touches something that matters a lot to infra engineers, so let's pull it out on its own.
 
-**AI Infrastructure & GPU Scheduling** — this is the answer to the paradox we opened with. Every notch of efficiency in the model/serving stack (quantization, KV-cache tricks, speculative decoding, better batching) raises per-card throughput and lowers unit cost — and demand immediately rushes in to eat the freed capacity. So you observe the counterintuitive truth: **the better you optimize, the fuller the cluster gets.** Capacity planning that assumes "optimize → idle → buy fewer cards" will almost always be wrong.
+## The engineer's view: don't plan capacity on the headroom an optimization "freed"
 
-**Training** — also holds, but apply it carefully. Falling cost per FLOP didn't make anyone spend less compute; it directly produced bigger models, longer runs, and more experiments. Whatever the budget saved gets eaten instantly by "well then, let's scale up another notch."
+Everything so far has been the why; this section is the one concrete thing we actually do differently.
 
-**Product** — this is the opportunity side. When the marginal cost of some capability approaches zero, **the real leverage isn't in "using it sparingly" but in "inventing uses that were impossible because they used to be too expensive."** The first PM to realize "we can now run 1,000 free model calls per user per day" captures an entire wave of upside.
+A lot of capacity planning goes: current load ÷ new per-card efficiency = cards needed. An optimization bumped efficiency 30%, so the conclusion is "we can buy 30% fewer cards" or "our current cards can take 30% more load."
 
-**Evaluation** — a counterintuitive warning: as inference gets cheaper, your eval costs get out of hand too. You'll be tempted to run more eval samples, more A/Bs, more regressions. Cheap didn't shrink your eval budget — it made you run more often.
+**That arithmetic will almost always blow up in Jevons' face.** Because it assumes demand is fixed, and the very optimization we just shipped is what pulls demand up. What actually happens: the optimization ships, unit cost drops, and the product side (maybe the team next door) notices "oh, this is now cheap enough to turn on for everyone by default." Call volume triples in two weeks and eats the headroom we freed, with interest.
 
-## Engineering Perspective
+The right stance: **size capacity by "how much new demand this price cut will unlock," not by "current load divided by new efficiency."** Leave headroom for the surge; don't treat the freed space as a budget you get to save. I've sat through too many "we optimized and somehow ended up shorter on cards" retros, and the root cause is always this.
 
-The same Jevons, different roles, different things to notice:
+As for agent engineers, the same truth bites us somewhere else: cheap tempts us into ever-chattier agents. **Set explicit budget ceilings** (max calls per task, max context size), or cost spirals right alongside capability, and you won't even notice at first, not until the bill arrives.
 
-- **If I'm an Infra Engineer:** never treat "capacity freed by an optimization" as "capacity I can avoid buying." The real result of an optimization is that **demand rises to fill it**. Plan capacity around the *new demand you unlocked*, not around "current load ÷ new efficiency." Leave headroom for the surge.
-- **If I'm an Agent Engineer:** cheaper per-call costs tempt you into designing chattier agents (more reflection, more retries, bigger context). That's Jevons incarnate inside your architecture. Set explicit budget caps, or cost will spiral right alongside capability.
-- **If I'm a PM:** don't spend a price cut purely on margin. Ask the Jevons question: **"If this capability got 10× cheaper again, what product becomes possible that's impossible today?"** The upside is on the new-demand side, not the savings side.
-- **If I'm a Researcher:** efficiency results (leaner architectures, faster inference) won't reduce total compute consumption — they **raise everyone's baseline usage**. The more successful your efficient method, the more compute the whole field burns. That's not a bad thing, but be honest about its system-level consequence.
+## The investor's view: this chain explains an apparent contradiction
 
-## Investment Perspective
+Jevons is also a key to AI compute as a business, and it cuts directly against the intuition that "models are dirt cheap now, so what's left for the shovel-sellers."
 
-Jevons is a key for understanding the logic of AI compute as an investment — and it cuts directly against the intuition that "AI got cheap, so the shovel-sellers are done."
+The chain runs like this:
 
-```
-Inference efficiency improves (cheaper tokens)
-        ↓
-Demand explodes (more calls, more agents, more use cases)
-        ↓
-GPU demand rises, not falls → cloud-compute demand rises → upstream
-(HBM, advanced packaging, electricity) tightens with it
-```
+> Inference gets cheaper → call volume explodes (more use cases, more agents) → GPU demand **rises, not falls** → cloud compute demand rises → further upstream, HBM, advanced packaging, even electricity tighten along with it.
 
-This explains an apparent contradiction: **model APIs slash prices while GPUs, cloud, and even electricity stay persistently tight.** A price cut isn't the end of demand — it's the beginning.
+This explains that apparently contradictory picture: **model APIs slash prices at the very same time GPUs, cloud, and power stay persistently tight.** A price cut isn't the end of demand; it's the start.
 
-To bring it back to AI system design: the lesson this investment chain hands an engineer is that **compute will be scarce for a long time.** Don't wait for "cards to get cheap"; treat "compute-constrained" as a permanent design constraint, not a temporary inconvenience.
+Back to the code we write: the real lesson this chain hands an engineer isn't "which stock to buy," but a judgment that should be carved into your system design: **compute will be scarce for a long time; treat it as a permanent constraint, not a temporary inconvenience.** Don't write TODOs like "optimize once cards get cheap, once quota loosens." That day isn't coming. Constraint is the normal state, so design for it.
 
-## Life Perspective
+## The everyday view: you've seen this already
 
-Jevons is everywhere in daily life too:
+This machinery isn't confined to the data center.
 
-- A **dishwasher** saves the effort of washing one load, so you use more dishes and wash more often — instead of banking the time.
-- A **faster commute** (a new road) saves time in the short run but, in the long run, pushes people to move farther away, leaving total commute time flat or worse. (This is the famous "induced demand.")
-- **Productivity tools:** a faster IDE and smarter autocomplete don't get you home earlier; they get you *expected to ship more code*.
+A dishwasher saves the effort of one load, and the result isn't that you bank the time; it's that you use more dishes and run it more often, because "washing dishes" got cheaper. Build a faster road and you save time short-term, but long-term people move farther out and total commute time doesn't budge (urban planners call it "induced demand"—Jevons in disguise).
 
-Back to AI: this is exactly why "AI makes engineers more productive" doesn't necessarily make anyone's life easier — **the capacity you save gets eaten by raised expectations.** Grasp this, and when you design AI tools you can deliberately ask: am I actually saving someone time, or just raising the bar for them?
+The one that stings most: you get a faster IDE and smarter autocomplete, and the result isn't leaving work earlier; it's being quietly expected to ship more code.
 
-## Misconceptions
+Getting this straight actually matters for how you design AI tools: **the capacity you save gets eaten by raised expectations.** So when we build an "AI that makes engineers more productive" feature, it's worth asking ourselves honestly: am I actually saving someone time, or just quietly raising the bar on them? The answer often decides whether the feature ends up loved or resented.
 
-The easiest thing to get wrong:
+## Common misconceptions
 
-> Jevons Paradox ≠ "efficiency improvements **always** increase total consumption."
+The easiest thing to remember wrong:
 
-The precise statement is: **given elastic demand, efficiency improvements *can* increase total consumption.** It's "can," not "must," and it's **condition-dependent**.
+> Jevons Paradox is **not** "efficiency always increases total consumption."
 
-Another common misread: treating it as "so optimization is pointless." Quite the opposite — optimization is enormously valuable; it unlocks a flood of new value (more use cases, more products). Jevons doesn't say "don't optimize." It says **"don't expect optimization to let you buy less of the resource."**
+The precise version: **given elastic demand, efficiency *can* increase total consumption.** It's "can," not "must," and it comes **with conditions attached.** Treat it as an iron law and apply it everywhere, and you'll embarrass yourself.
 
-## When It Doesn't Apply
+The more dangerous misread: hearing it as "so optimization is pointless." The opposite is true: optimization is enormously valuable (it unlocks a flood of value that didn't exist before). Jevons never said "don't optimize." It said something else: **don't expect optimization to let you buy less of the resource.** The payoff of optimization is unlocking new things, not saving on old costs, and we need to keep those two apart.
 
-The key condition under which the Jevons effect **fails** is **inelastic demand** — a price cut draws out no new demand:
+## When it doesn't apply
 
-- **Demand is already saturated.** Cheaper salt won't make you eat more. Some internal tools have a fixed call volume; no matter how cheap the model gets, the number of calls won't rise. There, efficiency genuinely saves cost.
-- **A hard bottleneck lies elsewhere.** If the real constraint isn't the thing you optimized (say inference isn't compute-bound, it's bound by quality data or a license), then cutting inference cost won't trigger a demand explosion.
-- **Regulation or quotas cap usage.** If consumption is externally capped (compliance, hard budget ceilings), demand can't rise.
+Knowing when a model *fails* is worth more than knowing the model itself. Jevons doesn't hold when **demand is inelastic**—when a price cut draws out no new demand:
 
-The test is simple: ask **"if this got 10× cheaper, would anyone want to use more of it?"** If the answer is "yes, and there are countless places to use it," Jevons holds; if it's "no, demand is what it is," it doesn't. AI inference is clearly the former — which is exactly why the paradox is so glaring in the AI era.
+When demand is already maxed out. Cheaper salt won't make you eat more. Some internal tools have a fixed call volume; no matter how far the model's price drops, call count won't rise—and there, optimization genuinely saves money, no backlash.
 
-## Related Models
+When the real bottleneck isn't the thing you optimized. If your system is stuck on data quality, on a license, on people, then driving inference cost to the floor won't trigger a demand explosion, because the user's foot is caught somewhere else.
 
-Jevons doesn't stand alone; it sits in a web of relationships:
+When usage is hard-capped. Compliance rules, hard budget ceilings, regulatory quotas—demand can't rise even if it wants to.
 
-<!-- These link to forthcoming articles in the same column, forming the knowledge web (spec §9). -->
-- [Opportunity Cost](/en/mental-models/opportunity-cost/): cheaper compute reshuffles the opportunity cost of "what should this card be doing."
-- [Supply & Demand](/en/mental-models/supply-and-demand/): Jevons is, at root, a story about the elasticity of the demand curve.
-- [Positive Feedback](/en/mental-models/positive-feedback/): new demand spurs more use cases — a self-amplifying loop.
-- [Economies of Scale](/en/mental-models/economies-of-scale/): falling cost and expanding demand feed each other.
-- [Induced Demand](/en/mental-models/induced-demand/): building roads and building GPU clusters are the same story.
+The test fits in one line: **"if this got 10× cheaper, would anyone want to use more of it—and are there lots of places to use it?"** If it's "yes, and plenty of places," Jevons holds; if it's "no, demand is what it is," it doesn't. AI inference is plainly the former, which is exactly why a 150-year-old paradox is so glaring today.
 
-## Key Takeaway
+## Related models
 
-> EN: Efficiency doesn't kill scarcity; it relocates it. When you make something cheaper, don't count the savings first—ask what new demand you're about to unleash.
-> 中文：效率不会消灭稀缺，它只是把稀缺搬个地方。当你让某样东西变得更便宜，先别急着算省了多少——先问问，你即将解锁多大的新需求。
+Jevons doesn't stand alone; it hangs in a web. These are its neighbors on that web (articles I'll add over time):
+
+- [Opportunity Cost](/en/mental-models/opportunity-cost/): cheaper compute really changes the ranking of "what should this card be doing instead."
+- [Supply & Demand](/en/mental-models/supply-and-demand/): Jevons is, at bottom, a story about the elasticity of demand.
+- [Positive Feedback](/en/mental-models/positive-feedback/): new demand spawns new use cases—a self-amplifying loop.
+- [Induced Demand](/en/mental-models/induced-demand/): building roads and scaling clusters are the same script.
+
+## One line to remember
+
+> EN: Efficiency doesn't kill scarcity; it just relocates it. So don't wait for compute to get cheap—every bit of cheapness gets eaten by the new demand you just unlocked.
+> 中文：效率不会消灭稀缺，它只是把稀缺挪个地方。所以别等算力变便宜——它便宜下来的每一分，都会被你解锁的新需求重新吃掉。
