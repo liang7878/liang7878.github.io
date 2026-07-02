@@ -316,18 +316,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">94</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -367,8 +367,8 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/c8fa70e0.html">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/principal-agent-problem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -386,7 +386,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/c8fa70e0.html" class="post-title-link" itemprop="url">“《B 站大数据体系建设的技术选型与落地实践》直播总结 -- B站大数据离线平台架构演进与实践”</a>
+          <a href="/mental-models/principal-agent-problem/" class="post-title-link" itemprop="url">委托代理问题：当你雇的"代理"有自己的算盘</a>
         </h2>
 
         <div class="post-meta-container">
@@ -397,14 +397,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-10-14 23:31:11" itemprop="dateCreated datePublished" datetime="2023-10-14T23:31:11+08:00">2023-10-14</time>
+      <time title="创建时间：2026-07-01 11:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T11:00:00+08:00">2026-07-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-01 16:55:10" itemprop="dateModified" datetime="2026-07-01T16:55:10+08:00">2026-07-01</time>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -412,7 +412,11 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Organization/" itemprop="url" rel="index"><span itemprop="name">Organization</span></a>
         </span>
     </span>
 
@@ -425,14 +429,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.5k</span>
+      <span>5.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>19 分钟</span>
     </span>
 </div>
 
@@ -443,10 +447,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这篇是上周五 B 站和 deeplus 技术分享的第一个 session，直播的时候我正在上班，基本全程错过，今晚趁这个时间把第一部分先看一下，我们一步一步来。</p>
+          <blockquote>
+<p><strong>委托代理问题 &#x2F; Principal-Agent Problem</strong><br>中文：你把事交给一个有自己利益、又不完全受你监督的代理，它执行的就不完全是你的目标。<br>EN: When you delegate to an agent that has its own interests and that you can’t fully monitor, it won’t act purely in yours.</p>
+</blockquote>
+<p>我们来聊一件做 Agent 的人几乎天天撞上、却很少往深里想的事：<strong>你把一个目标交出去，最后拿回来的，往往不是”目标被完成了”，而是”某个你看得见的信号被做漂亮了”——因为那个交出去执行的家伙，有它自己的算盘，还比你更清楚它到底干了什么。</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/posts/c8fa70e0.html">
+              <a class="btn" href="/mental-models/principal-agent-problem/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -476,8 +483,8 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/5a8a6c8d.html">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/ooda-loop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -495,7 +502,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/5a8a6c8d.html" class="post-title-link" itemprop="url">读腾讯技术工程《一文讲透 Redis 分布式锁安全问题》</a>
+          <a href="/mental-models/ooda-loop/" class="post-title-link" itemprop="url">OODA 循环：为什么迭代速度能打败“完美计划”</a>
         </h2>
 
         <div class="post-meta-container">
@@ -506,14 +513,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-10-11 21:59:46" itemprop="dateCreated datePublished" datetime="2023-10-11T21:59:46+08:00">2023-10-11</time>
+      <time title="创建时间：2026-07-01 10:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T10:00:00+08:00">2026-07-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-01 16:55:10" itemprop="dateModified" datetime="2026-07-01T16:55:10+08:00">2026-07-01</time>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -521,7 +528,11 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Organization/" itemprop="url" rel="index"><span itemprop="name">Organization</span></a>
         </span>
     </span>
 
@@ -534,7 +545,355 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>19 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>OODA 循环 &#x2F; OODA Loop</strong><br>中文：观察—定向—决策—行动，不停循环；赢的往往不是计划最完美的，而是循环转得最快的。<br>EN: Observe, orient, decide, act, on repeat—the winner is usually not the best plan but the fastest loop.</p>
+</blockquote>
+<p>我们来聊一件做 AI 的人天天在跟它较劲、却很少有人点破的事：<strong>在一个变化快得离谱的领域里，赢家几乎从来不是那个计划做得最周密的团队，而是那个“观察—调整—再来一遍”的循环转得最快的团队。计划再完美，也架不住它在你落地之前就过期了。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/mental-models/ooda-loop/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/conways-law/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/mental-models/conways-law/" class="post-title-link" itemprop="url">康威定律：你的系统架构，是团队结构的镜像</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-01 09:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T09:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Organization/" itemprop="url" rel="index"><span itemprop="name">Organization</span></a>
+        </span>
+    </span>
+
+  
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>康威定律 &#x2F; Conway’s Law</strong><br>中文：任何设计系统的组织，最后造出的系统结构，都会长成这个组织沟通结构的翻版。<br>EN: Any organization that designs a system will produce a design whose structure mirrors the organization’s communication structure.</p>
+</blockquote>
+<p>我们来聊一件做 AI 的人天天撞见、却很少往深里想的事：<strong>你的系统会长成你团队的形状——不是因为那样设计最好，而是因为你的团队只造得出他们能沟通出来的东西。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/mental-models/conways-law/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/goodharts-law/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/mental-models/goodharts-law/" class="post-title-link" itemprop="url">古德哈特定律：为什么指标一旦被优化，就开始失真</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-30 16:00:00" itemprop="dateCreated datePublished" datetime="2026-06-30T16:00:00+08:00">2026-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Systems/" itemprop="url" rel="index"><span itemprop="name">Systems</span></a>
+        </span>
+    </span>
+
+  
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>古德哈特定律 &#x2F; Goodhart’s Law</strong><br>中文：当一个指标变成了目标，它就不再是个好指标。<br>EN: When a measure becomes a target, it stops being a good measure.</p>
+</blockquote>
+<p>我们来聊一件做 AI 的人天天遇到、却很少有人点破的事：<strong>你一旦开始拿某个分数考核系统，这个分数就会慢慢和它本来想衡量的东西脱钩——而且优化得越狠，脱钩得越快。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/mental-models/goodharts-law/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/jevons-paradox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/mental-models/jevons-paradox/" class="post-title-link" itemprop="url">杰文斯悖论：为什么算力会永远不够</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-30 14:00:00" itemprop="dateCreated datePublished" datetime="2026-06-30T14:00:00+08:00">2026-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Resources/" itemprop="url" rel="index"><span itemprop="name">Resources</span></a>
+        </span>
+    </span>
+
+  
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -552,337 +911,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>在单机环境下编写多线程程序时，为了避免多个线程同时操作同一个资源，我们往往会通过加锁来实现互斥，以保证同一时间只有一个操作者对某个资源执行操作，在单机多进程的情况下，如果们想操作同一个共享资源，我们也可以通过操作系统提供的文件锁和心好凉来实现互斥，这些都是单台机器上的操作。而在分布式环境下，如果不同机器上的不同进程需要…</p>
+          <blockquote>
+<p><strong>杰文斯悖论 &#x2F; Jevons Paradox</strong><br>中文：把一样东西变便宜，往往不会让它被用得更少，反而更多。<br>EN: Make something cheaper and you usually get more of it consumed, not less.</p>
+</blockquote>
+<p>我们来聊个有点反直觉的事：<strong>算力一定会越来越便宜，但我们只会越来越觉得它不够用，而且恰恰是因为它变便宜了。</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/posts/5a8a6c8d.html">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/a2161837.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/a2161837.html" class="post-title-link" itemprop="url">读《云原生分布式存储基石：etcd 深入解析》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-10-09 23:59:02" itemprop="dateCreated datePublished" datetime="2023-10-09T23:59:02+08:00">2023-10-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-01 16:55:10" itemprop="dateModified" datetime="2026-07-01T16:55:10+08:00">2026-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
-        </span>
-    </span>
-
-  
-
-
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>《云原生分布式存储基石：etcd 深入解析》读书笔记，串联分布式基础到源码：CAP/FLP 与一致性模型、复制状态机与 Raft/Paxos 共识，etcd 的 Lease 租约、Watch、MVCC、WAL 与快照 compaction，以及 raft 内核、BoltDB 存储、Learner 成员变更等源码亮点与运维监控实践。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/a2161837.html">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/11e2c87a.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/11e2c87a.html" class="post-title-link" itemprop="url">读《程序员的 README》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-09-09 21:58:30" itemprop="dateCreated datePublished" datetime="2023-09-09T21:58:30+08:00">2023-09-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-01 16:55:10" itemprop="dateModified" datetime="2026-07-01T16:55:10+08:00">2026-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">书籍阅读</span></a>
-        </span>
-    </span>
-
-  
-
-
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>27 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>《程序员的 README》读书笔记，面向新手与瓶颈期工程师梳理成长方法论：技术/执行/沟通/领导力四项能力、应对软件熵与技术债、代码评审、测试分层、依赖与语义化版本管理、On-Call 事故响应、技术设计文档、可演进架构、敏捷 Scrum 与向上管理及 OKR。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/11e2c87a.html">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/posts/b0cb3be9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Chengliang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小良的分布式之路">
-      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | 小良的分布式之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/b0cb3be9.html" class="post-title-link" itemprop="url">读《OceanBase 数据库源码解析》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-08-29 21:31:16" itemprop="dateCreated datePublished" datetime="2023-08-29T21:31:16+08:00">2023-08-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-01 16:55:10" itemprop="dateModified" datetime="2026-07-01T16:55:10+08:00">2026-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D/" itemprop="url" rel="index"><span itemprop="name">技术书籍</span></a>
-        </span>
-    </span>
-
-  
-
-
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>22k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1:21</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>《OceanBase 数据库源码解析》读书笔记，按概述、架构、OBServer、存储引擎、SQL 引擎、事务引擎、高可用、多租户、安全九章梳理 OB 的 Shared-Nothing 与 Paxos 复制组、RootService 总控、LSM-Tree 存储与多级缓存、查询优化与并行执行、两阶段提交事务及多租户资源隔离。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/b0cb3be9.html">
+              <a class="btn" href="/mental-models/jevons-paradox/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -906,7 +941,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -929,14 +964,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">132k</span>
+    <span title="站点总字数">197k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:01</span>
+    <span title="站点阅读时长">11:55</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动

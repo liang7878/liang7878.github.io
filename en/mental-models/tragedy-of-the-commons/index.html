@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Tragedy of the CommonsEN: When many rational people share one finite resource, they tend to drain it together.中文：一群各自理性的人共用一份有限资源，最后往往会一起把它榨干。  Here’s something anyone building multi-agent systems or">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Tragedy of the Commons: How Rational Use Destroys a Shared Resource">
+<meta property="og:url" content="https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="Tragedy of the CommonsEN: When many rational people share one finite resource, they tend to drain it together.中文：一群各自理性的人共用一份有限资源，最后往往会一起把它榨干。  Here’s something anyone building multi-agent systems or">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Game Theory">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Economics">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="Commons">
+<meta property="article:tag" content="Shared Resources">
+<meta property="article:tag" content="Rate Limiting">
+<meta property="article:tag" content="Sustainability">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/","path":"/en/mental-models/tragedy-of-the-commons/","title":"The Tragedy of the Commons: How Rational Use Destroys a Shared Resource"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>The Tragedy of the Commons: How Rational Use Destroys a Shared Resource | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Game Theory, Agent, LLM, Economics, Multi-Agent, Commons, Shared Resources, Rate Limiting, Sustainability">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/tragedy-of-the-commons/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/tragedy-of-the-commons/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/"
+    },
+    "headline": "The Tragedy of the Commons: How Rational Use Destroys a Shared Resource",
+    
+    "description": "Tragedy of the CommonsEN: When many rational people share one finite resource, they tend to drain it together.中文：一群各自理性的人共用一份有限资源，最后往往会一起把它榨干。 Here’s something ...",
+    
+    "inLanguage": "en",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T07:00:00+00:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Game Theory, Agent, LLM, Economics, Multi-Agent, Commons, Shared Resources, Rate Limiting, Sustainability"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Agents",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Agents/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "The Tragedy of the Commons: How Rational Use Destroys a Shared Resource",
+        "item": "https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ask-this"><span class="nav-number">1.</span> <span class="nav-text">Why ask this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-it-comes-from"><span class="nav-number">2.</span> <span class="nav-text">Where it comes from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-core-intuition"><span class="nav-number">3.</span> <span class="nav-text">The core intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-real-world-example"><span class="nav-number">4.</span> <span class="nav-text">A real-world example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-to-AI-the-shared-thing-getting-drained-together"><span class="nav-number">5.</span> <span class="nav-text">Mapping to AI: the shared thing, getting drained together</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-engineer%E2%80%99s-view-don%E2%80%99t-rely-on-restraint-rely-on-rules"><span class="nav-number">6.</span> <span class="nav-text">The engineer’s view: don’t rely on restraint, rely on rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-investment-view-a-whole-industry-draining-the-well-it-drinks-from"><span class="nav-number">7.</span> <span class="nav-text">The investment view: a whole industry draining the well it drinks from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-life-view-you%E2%80%99ve-already-played-the-commons-game"><span class="nav-number">8.</span> <span class="nav-text">The life view: you’ve already played the commons game</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-misconceptions"><span class="nav-number">9.</span> <span class="nav-text">Common misconceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-it-doesn%E2%80%99t-apply"><span class="nav-number">10.</span> <span class="nav-text">When it doesn’t apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-models"><span class="nav-number">11.</span> <span class="nav-text">Related models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-one-line-to-remember"><span class="nav-number">12.</span> <span class="nav-text">The one line to remember</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    Related Posts
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/tragedy-of-the-commons/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      公地悲剧：每个人都理性，公共资源却被榨干
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      纳什均衡：没人想动，不代表结局是好的
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/en/mental-models/tragedy-of-the-commons/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="The Tragedy of the Commons: How Rational Use Destroys a Shared Resource | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          The Tragedy of the Commons: How Rational Use Destroys a Shared Resource
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-01 15:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T15:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Agents/" itemprop="url" rel="index"><span itemprop="name">Agents</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/mental-models/tragedy-of-the-commons/" rel="alternate" hreflang="zh-CN">中文</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>Tragedy of the Commons</strong><br>EN: When many rational people share one finite resource, they tend to drain it together.<br>中文：一群各自理性的人共用一份有限资源，最后往往会一起把它榨干。</p>
+</blockquote>
+<p>Here’s something anyone building multi-agent systems or infrastructure knows in their bones: <strong>give a bunch of brilliant, perfectly rational people one shared resource and no rules, and they’ll almost certainly drain it together—not because anyone turns evil, but precisely because everyone is doing their own careful math.</strong></p>
+<span id="more"></span>
+
+<h2 id="Why-ask-this"><a href="#Why-ask-this" class="headerlink" title="Why ask this"></a>Why ask this</h2><p>Let me describe a scene you’re probably living through right now.</p>
+<p>You want to run an experiment, so you go grab some GPUs. The scheduler tells you the cluster is 100% full—get in line. But you know full well that half those GPUs are idling, because every team reserved more than it actually needs. Just in case. To keep a buffer. So nobody snipes my capacity later. The cluster was never really busy; it just got squatted to death by everyone at once.</p>
+<p>Different scene, identical script. Your service sits behind a shared API gateway and runs fine—until one day your p99 explodes. You dig through your own code for an hour before you find it: the team next door shipped a feature that pinned the shared endpoint. The classic noisy neighbor. You did nothing wrong, but you share a pipe with them, and what they grabbed is exactly what got squeezed out of you.</p>
+<p>These are the same story: <strong>a finite resource that everyone shares, where each person has every reason to grab a little more—because the upside of grabbing is all theirs, and the cost is spread across everyone.</strong></p>
+<p>None of this is new. An ecologist nailed it back in 1968—writing not about chips, but about cows.</p>
+<h2 id="Where-it-comes-from"><a href="#Where-it-comes-from" class="headerlink" title="Where it comes from"></a>Where it comes from</h2><p>The structure was first sketched in 1833 by a British economist named William Forster Lloyd, writing about a village’s shared pasture. What made it famous was a 1968 essay in Science by the ecologist Garrett Hardin, titled, plainly, “The Tragedy of the Commons.”</p>
+<p>Hardin’s picture is so simple you can’t unsee it:</p>
+<p>A common pasture, open to every herder in the village. For each herder, the math on adding one more cow is delicious: the whole benefit of that cow is mine, while the cost—the overgrazing, the degraded pasture—is shared across every cow in the village, so my slice of it is tiny. Every rational herder reaches the same conclusion: add one more. Everyone does, the pasture gets stripped bare, and in the end nobody’s cows can eat.</p>
+<p>Here’s the part that stings: <strong>there are no villains.</strong> Not one herder is a greedy monster; each is simply making the choice that’s best for himself. The tragedy isn’t caused by anyone behaving badly—it’s caused by the structure itself: private benefit, shared cost, pushing every rational person the same way.</p>
+<p>Hardin’s own prescription was bleak: either privatize the commons (carve it into private plots) or hand it to the state to run top-down. For a long time people assumed those were the only two roads.</p>
+<p>Then in 1990, Elinor Ostrom blew up that binary with a book called Governing the Commons—work that later won her the Nobel in economics. She went and looked at how real fishing villages, forests, and irrigation systems actually manage shared resources, and found a third road: <strong>communities that make their own rules, watch each other, and impose graduated penalties on whoever oversteps—no privatization, no central dictator.</strong> That third road is exactly the one we systems people should be copying. More on it later.</p>
+<h2 id="The-core-intuition"><a href="#The-core-intuition" class="headerlink" title="The core intuition"></a>The core intuition</h2><p>The core of the tragedy fits in one sentence: <strong>the thing you actually care about (don’t let the resource collapse) is a collective matter, but every concrete choice you face is one you cost out alone—and those two ledgers point in opposite directions.</strong></p>
+<p>A few conditions have to line up for the show to run:</p>
+<ol>
+<li><strong>The resource is finite and gets used up.</strong> My extra unit is your missing unit (economists call this “rivalrous”). A pasture, a slice of bandwidth, a rate-limit quota—all of them.</li>
+<li><strong>Anyone can use it, and you can’t fence them out.</strong> No ticket, no wall (“non-excludable”). Openness is the whole meaning of the word “commons.”</li>
+<li><strong>The benefit of grabbing is private; the cost is socialized.</strong> This is the engine. The sweetness of your extra grab goes straight into your pocket; the pain is averaged across everyone, so your own share of it is barely perceptible.</li>
+</ol>
+<p>Keep this key handy, because we’ll use it again and again: <strong>the gain from grabbing is all yours; the cost is split among everyone. As long as that asymmetry holds, rational people keep grabbing until there’s nothing left to grab.</strong></p>
+<p>The nastiest bit is a corollary of that third condition: <strong>restraint gets punished.</strong> Say you have a change of heart and voluntarily take less. What happens? The share you left on the table is immediately taken by someone else, the resource collapses anyway, and you’re just the sucker who took less. In this structure, the person who holds back isn’t a hero—they’re the one who loses first. That’s why “everybody please be responsible” never works: restraint is a losing trade, structurally.</p>
+<pre>
+<code class="mermaid">
+
+graph TD
+  A[Shared resource finite but open to all] --&gt; B[Each user runs their own rational math]
+  B --&gt; C[Grab a bit more and keep the whole gain]
+  C --&gt; D[The cost is spread thin across everyone]
+  D --&gt; E[The rational move is always grab more]
+  E --&gt; F[Everyone grabs and the resource is drained]
+  F -.restraint just makes you lose first.-&gt; B
+</code>
+</pre>
+
+<p>Notice that dashed line: <strong>the scarcer the resource gets, the more restraint costs you, so everyone grabs harder.</strong> It’s a loop that spins itself faster, not something you stop by tapping the brakes once. The cruelest part is that late in the game, when the resource is most depleted and everyone should be pulling back, the incentive to grab is strongest—so everyone floors it at exactly the wrong moment.</p>
+<h2 id="A-real-world-example"><a href="#A-real-world-example" class="headerlink" title="A real-world example"></a>A real-world example</h2><p>The most brutal real version of this is fish.</p>
+<p>The Grand Banks off Newfoundland were once among the richest fishing grounds on Earth—cod so thick, the story went, you could walk across their backs. For centuries that sea fed generation after generation of fishermen. Then, in the back half of the twentieth century, sonar and giant trawlers and factory ships arrived together, and catching efficiency went vertical.</p>
+<p>For any single boat, the math was easy: another netful today is money in my pocket; whether the stock gets overfished past its ability to recover is a matter for “everyone,” and has little to do with this one haul. Every boat reasoned the same way, and together all the boats pulled cod out far faster than cod could breed.</p>
+<p>In 1992 the stock simply collapsed—down to roughly one percent of its historical level. Canada slammed an emergency moratorium on the fishery, and overnight some 35,000 fishers and plant workers lost their jobs, the largest layoff in Canadian history. More than thirty years on, the cod there still haven’t truly recovered.</p>
+<p>Not one boat wanted to destroy that fishery—it was their own livelihood, and their children’s. But every one of them was rational, and it was exactly that boat-by-boat rationality that emptied the sea. Swap “boat” for “team” and “cod” for “GPU quota” or “the open web’s data,” and the script doesn’t change a word.</p>
+<h2 id="Mapping-to-AI-the-shared-thing-getting-drained-together"><a href="#Mapping-to-AI-the-shared-thing-getting-drained-together" class="headerlink" title="Mapping to AI: the shared thing, getting drained together"></a>Mapping to AI: the shared thing, getting drained together</h2><p>AI is basically a theme park for the tragedy of the commons, because we share finite things everywhere—clusters, rate limits, context budgets, and one whole open internet.</p>
+<p><strong>The shared compute cluster.</strong> That’s the opening scene. Every team over-reserves quota and leaves a pile of “held but idling” GPUs; utilization reads 100% while the throughput doing real work starves. The “never getting preempted” comfort you over-reserved is all yours; the queue everyone stands in is the shared cost. Whoever lets go first loses first—so nobody lets go.</p>
+<p><strong>Shared services and rate limits: noisy neighbors and retry storms.</strong> One noisy neighbor dragging down a shared pipe is just the opener. The nastier one is retries: when the shared service slows, every client retries harder—and each retry, taken alone, is perfectly rational (I need this request to succeed), while together they add up to a friendly-fire DDoS that amplifies a small hiccup into a full avalanche (the thundering herd).</p>
+<p><strong>The open web as a data commons (the cleanest case).</strong> The open internet was the well everyone drew from for free; nearly every large model was trained out of it. Now two things are happening at once. It’s being pumped so hard that sites are walling themselves off (Cloudflare blocking crawlers, robots.txt, paywalls; Reddit, Stack Overflow, and Twitter slamming their APIs shut)—the well is being sealed precisely because it got drained. And AI-generated slop is flooding that same web, so models trained on it get worse: “model collapse,” where each generation trained on the previous one’s output bleeds diversity and quality. Every lab scraping, and every dump of generated text back onto the web, is individually rational; together they’re draining and poisoning the exact well the next generation of models has to drink from. The kicker: AI is at once the over-user, the polluter, and the future victim.</p>
+<p><strong>Shared budgets in multi-agent systems.</strong> Several agents share one finite context window, token budget, or tool-call allowance. Each sub-agent, trying to nail its own little subtask, wants to stuff more into the shared context (“bring this doc along too, just in case”). The shared context fills with noise and every agent’s quality drops (context rot). Each stuffing is locally rational; together they blow the shared budget. Same with a shared rate-limit pool across agents—one greedy agent can starve all the rest.</p>
+<p>Stack those four scenes on top of each other and you see the same key underneath every one: <strong>each person grabbing is rational, none of them is a villain, but the benefit of grabbing is theirs while the cost lands on the whole system—so the shared thing gets drained, with nobody behaving badly at all.</strong></p>
+<h2 id="The-engineer’s-view-don’t-rely-on-restraint-rely-on-rules"><a href="#The-engineer’s-view-don’t-rely-on-restraint-rely-on-rules" class="headerlink" title="The engineer’s view: don’t rely on restraint, rely on rules"></a>The engineer’s view: don’t rely on restraint, rely on rules</h2><p>Enough principle—down to what we can actually do. And the one sentence that matters most here is Ostrom’s: <strong>a commons doesn’t need privatization, and it doesn’t need a dictator; it needs governance.</strong></p>
+<p><strong>Make the shared cost land on the individual.</strong> The tragedy runs on the cost being invisible to you. So the first move is to hand it back with a price tag: internal chargeback&#x2F;showback, tagging every job with the GPU-hours and tokens it burned. The moment grabbing makes some team’s bill look ugly, the rational direction flips. (This is just internalizing the externality.)</p>
+<p><strong>Quotas and fair-share scheduling—don’t rely on trust.</strong> Hard per-tenant quotas, a fair-share scheduler (DRF, fair-share, Kubernetes ResourceQuotas). Why hard? Because, as we said, restraint is a losing trade structurally—so “restraint” can’t be voluntary; the system has to enforce the split.</p>
+<p><strong>Isolation—don’t let one noisy neighbor drain the pool.</strong> Per-tenant rate limits, token buckets, circuit breakers, backpressure. The worst thing about a shared pool is that one user can drink it dry; isolation fences the commons—but it’s a “you only get your share” fence, not privatization.</p>
+<p><strong>Put retries on a budget.</strong> Exponential backoff + jitter + retry budgets (the Google SRE playbook). One client retrying hard is rational; ten thousand retrying together is an avalanche. A retry budget is the structural rule that keeps “rational retries” from summing into suicide.</p>
+<p><strong>Toward the data commons, don’t just take.</strong> Don’t feed unfiltered web sludge straight into training; label your synthetic data and keep its provenance (C2PA and friends), so you’re not pouring pollution back into the shared well. If you use open source, give back to it—and while we’re here: AI-generated low-quality PRs and “security reports” are flooding open-source maintainers (curl’s Daniel Stenberg has publicly ranted about AI-fabricated vulnerability reports). A maintainer’s time and energy is another commons being drained.</p>
+<p>Ostrom’s insight pays off enormously here: you don’t have to shatter the cluster into one-slice-per-person (fragmented, miserable utilization), and you don’t have to route every job through a central approval dictator (a bottleneck). The middle road—quotas + monitoring + consequences for overstepping—is the right one.</p>
+<h2 id="The-investment-view-a-whole-industry-draining-the-well-it-drinks-from"><a href="#The-investment-view-a-whole-industry-draining-the-well-it-drinks-from" class="headerlink" title="The investment view: a whole industry draining the well it drinks from"></a>The investment view: a whole industry draining the well it drinks from</h2><p>Pull the lens back to the industry, and the biggest commons of all is the human-made data on the open internet. For over a decade, nearly every large model has drawn from that well for free. The problem now: everyone’s drawing from it at once and pouring AI-generated water back in, so the well is being drained and polluted at the same time.</p>
+<p>This has a direct bearing on how to bet on AI. As the public-data commons degrades, the moat shifts to two places: whoever holds proprietary data nobody else can get (their own well, fenced and unpolluted), and whoever builds the governance (provenance you can trace, quality you can control). The players running naked on public web data are standing on ground everyone is hollowing out together.</p>
+<p>Looping back to writing code, the lesson is plain: <strong>stop treating public web data as a well that never runs dry and never gets dirty.</strong> Treat it as a degrading commons—verify provenance where you can, build your own data where it matters, mark your synthetic data. How you treat that commons today decides what you’ll be able to train two years from now.</p>
+<h2 id="The-life-view-you’ve-already-played-the-commons-game"><a href="#The-life-view-you’ve-already-played-the-commons-game" class="headerlink" title="The life view: you’ve already played the commons game"></a>The life view: you’ve already played the commons game</h2><p>This machinery doesn’t stay in the server room.</p>
+<p>The shared office fridge always ends up stuffed with unclaimed, furry leftovers—easy for anyone to add to, and cleaning it out is a matter for “everyone,” so nobody does. The shared kitchen, the shared meeting room, the group-project teammate who does nothing and still signs their name (free-riding)—same show. The biggest commons of all is the planet’s climate: each country’s, each company’s extra bit of emissions is a benefit they keep, while the cost is carried by all of humanity.</p>
+<p>Think this through, because it’s lethal for AI product design: <strong>the moment your product lets a crowd share one pool—a shared rate-limit budget, community-contributed content, a shared reputation score—it will get “commons-ed.”</strong> People will farm the budget, dump garbage into the content, game the reputation score—each of them rational, none of them feeling like a villain. So when you build features like this, the right mindset isn’t “might users abuse it,” it’s “someone will definitely grab too much—so did I design the rules, the quotas, and the cost-sharing in from day one?” Answer that, and you’ve usually decided whether your shared feature grows into a pasture or into that furry fridge.</p>
+<h2 id="Common-misconceptions"><a href="#Common-misconceptions" class="headerlink" title="Common misconceptions"></a>Common misconceptions</h2><p><strong>Misconception one: it’s about human greed, so a little education and an appeal to everyone’s better nature will fix it.</strong> It won’t. Like Goodhart, this is structural, not a character flaw. Fill a room with kind, considerate people, and as long as “private benefit, shared cost” holds, the commons still gets drained—because whoever restrains themselves loses first. That “please use the cluster responsibly” all-hands email is worth about as much as the electrons it’s printed on. Get this backwards and you’ll go hunting for “bad actors” instead of fixing the broken structure.</p>
+<p><strong>Misconception two: it’s privatize or central control, pick one.</strong> Exactly backwards—that false binary is Hardin’s own mental rut, and it’s precisely what Ostrom won a Nobel for breaking. Carve the cluster into one slice per person and utilization craters; put a central scheduling dictator in charge of approving every job and it becomes the bottleneck. What actually works is almost always the third road: <strong>governance</strong>—a shared pool plus clear quotas plus usage everyone can see plus consequences for overstepping. Don’t leap into the “privatize vs. big government” dilemma every time you hit a commons.</p>
+<p><strong>Misconception three: any shared resource is doomed.</strong> Also wrong. The tragedy is conditional, not universal. It needs a rivalrous resource, open with no fence, a cost that can be pushed onto others, and no governance. Break any one of those and the tragedy may not happen at all—which leads straight into the next section.</p>
+<h2 id="When-it-doesn’t-apply"><a href="#When-it-doesn’t-apply" class="headerlink" title="When it doesn’t apply"></a>When it doesn’t apply</h2><p>Knowing when a model fails is worth more than memorizing the model. Flip those conditions and you get the cases where the tragedy doesn’t hold:</p>
+<p><strong>The resource is non-rivalrous—your use doesn’t reduce mine.</strong> Pure information copies for almost nothing: a read-only model weight, a static file on a CDN. You read yours, I read mine, neither of us has less. Things like that can’t be “drained.” (Careful: the bandwidth and compute to host and serve it are still rivalrous—the commons often hides one layer beneath the thing you assumed was free.)</p>
+<p><strong>It’s already fenced and metered.</strong> Your own dedicated GPU quota isn’t a commons; it has no tragedy (and, of course, none of the sharing efficiency either). Metering and quotas are themselves the cure—which is exactly why “governance” works.</p>
+<p><strong>Few players, repeated interaction, mutual visibility.</strong> Three people sharing a dev box mostly just work it out; ten thousand anonymous API clients won’t. When participants are few, in it for the long haul, and can see each other’s usage, reputation and unspoken norms hold the grabbing in check (these are Ostrom’s conditions, and the same reason cooperation emerges in a repeated game).</p>
+<p><strong>Regeneration far outpaces consumption.</strong> If extraction runs well below recovery, the pool is effectively infinite and won’t collapse. But watch out for Jevons: the moment you make drawing water cheaper, extraction climbs on its own, and “effectively infinite” stops being true fast.</p>
+<p>The test is that same key, run backwards: <strong>“if I grab an extra share of this shared thing, do I keep the whole benefit while the cost lands on others—and can I get away with it unseen and unpunished?”</strong> All three “yes” → high tragedy risk, add governance now; even one “no” (the cost falls back on me, I’ll get caught and sanctioned, or the pool is effectively infinite) → the sharing is reasonably sturdy. In AI, for the vast majority of shared resources, all three answers are a loud “yes”—which is why this law from 1968 stings so much in our field.</p>
+<h2 id="Related-models"><a href="#Related-models" class="headerlink" title="Related models"></a>Related models</h2><p>The tragedy of the commons isn’t an island; it hangs in a web. Here are some neighbors on that web (articles coming as I write them):</p>
+<ul>
+<li><a href="/en/mental-models/prisoners-dilemma/">Prisoner’s Dilemma</a>: the tragedy is really its many-player version—for each individual, “grab” strictly beats “restrain,” yet everyone grabbing together ends far worse than everyone restraining.</li>
+<li><a href="/en/mental-models/nash-equilibrium/">Nash Equilibrium</a>: “everyone extracting to the max” is a Nash equilibrium—given that everyone else is grabbing, restraining unilaterally only makes you worse off. That’s why the tragedy is so stable and so hard to escape from the inside.</li>
+<li><a href="/en/mental-models/mechanism-design/">Mechanism Design</a>: governing a commons is a mechanism-design problem—engineer the rules so the individually rational choice is also the collective optimum, i.e., internalize the externality. Ostrom’s work is the empirical version of it.</li>
+<li><a href="/en/mental-models/externality/">Externality</a>: “socialized cost” is just a negative externality—the cost of your extra grab, pushed onto others who never made the choice. The tragedy of the commons is externality taken to its limit.</li>
+<li><a href="/en/mental-models/jevons-paradox/">Jevons Paradox</a>: make drawing from the commons cheaper and extraction climbs on its own. Efficiency doesn’t save the shared resource; it burns through it faster.</li>
+</ul>
+<h2 id="The-one-line-to-remember"><a href="#The-one-line-to-remember" class="headerlink" title="The one line to remember"></a>The one line to remember</h2><blockquote>
+<p>EN: A commons doesn’t die because someone turns evil—it dies because everyone stays rational: the gain is yours, the cost is everyone’s. So stop waiting for restraint; hand the shared cost back, with a price tag, to whoever spends it.<br>中文：公地不是因为有人使坏才崩，而是因为每个人都太理性——好处归你，代价归大家。所以别等谁自觉，把公共的代价，明码标价地还给花它的那个人。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+              <a href="/tags/Multi-Agent/" rel="tag"># Multi-Agent</a>
+              <a href="/tags/Commons/" rel="tag"># Commons</a>
+              <a href="/tags/Shared-Resources/" rel="tag"># Shared Resources</a>
+              <a href="/tags/Rate-Limiting/" rel="tag"># Rate Limiting</a>
+              <a href="/tags/Sustainability/" rel="tag"># Sustainability</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/mental-models/tragedy-of-the-commons/" rel="prev" title="公地悲剧：每个人都理性，公共资源却被榨干">
+                  <i class="fa fa-angle-left"></i> 公地悲剧：每个人都理性，公共资源却被榨干
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/mental-models/bayesian-thinking/" rel="next" title="贝叶斯思维：用证据更新信念，而不是靠直觉下注">
+                  贝叶斯思维：用证据更新信念，而不是靠直觉下注 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"55fe3c5c49febe7c618ff5b7b3e26942"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

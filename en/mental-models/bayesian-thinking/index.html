@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Bayesian ThinkingEN: A belief isn’t a yes&#x2F;no switch; it’s a probability you keep updating as evidence arrives.中文：信念不是”信 &#x2F; 不信”的开关，而是一个随证据不断更新的概率。  Here’s something everyone in AI does every">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bayesian Thinking: Update on Evidence, Don&#39;t Bet on Your Gut">
+<meta property="og:url" content="https://liang7878.github.io/en/mental-models/bayesian-thinking/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="Bayesian ThinkingEN: A belief isn’t a yes&#x2F;no switch; it’s a probability you keep updating as evidence arrives.中文：信念不是”信 &#x2F; 不信”的开关，而是一个随证据不断更新的概率。  Here’s something everyone in AI does every">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Decision">
+<meta property="article:tag" content="Inference">
+<meta property="article:tag" content="Evaluation">
+<meta property="article:tag" content="Statistics">
+<meta property="article:tag" content="Probability">
+<meta property="article:tag" content="Machine Learning">
+<meta property="article:tag" content="Uncertainty">
+<meta property="article:tag" content="Forecasting">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/en/mental-models/bayesian-thinking/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://liang7878.github.io/en/mental-models/bayesian-thinking/","path":"/en/mental-models/bayesian-thinking/","title":"Bayesian Thinking: Update on Evidence, Don't Bet on Your Gut"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Bayesian Thinking: Update on Evidence, Don't Bet on Your Gut | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="LLM, Decision, Inference, Evaluation, Statistics, Probability, Machine Learning, Uncertainty, Forecasting">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/bayesian-thinking/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/bayesian-thinking/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/bayesian-thinking/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/en/mental-models/bayesian-thinking/"
+    },
+    "headline": "Bayesian Thinking: Update on Evidence, Don't Bet on Your Gut",
+    
+    "description": "Bayesian ThinkingEN: A belief isn’t a yes&#x2F;no switch; it’s a probability you keep updating as evidence arrives.中文：信念不是”信 &#x2F; 不信”的开关，而是一个随证据不断更新的概率。 Here’...",
+    
+    "inLanguage": "en",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T08:00:00+00:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "LLM, Decision, Inference, Evaluation, Statistics, Probability, Machine Learning, Uncertainty, Forecasting"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Decision",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Decision/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Bayesian Thinking: Update on Evidence, Don't Bet on Your Gut",
+        "item": "https://liang7878.github.io/en/mental-models/bayesian-thinking/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ask-this"><span class="nav-number">1.</span> <span class="nav-text">Why ask this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-it-comes-from"><span class="nav-number">2.</span> <span class="nav-text">Where it comes from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-core-intuition"><span class="nav-number">3.</span> <span class="nav-text">The core intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-real-world-example"><span class="nav-number">4.</span> <span class="nav-text">A real-world example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-to-AI-one-positive-is-mostly-noise"><span class="nav-number">5.</span> <span class="nav-text">Mapping to AI: one positive is mostly noise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-engineer%E2%80%99s-view-swap-%E2%80%9CI-believe-I-don%E2%80%99t%E2%80%9D-for-%E2%80%9CI%E2%80%99m-X-percent-sure%E2%80%9D"><span class="nav-number">6.</span> <span class="nav-text">The engineer’s view: swap “I believe &#x2F; I don’t” for “I’m X percent sure”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-investment-view-good-investors-are-all-secretly-doing-Bayes"><span class="nav-number">7.</span> <span class="nav-text">The investment view: good investors are all secretly doing Bayes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-life-view-strong-opinions-weakly-held"><span class="nav-number">8.</span> <span class="nav-text">The life view: strong opinions, weakly held</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-misconceptions"><span class="nav-number">9.</span> <span class="nav-text">Common misconceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-it-doesn%E2%80%99t-apply"><span class="nav-number">10.</span> <span class="nav-text">When it doesn’t apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-models"><span class="nav-number">11.</span> <span class="nav-text">Related models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-one-line-to-remember"><span class="nav-number">12.</span> <span class="nav-text">The one line to remember</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    Related Posts
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/bayesian-thinking/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      贝叶斯思维：用证据更新信念，而不是靠直觉下注
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/ooda-loop/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The OODA Loop: Why Speed of Iteration Beats the Perfect Plan
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/goodharts-law/" rel="bookmark">
+        <time class="popular-posts-time">2026-06-30</time>
+        <br>
+      Goodhart's Law: Why the Metric You Optimize Turns Against You
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/ooda-loop/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      OODA 循环：为什么迭代速度能打败“完美计划”
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/goodharts-law/" rel="bookmark">
+        <time class="popular-posts-time">2026-06-30</time>
+        <br>
+      古德哈特定律：为什么指标一旦被优化，就开始失真
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/en/mental-models/bayesian-thinking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Bayesian Thinking: Update on Evidence, Don&#39;t Bet on Your Gut | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bayesian Thinking: Update on Evidence, Don't Bet on Your Gut
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-01 16:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T16:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Decision/" itemprop="url" rel="index"><span itemprop="name">Decision</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/mental-models/bayesian-thinking/" rel="alternate" hreflang="zh-CN">中文</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>Bayesian Thinking</strong><br>EN: A belief isn’t a yes&#x2F;no switch; it’s a probability you keep updating as evidence arrives.<br>中文：信念不是”信 &#x2F; 不信”的开关，而是一个随证据不断更新的概率。</p>
+</blockquote>
+<p>Here’s something everyone in AI does every day and almost nobody does well: <strong>deciding how much a new piece of evidence should change your mind.</strong></p>
+<span id="more"></span>
+
+<h2 id="Why-ask-this"><a href="#Why-ask-this" class="headerlink" title="Why ask this"></a>Why ask this</h2><p>Let me describe a scene you’ve probably lived through.</p>
+<p>A new model ships, someone runs the eval once, and the score jumps from 71 to 76. Slack lights up—“the new approach works!”—and the PR merges that afternoon. The next day someone reruns it with a different random seed and it’s back to 72. Those five points were never capability; they were noise. But they’d already changed the whole team’s mind, and changed the code.</p>
+<p>The opposite version is just as common. A rarely-seen category in the eval suddenly flashes red, an alert fires, the whole team drops into firefighting mode—and after an hour of digging, it turns out to be one unlucky sample. Nothing broke.</p>
+<p>One more: someone runs an impressive demo, drops the screenshot in the channel, and everyone instantly believes “the model can do X.” Then it hits real production load and face-plants eight times out of ten.</p>
+<p>All three are the same bug: <strong>we’re far too quick to let a single observation—one eval, one alert, one demo—slam our belief from “not sure” all the way to “certain.”</strong> The better move is almost embarrassingly simple: take a small step, sized to how strong the evidence actually is.</p>
+<p>The algorithm for “how big a step” was written down by an English minister more than two centuries ago.</p>
+<h2 id="Where-it-comes-from"><a href="#Where-it-comes-from" class="headerlink" title="Where it comes from"></a>Where it comes from</h2><p>Thomas Bayes, an 18th-century English Presbyterian minister who did mathematics on the side, never published the result himself. His friend Richard Price found it in his papers after Bayes died and published it for him in 1763.</p>
+<p>The problem he solved, in plain words: <strong>I’m holding a hypothesis, a new piece of evidence just arrived—what should I now set the probability of “this hypothesis is true” to?</strong></p>
+<p>Decades later, Laplace in France rederived the whole thing independently and generalized it—another case of several people walking into the same wall from different directions, which usually means the wall is load-bearing. Funny enough, the rule then stayed philosophically contested for nearly two centuries (“is probability an objective frequency, or your subjective degree of belief?”) before quietly becoming one of the foundations of modern machine learning.</p>
+<h2 id="The-core-intuition"><a href="#The-core-intuition" class="headerlink" title="The core intuition"></a>The core intuition</h2><p>Strip the math off Bayes and you’re left with one multiplication:</p>
+<blockquote>
+<p>new belief ＝ old belief × how convincing this evidence is</p>
+</blockquote>
+<p>Three words:</p>
+<ul>
+<li><strong>Prior</strong>: before you saw the evidence, how much you already believed the thing.</li>
+<li><strong>Likelihood (evidence strength)</strong>: if the hypothesis were true, how likely you’d be to see exactly this evidence.</li>
+<li><strong>Posterior</strong>: your updated belief after the evidence.</li>
+</ul>
+<p>Two knobs decide how far you move. <strong>If the claim was very unlikely to begin with (low prior), you need very strong evidence to move it much. If the evidence is weak—you’d see it whether or not the hypothesis is true—it barely moves you at all.</strong></p>
+<p>An eval that swings five points just from a new random seed is the second kind: those five points show up easily under both “the new method works” and “pure luck,” so as evidence they carry almost zero strength—and by rights they shouldn’t move you.</p>
+<p>Keep one key handy, because we’ll use it again and again: <strong>a belief is a dial, not a switch.</strong></p>
+<pre>
+<code class="mermaid">
+
+graph LR
+  A[Prior belief before evidence] --&gt; C[Posterior updated belief]
+  B[Strength of new evidence] --&gt; C
+  C -.this posterior becomes next prior.-&gt; A
+</code>
+</pre>
+
+<p>Notice that dashed line: <strong>this isn’t a one-shot deal, it’s a loop.</strong> This round’s posterior is next round’s prior. You never arrive at “I’m certain”; you just keep nudging, one small step at a time. That’s exactly the core of the Orient step in the <a href="/en/mental-models/ooda-loop/">OODA Loop</a>—orienting is, at bottom, updating your posterior with fresh intel.</p>
+<h2 id="A-real-world-example"><a href="#A-real-world-example" class="headerlink" title="A real-world example"></a>A real-world example</h2><p>There’s a classic problem in medical statistics that almost everyone gets wrong the first time.</p>
+<p>Say a disease has a base rate of 1 in 1,000. There’s a very accurate test: if you have the disease, it comes back positive 99% of the time; if you don’t, it falsely reads positive only 1% of the time. You test positive. What’s the chance you actually have the disease?</p>
+<p>Your gut screams “99%—the test is that good.” The real answer: <strong>about 9%.</strong></p>
+<p>Here’s the arithmetic. Take 1,000 people: 1 truly has the disease, and the test flags that 1 as positive. Of the other 999 healthy people, the 1% false-positive rate flags about 10 of them positive too. So you get roughly 11 positives, and only 1 is real. One in eleven—about 9%.</p>
+<p>That entire 90-point gap comes from one thing your gut skipped: <strong>the disease is rare to begin with.</strong> The denominator is packed with healthy people, so even a tiny 1% false-positive rate produces, in raw numbers, ten times more false alarms than real cases.</p>
+<p>So here’s a second key, to use alongside the first: <strong>for a rare event, even a very accurate test reading “positive” is probably wrong.</strong></p>
+<h2 id="Mapping-to-AI-one-positive-is-mostly-noise"><a href="#Mapping-to-AI-one-positive-is-mostly-noise" class="headerlink" title="Mapping to AI: one positive is mostly noise"></a>Mapping to AI: one positive is mostly noise</h2><p>AI is Bayesian almost everywhere, because the job is literally “update your beliefs about the world using data.” A few of the tightest fits.</p>
+<p><strong>Prior × likelihood is something you already use daily.</strong> Weight decay (L2 regularization), in Bayesian eyes, is just a prior on the weights—“they should be small by default, unless the data strongly objects.” Bayesian optimization for hyperparameter search takes it further and turns the idea into an algorithm: it holds a belief about which hyperparameters are promising, updates that belief after each expensive run, and spends the next run where the expected payoff is highest. That’s Bayesian thinking written as code: <strong>spend your limited experiments where they’ll update your beliefs the most.</strong></p>
+<p><strong>Rare bugs and flaky eval signals are that disease problem.</strong> Your regression detector flashes red on some category that rarely fails—before you firefight, apply the key: how rare is this failure, and how often does the detector false-alarm? On a rare event, <strong>a “positive” is probably noise, not a real break.</strong> Flaky tests, jittery evals, the occasional spurious alert—all variants of the same problem.</p>
+<p><strong>Why a single eval run should barely move you.</strong> Temperature, sampling, a test set of a few hundred items—all of it gives one run real variance. Those five points show up easily whether the model truly got better or just got lucky; the likelihood ratio sits near 1, so by the formula it earns a tiny update, nothing more. <strong>Weak evidence, small step.</strong> Five hundred examples with a tight confidence interval that reproduces—that’s strong evidence, and that’s what earns a big revision.</p>
+<p><strong>A demo tells you “possible,” not “reliable.”</strong> Everyone loves to over-update on one dazzling demo. But a demo is a single sample from a distribution you don’t understand (and often a cherry-picked one). It proves the thing can happen; it barely moves your belief about “happens reliably in production.”</p>
+<p><strong>Don’t call an A&#x2F;B test on day one either.</strong> Early data is small-sample and wide-interval; your belief in “B beats A” should be a distribution, not a yes&#x2F;no. Wait for the interval to tighten before you conclude—don’t go all-in on weak evidence.</p>
+<p><strong>Calibration is just honestly reporting probabilities.</strong> A well-calibrated model, on the predictions where it claims 70% confidence, should be right about 70% of the time. That’s the Bayesian spirit landing in engineering: <strong>report a probability, not a bare flag with no uncertainty attached.</strong></p>
+<p>So why shouldn’t those five points have thrilled anyone? One sentence: <strong>weak evidence only buys a small update.</strong> The right move wasn’t to flip the flag—it was to nudge the dial one notch toward “the new method might work,” and then go earn stronger evidence.</p>
+<h2 id="The-engineer’s-view-swap-“I-believe-I-don’t”-for-“I’m-X-percent-sure”"><a href="#The-engineer’s-view-swap-“I-believe-I-don’t”-for-“I’m-X-percent-sure”" class="headerlink" title="The engineer’s view: swap “I believe &#x2F; I don’t” for “I’m X percent sure”"></a>The engineer’s view: swap “I believe &#x2F; I don’t” for “I’m X percent sure”</h2><p>Enough principle—down to moves you can use tomorrow.</p>
+<p><strong>Attach a probability to every belief, not a flag.</strong> Don’t say “the new model is better (true &#x2F; false).” Say “I’m about 60% the new model is better, and I know what evidence would change that number.” The first gets overturned by one jittery run; the second holds up.</p>
+<p><strong>One observation earns one small step.</strong> Want a big revision? Earn it: run the eval N times, report the mean and a confidence interval, and treat any single run as a hint, not a verdict.</p>
+<p><strong>Estimate the base rate before you panic.</strong> Before you treat an alert or a regression as real, run the disease problem: how rare is the thing, how accurate is the detector. On rare events, assume a positive is probably false—then go check.</p>
+<p><strong>Let evidence strength set the size of the update.</strong> Big sample + tight interval + reproducible → revise a lot; one demo → nudge a little. This one rule alone will catch half your bad calls.</p>
+<p><strong>Write down your prior before you look at the data.</strong> Before you start, note what you expect to see, even in one line. Then afterward you can honestly tell the difference between “the data changed me” and “I quietly changed my belief to fit the conclusion I wanted.” It’s the best antidote to anchoring on your first guess and explaining away everything that disagrees.</p>
+<p><strong>When debugging, don’t anchor on the first hypothesis.</strong> Keep two or three hypotheses alive, each with a probability; every test result reweights them, instead of marching down the first guess to the bitter end. That reweighting is exactly what Orient does.</p>
+<p>The stance for this whole section in one line: <strong>translating “I believe &#x2F; I don’t” into “I’m X percent sure” is the cheapest and most underrated upgrade in this field.</strong></p>
+<h2 id="The-investment-view-good-investors-are-all-secretly-doing-Bayes"><a href="#The-investment-view-good-investors-are-all-secretly-doing-Bayes" class="headerlink" title="The investment view: good investors are all secretly doing Bayes"></a>The investment view: good investors are all secretly doing Bayes</h2><p>Move the lens to investing and Bayes shows up in a new outfit.</p>
+<p>A decent investment thesis is a probabilistic bet: I’m 70% this company wins. After that, every earnings report and every data point is evidence that should reweight the number. The bad investor does the opposite—he anchors on the thesis he had at entry, then treats every good sign as confirmation and explains every bad one away. <strong>Falling in love with a position is just handing it a prior that never updates.</strong></p>
+<p>Base rates bite here too: the vast majority of startups fail, so a dazzling pitch (a “positive”) landing on the very rare outcome of “unicorn” is probably still noise. Getting starry-eyed over a founder’s polished demo and getting thrilled by a jittery eval are the same base-rate error.</p>
+<p>Looping back to building AI: when you’re sizing up an AI system—or an AI company—to bet on, treat a pretty benchmark or a stunning demo as exactly that, a weak positive on a rare event. <strong>Don’t flip the flag; nudge the dial one notch, then earn stronger evidence from your own private evals and from behavior under real load.</strong></p>
+<h2 id="The-life-view-strong-opinions-weakly-held"><a href="#The-life-view-strong-opinions-weakly-held" class="headerlink" title="The life view: strong opinions, weakly held"></a>The life view: strong opinions, weakly held</h2><p>This reflex doesn’t stay in the server room.</p>
+<p>You meet someone once, they’re rude, and you instantly label them “a jerk.” That’s over-updating on a single sample (n&#x3D;1) while ignoring the base rate—everyone has a bad day. Refusing to fly after reading one crash story is the same error: one vivid, frightening data point mistaken for strong evidence.</p>
+<p>The healthy Bayesian posture already has a Silicon Valley slogan: <strong>strong opinions, weakly held.</strong> You’re allowed a confident view (a posterior built on a lot of evidence), but you stay clear-eyed about exactly what counter-evidence would flip it. Opinionated, not dogmatic.</p>
+<p>Back to AI: reading one eval, one demo, one user complaint calls for the same reflex—<strong>a single loud data point is only a weak update.</strong> Ask for the base rate and the sample size before you flip.</p>
+<h2 id="Common-misconceptions"><a href="#Common-misconceptions" class="headerlink" title="Common misconceptions"></a>Common misconceptions</h2><p><strong>Misconception 1: Bayes is a formula you compute every time.</strong> It isn’t. The value is a posture for holding beliefs—probabilities instead of flags, updates sized to evidence, base rates checked first—not actually writing out Bayes’ rule. In practice you almost never compute; you just estimate which way to move, and how far.</p>
+<p><strong>Misconception 2: constantly updating means you’re spineless, a weathervane. Exactly backwards.</strong> Bayes hands you both things at once: with enough evidence you may hold a strong view, and against strong counter-evidence you must change it. A weathervane updates on the loudest voice; a Bayesian updates on the strongest evidence. It’s the opposite of dogma, not the opposite of conviction.</p>
+<p><strong>Misconception 3: the prior is subjective, so Bayes is unreliable and you can set it however you like.</strong> The prior only dominates when evidence is thin; with enough good evidence, two honest people starting from different priors converge to the same posterior. A bad prior isn’t fatal—<strong>refusing to update it is.</strong> A prior you never revise is the truly subjective one.</p>
+<h2 id="When-it-doesn’t-apply"><a href="#When-it-doesn’t-apply" class="headerlink" title="When it doesn’t apply"></a>When it doesn’t apply</h2><p>Knowing when a model <strong>fails</strong> is worth more than memorizing the model. Bayesian updating has a few quiet assumptions; break them and it stops working:</p>
+<p><strong>The truth has to be on your list of hypotheses.</strong> Bayes only reshuffles probability among the hypotheses you’re already considering. If the real cause isn’t on the list, you’ll converge—confidently—on “the best-fitting wrong option.” What you need then isn’t reweighting; it’s adding a new hypothesis, which is a different move entirely.</p>
+<p><strong>The evidence has to be genuinely independent.</strong> If your “pile of evidence” all comes from the same broken eval harness or the same contaminated test set, it feels like many independent data points but it’s really one. Counting correlated evidence as independent is the number-one cause of being confident and wrong.</p>
+<p><strong>The prior can’t be 0 or 1.</strong> Once you set a probability to an absolute 0 or 100%, no evidence can ever move it—dogma is a Bayesian dead end. Which is the method’s one demand on you: never round your certainty all the way up to 100%.</p>
+<p>The test is those same two keys, run backwards: <strong>“how much should I really change my mind here?”—first ask how strong the evidence is, how rare the event was, and whether these data points actually trace back to the same source.</strong> Weak, common, or correlated → nudge; only strong, independent, and surprising evidence earns a big revision.</p>
+<h2 id="Related-models"><a href="#Related-models" class="headerlink" title="Related models"></a>Related models</h2><p>Bayes isn’t an island; it hangs in a web (articles coming as I write them):</p>
+<ul>
+<li><a href="/en/mental-models/ooda-loop/">OODA Loop</a>: the Orient step is, at bottom, updating your posterior with new intel. All of OODA is Bayesian updating wrapped in a jacket of action.</li>
+<li><a href="/en/mental-models/goodharts-law/">Goodhart’s Law</a>: Bayes tells you how much to trust a signal; Goodhart tells you why the signal rots—a gamed benchmark is a contaminated likelihood.</li>
+<li><a href="/en/mental-models/regression-to-the-mean/">Regression to the Mean</a>: part of any dazzling eval is luck, and luck regresses. Over-updating on an extreme observation is forgetting that the mean will drag it back.</li>
+<li><a href="/en/mental-models/survivorship-bias/">Survivorship Bias</a>: you only see the samples that survived (the impressive demos, the successful companies), which corrupts the base rate you’re estimating—the very evidence you’re updating on has already been filtered.</li>
+</ul>
+<h2 id="The-one-line-to-remember"><a href="#The-one-line-to-remember" class="headerlink" title="The one line to remember"></a>The one line to remember</h2><blockquote>
+<p>EN: A belief isn’t a switch, it’s a dial. Don’t slam it to the end for one eval or one demo—move it by the strength of the evidence, and whatever you land on becomes your prior for the next round.<br>中文：信念不是开关，是刻度。别因为一次评测、一个 demo 就把它推到底——按证据的强度挪；挪完了，这个后验就是你下一次的先验。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Decision/" rel="tag"># Decision</a>
+              <a href="/tags/Inference/" rel="tag"># Inference</a>
+              <a href="/tags/Evaluation/" rel="tag"># Evaluation</a>
+              <a href="/tags/Statistics/" rel="tag"># Statistics</a>
+              <a href="/tags/Probability/" rel="tag"># Probability</a>
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Uncertainty/" rel="tag"># Uncertainty</a>
+              <a href="/tags/Forecasting/" rel="tag"># Forecasting</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/mental-models/bayesian-thinking/" rel="prev" title="贝叶斯思维：用证据更新信念，而不是靠直觉下注">
+                  <i class="fa fa-angle-left"></i> 贝叶斯思维：用证据更新信念，而不是靠直觉下注
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"343ae0fbf9f18432545d6f6a8b20e26a"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

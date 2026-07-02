@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Conway’s LawEN: Any organization that designs a system will produce a design whose structure mirrors the organization’s communication structure.中文：任何设计系统的组织，最后造出的系统结构，都会长成这个组织沟通结构的翻版。  Here’s somethi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Conway&#39;s Law: Your Architecture Is a Copy of Your Org Chart">
+<meta property="og:url" content="https://liang7878.github.io/en/mental-models/conways-law/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="Conway’s LawEN: Any organization that designs a system will produce a design whose structure mirrors the organization’s communication structure.中文：任何设计系统的组织，最后造出的系统结构，都会长成这个组织沟通结构的翻版。  Here’s somethi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.303Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Organization">
+<meta property="article:tag" content="Software Architecture">
+<meta property="article:tag" content="Team Topology">
+<meta property="article:tag" content="Microservices">
+<meta property="article:tag" content="System Design">
+<meta property="article:tag" content="Management">
+<meta property="article:tag" content="Communication">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/en/mental-models/conways-law/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://liang7878.github.io/en/mental-models/conways-law/","path":"/en/mental-models/conways-law/","title":"Conway's Law: Your Architecture Is a Copy of Your Org Chart"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Conway's Law: Your Architecture Is a Copy of Your Org Chart | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Agent, LLM, Organization, Software Architecture, Team Topology, Microservices, System Design, Management, Communication">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/conways-law/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/conways-law/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/conways-law/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/en/mental-models/conways-law/"
+    },
+    "headline": "Conway's Law: Your Architecture Is a Copy of Your Org Chart",
+    
+    "description": "Conway’s LawEN: Any organization that designs a system will produce a design whose structure mirrors the organization’s communication structure.中文：任何设计系统的组织，最后造...",
+    
+    "inLanguage": "en",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T09:00:00+08:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Agent, LLM, Organization, Software Architecture, Team Topology, Microservices, System Design, Management, Communication"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Organization",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Organization/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Conway's Law: Your Architecture Is a Copy of Your Org Chart",
+        "item": "https://liang7878.github.io/en/mental-models/conways-law/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ask-this"><span class="nav-number">1.</span> <span class="nav-text">Why ask this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-it-comes-from"><span class="nav-number">2.</span> <span class="nav-text">Where it comes from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-core-intuition"><span class="nav-number">3.</span> <span class="nav-text">The core intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-real-world-example"><span class="nav-number">4.</span> <span class="nav-text">A real-world example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-to-AI-how-you-split-the-team-is-how-you-split-the-pipeline"><span class="nav-number">5.</span> <span class="nav-text">Mapping to AI: how you split the team is how you split the pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-engineer%E2%80%99s-view-the-inverse-Conway-maneuver"><span class="nav-number">6.</span> <span class="nav-text">The engineer’s view: the inverse Conway maneuver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-org-and-investment-view-team-shape-is-a-leading-indicator-of-architecture"><span class="nav-number">7.</span> <span class="nav-text">The org-and-investment view: team shape is a leading indicator of architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-misconceptions"><span class="nav-number">8.</span> <span class="nav-text">Common misconceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-it-doesn%E2%80%99t-apply"><span class="nav-number">9.</span> <span class="nav-text">When it doesn’t apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-models"><span class="nav-number">10.</span> <span class="nav-text">Related models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-one-line-to-remember"><span class="nav-number">11.</span> <span class="nav-text">The one line to remember</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    Related Posts
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/conways-law/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      康威定律：你的系统架构，是团队结构的镜像
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/principal-agent-problem/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Principal-Agent Problem: When Your Agent Has Its Own Agenda
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/principal-agent-problem/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      委托代理问题：当你雇的"代理"有自己的算盘
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/ooda-loop/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The OODA Loop: Why Speed of Iteration Beats the Perfect Plan
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/ooda-loop/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      OODA 循环：为什么迭代速度能打败“完美计划”
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/en/mental-models/conways-law/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Conway&#39;s Law: Your Architecture Is a Copy of Your Org Chart | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Conway's Law: Your Architecture Is a Copy of Your Org Chart
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-01 09:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T09:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Organization/" itemprop="url" rel="index"><span itemprop="name">Organization</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/mental-models/conways-law/" rel="alternate" hreflang="zh-CN">中文</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>Conway’s Law</strong><br>EN: Any organization that designs a system will produce a design whose structure mirrors the organization’s communication structure.<br>中文：任何设计系统的组织，最后造出的系统结构，都会长成这个组织沟通结构的翻版。</p>
+</blockquote>
+<p>Here’s something everyone in AI runs into and rarely thinks hard about: <strong>your system grows into the shape of your team—not because that shape is the best design, but because your teams can only build what they can communicate their way to.</strong></p>
+<span id="more"></span>
+
+<h2 id="Why-ask-this"><a href="#Why-ask-this" class="headerlink" title="Why ask this"></a>Why ask this</h2><p>Let me describe a scene you’ve probably lived through.</p>
+<p>You’re debugging why a RAG system gives mediocre answers. You trace it to the border between the retrieval team and the generation team. Retrieval says “my recall@k looks great.” Generation says “I answer whatever I’m handed.” By each team’s own metric nobody’s failing—yet the thing that actually decides quality (“which chunks should we retrieve for <em>this</em> question”) falls straight into the crack between them, and nobody owns it. Six months later that crack has hardened into an API nobody dares touch.</p>
+<p>Then you open the architecture diagram and notice something funnier: the number of boxes is exactly the number of teams. Retrieval service, generation service, eval service—one per team. You thought you were looking at a system design. You’re looking at the org chart wearing a hoodie.</p>
+<p>Both observations are the same observation: <strong>a system’s interfaces grow along its team boundaries.</strong> You didn’t design those seams. Your org structure designed them for you.</p>
+<p>None of this is new, and none of it is unique to AI. A programmer nailed it back in 1967—writing not about software, but about how committees invent things.</p>
+<h2 id="Where-it-comes-from"><a href="#Where-it-comes-from" class="headerlink" title="Where it comes from"></a>Where it comes from</h2><p>In 1967, Melvin Conway submitted a paper to the <em>Harvard Business Review</em> titled “How Do Committees Invent?” HBR rejected it. The next year it ran in <em>Datamation</em>, and one line in it has been quoted ever since:</p>
+<blockquote>
+<p>Any organization that designs a system will produce a design whose structure is a copy of the organization’s communication structure.</p>
+</blockquote>
+<p>Conway’s own example is wonderfully mean: <strong>put four groups on a compiler and you’ll get a four-pass compiler.</strong> Not because four passes is right—because you have four groups.</p>
+<p>The line sat quiet until Fred Brooks pulled it into <em>The Mythical Man-Month</em> and gave it its name, “Conway’s Law.” Brooks had earned the scar tissue—he’d run IBM’s System&#x2F;360, a project big enough to watch an org stamp its own shape onto a product in real time.</p>
+<p>Later people even went and measured it. A group at Harvard Business School compared software built by tightly-coupled commercial teams against loosely-coupled open-source communities, and the finding was blunt: <strong>a product’s modularity is basically a mirror of its organization’s coupling.</strong> Loosely-coordinated orgs ship loosely-coupled, cleanly-modular software; tightly-bound orgs ship tangled code.</p>
+<h2 id="The-core-intuition"><a href="#The-core-intuition" class="headerlink" title="The core intuition"></a>The core intuition</h2><p>Conway’s core fits in one sentence: <strong>for two pieces of software to agree at an interface, two groups of people have to communicate their way to that agreement—and communication is cheap inside a team and expensive across teams.</strong></p>
+<p>Follow that and everything falls out:</p>
+<ul>
+<li>Inside one team, people talk all day and share context. Changing a function signature is a shout across the room. So code written by one team tends to <strong>tangle together</strong>—coupled, sharing state, refactored on a whim—because communication is nearly free.</li>
+<li>Between two teams, communication means meetings, alignment, scheduling. It’s expensive. So cross-team code instinctively <strong>collapses toward one interface that’s as narrow, as stable, and as change-averse as possible</strong>—because every change to it costs another round of expensive talk.</li>
+</ul>
+<p>The result: <strong>your system splits where your organization goes quiet.</strong> Wherever a team boundary runs, that’s where the system’s seams run. An interface isn’t something an architect rationally drew on a whiteboard—it’s a fossil of communication cost. Where people rarely talk, the code freezes into a hard seam.</p>
+<pre>
+<code class="mermaid">
+
+graph LR
+  A[Org communication structure] --&gt; B[Cheap talk inside a team lets code tangle]
+  A --&gt; C[Costly talk across teams leaves one hard interface]
+  B --&gt; D[System structure mirrors the org]
+  C --&gt; D
+  D -.the frozen interface hardens the boundary.-&gt; A
+</code>
+</pre>
+
+<p>Notice that dashed line: <strong>this isn’t one-directional.</strong> Once that hard interface sets, it turns around and reinforces the team boundary—the interface becomes a contract between two teams that nobody wants to renegotiate, so the org splits ever more cleanly along it. Architecture and organization lock each other in.</p>
+<p>Keep one key handy, because we’ll use it again and again: <strong>a system splits where the organization goes quiet.</strong></p>
+<h2 id="A-real-world-example"><a href="#A-real-world-example" class="headerlink" title="A real-world example"></a>A real-world example</h2><p>The classic version is one you use every day.</p>
+<p>A company with a frontend team, a backend team, and a DBA team ships—almost without fail—a frontend&#x2F;backend&#x2F;database three-tier system. Not because three tiers is optimal. Because there are three teams. Count the teams and you can guess how many big boxes are on the architecture diagram, and you’ll usually be right.</p>
+<p>There’s a well-worn story about two groups in two different buildings with a walk between them. The system they built together had its most awkward, most painful interface land exactly at the boundary between the buildings—neither group wanted to make the walk, the talking dried up, and the interface rotted. <strong>The physical distance between two buildings got printed one-to-one into a software interface.</strong></p>
+<p>The reverse case is even more telling. Why do so many microservice migrations start strong and then collapse back into a few lumps? Because microservices want small, autonomous, cleanly-bounded services—but if the org is still a handful of big teams that align on everything, those “microservices” clump right back along the team lines. You renamed the code; you didn’t reshape the org; Conway’s Law wins anyway.</p>
+<h2 id="Mapping-to-AI-how-you-split-the-team-is-how-you-split-the-pipeline"><a href="#Mapping-to-AI-how-you-split-the-team-is-how-you-split-the-pipeline" class="headerlink" title="Mapping to AI: how you split the team is how you split the pipeline"></a>Mapping to AI: how you split the team is how you split the pipeline</h2><p>AI systems are a Conway’s Law disaster zone today, because our field <strong>has an unusual number of boundaries and loves to divide by capability</strong>: retrieval, generation, training, eval, platform, safety. Every one of those cuts is a seam that will later freeze into the system.</p>
+<p><strong>RAG and agent pipeline seams.</strong> Back to the opening scene. Split the team into a “retrieval group” and a “generation group” and your RAG system will have a hard, deep retrieval→generation interface that nobody optimizes end to end: retrieval chases recall@k, generation chases “answer quality given the context,” and the thing that actually matters—“what should we retrieve to answer <em>this</em> well”—straddles the seam, owned by neither. <strong>Your org’s division of labor got compiled, verbatim, into the pipeline’s seams.</strong></p>
+<p><strong>The agent’s planner&#x2F;executor split.</strong> Same story. Make planning and execution two teams and you’ll get an agent with a rigid planner&#x2F;executor interface—and the planner never learns from execution’s mistakes, because that feedback loop can’t close without crossing a team boundary. The agent’s architecture is a snapshot of your org chart.</p>
+<p><strong>ML-platform team vs. product team.</strong> The platform team holds training and inference infra; the product team holds the app. The API boundary between them looks exactly like the org boundary. And the friction follows: the product team wants to swap a model or tweak a prompt—should be minutes—but the model belongs to the platform team, so a tiny change now rides a cross-team sprint. <strong>The org boundary becomes an API boundary becomes a tax on iteration speed.</strong></p>
+<p><strong>Monorepo vs. polyrepo is an org decision in disguise.</strong> A repo per team hardens team boundaries into deploy boundaries; a monorepo lets code cross team lines more freely. It looks like a tooling choice. It’s really a choice about how tightly you want teams coupled.</p>
+<p><strong>Why three teams almost never ship a five-service system.</strong> The number of components you can evolve independently is roughly the number of teams that can independently own one. Ask three teams for five services and you usually get two orphans, or five nominal services that are really three lumps in a trench coat. <strong>The org’s team count quietly caps the architecture’s granularity.</strong></p>
+<p>So the two puzzles from the opening collapse into one line: <strong>you think you’re doing architecture; you’re actually translating an org chart into code—however you split the team is how the pipeline cracks.</strong></p>
+<h2 id="The-engineer’s-view-the-inverse-Conway-maneuver"><a href="#The-engineer’s-view-the-inverse-Conway-maneuver" class="headerlink" title="The engineer’s view: the inverse Conway maneuver"></a>The engineer’s view: the inverse Conway maneuver</h2><p>Enough principle. The most useful move here has a name: the <strong>inverse Conway maneuver</strong>. If org shape determines system shape, then run it backwards—<strong>decide the architecture you want, then build the teams to match.</strong></p>
+<p>Want an end-to-end-optimized RAG system? Don’t stand up a retrieval team and a generation team. Stand up one team that owns the whole query→answer path and is graded on whether the final answer was right. Want cleanly-bounded microservices? Staff small, autonomous teams that can ship independently. <strong>Where you want the system to split, let the org split naturally; where you don’t, don’t draw a team line there.</strong></p>
+<p>A few concrete moves:</p>
+<ul>
+<li><strong>Draw the org before the architecture.</strong> Before a new system starts, ask “how many groups, along what boundaries, will build this?” That staffing picture is the first draft of your architecture diagram—seeing it early beats cursing the architecture later.</li>
+<li><strong>To change the architecture, change the communication paths first.</strong> Moving boundaries in the code does nothing if the org doesn’t move; the seam grows right back. Real architectural change starts with who sits together and who shares a metric.</li>
+<li><strong>Beware the casual team split.</strong> Slicing teams by headcount, seniority, or geography is quietly deciding the system’s architecture. That one cut often shapes the product more than any tech-stack decision—treat it with the weight it deserves.</li>
+<li><strong>Don’t over-split.</strong> The more you fragment teams, the more hard seams you carve into the system, and coordination cost climbs fast (that’s Brooks’ Law’s territory). Three teams should honestly build three clean things, not force out five.</li>
+</ul>
+<p>The stance for this whole section in one line: <strong>an architecture problem is often an org problem in a technical costume. Before you refactor the code, check whether you should refactor the org.</strong></p>
+<h2 id="The-org-and-investment-view-team-shape-is-a-leading-indicator-of-architecture"><a href="#The-org-and-investment-view-team-shape-is-a-leading-indicator-of-architecture" class="headerlink" title="The org-and-investment view: team shape is a leading indicator of architecture"></a>The org-and-investment view: team shape is a leading indicator of architecture</h2><p>Pull the lens back to the company level, and Conway’s Law is a rarely-used but very accurate ruler.</p>
+<p>Read a company’s org and you can predict its product’s shape and its blind spots. An AI company that keeps a sharp wall between its “model team” and its “product team” will almost certainly have a product that’s awkward right where model capability meets user experience—because that seam is the deepest seam in its org. A company whose safety team sits off to the side doing after-the-fact review will most likely have safety bolted on as a layer, not grown into the product. <strong>The org chart is a leading indicator of the product architecture—you can read where it’ll break before it breaks.</strong></p>
+<p>Looping back to building AI, the lesson for engineers is direct: <strong>when you evaluate, join, or bet on an AI team, don’t just look at its stack—look at how it’s divided, who shares a metric, and which two groups never talk.</strong> That org chart tells you where the system will crack and which capability will go chronically unowned. Tech debt you can pay down; an org seam welded into the architecture is the most expensive, hardest-to-repay debt there is.</p>
+<h2 id="Common-misconceptions"><a href="#Common-misconceptions" class="headerlink" title="Common misconceptions"></a>Common misconceptions</h2><p>The most common slip is reading Conway’s Law as “so the org doesn’t matter, strong engineers can transcend it.” <strong>Exactly backwards.</strong> It says the org matters <em>enormously</em>—enough to decide whether you can pull the thing off technically at all. The teams that try hardest to ignore it, betting on individual heroics, are the ones it bends the hardest.</p>
+<p>Second misconception: hearing it as a jab at “bureaucracy” or “big-company disease.” It isn’t. <strong>It’s neutral—it’s gravity, not a defect.</strong> Communication has a cost, and that cost shapes the system. You can’t cancel gravity; you can only design with it. People who get it borrow its force with the inverse maneuver; people who don’t get tripped by it without ever seeing what tripped them.</p>
+<p>Third: thinking it’s only about static structure. Its meaner edge is the <strong>dynamic</strong> side—reorganize once and the system twists to follow. Every reorg, every team merge or split, quietly rewrites your architecture, even if nobody touches a line of code.</p>
+<h2 id="When-it-doesn’t-apply"><a href="#When-it-doesn’t-apply" class="headerlink" title="When it doesn’t apply"></a>When it doesn’t apply</h2><p>Knowing when a model <strong>fails</strong> is worth more than memorizing it. Conway’s Law runs on “interfaces need communication, communication has a cost, and that cost is distributed along org boundaries.” Disturb those and you find where it loosens:</p>
+<p><strong>When the team is small enough and communication is cheap enough.</strong> A handful of people who can all touch all the code have no cross-team seams for the law to grab—one reason small teams so often have cleaner architectures.</p>
+<p><strong>When you deliberately flatten communication cost with tooling.</strong> Monorepos, shared design reviews, forced cross-team rotation, AI pairing—these all push down the cost of talking across boundaries. The lower you push it, the weaker the org’s grip on the architecture.</p>
+<p><strong>When the architecture has reshaped the org, not the other way around.</strong> When the inverse maneuver works, the causality is flipped—the architecture you wanted is driving the org. The “org equals architecture” you see there is one you built on purpose, not fate.</p>
+<p>The test is that same key, run backwards: <strong>“is the seam I truly can’t change sitting exactly between two groups of people who rarely talk?”</strong> Yes → Conway’s Law is at work, and no purely technical fix will save you; no → you might actually have a purely technical problem. In AI teams, for most “the cross-team interface is a mess” complaints, the answer is a loud “yes.”</p>
+<h2 id="Related-models"><a href="#Related-models" class="headerlink" title="Related models"></a>Related models</h2><p>Conway’s Law isn’t an island; it hangs in a web. Here are some neighbors on that web (articles coming as I write them):</p>
+<ul>
+<li><a href="/en/mental-models/principal-agent-problem/">Principal-Agent Problem</a>: Conway is about how an org’s <em>communication</em> structure shapes the system; the principal-agent problem is about how an org’s <em>incentive</em> structure shapes people’s behavior—two sides of “how an org stamps itself onto its output.”</li>
+<li><a href="/en/mental-models/incentive/">Incentive</a>: whether two teams talk, and what they align toward, comes down to incentives. To reshape an org with the inverse maneuver, you first have to get the incentives right.</li>
+<li><a href="/en/mental-models/brooks-law/">Brooks’ Law</a>: adding people to a late project makes it later, because communication cost explodes with headcount. Conway says that cost shapes the architecture; Brooks says it also wrecks the schedule—two consequences of the same “communication cost.”</li>
+<li><a href="/en/mental-models/goodharts-law/">Goodhart’s Law</a>: when retrieval is graded only on recall@k and generation only on “quality given the context,” the end-to-end goal gets Goodharted right there in the org seam—the two laws often bite you together on the same team boundary.</li>
+</ul>
+<h2 id="The-one-line-to-remember"><a href="#The-one-line-to-remember" class="headerlink" title="The one line to remember"></a>The one line to remember</h2><blockquote>
+<p>EN: You’re not designing a system; you’re translating your org chart into code. Want a different architecture? First change who talks to whom.<br>中文：你不是在设计系统，你是在把组织结构翻译成代码。想换个架构，先换掉”谁跟谁说话”。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Organization/" rel="tag"># Organization</a>
+              <a href="/tags/Software-Architecture/" rel="tag"># Software Architecture</a>
+              <a href="/tags/Team-Topology/" rel="tag"># Team Topology</a>
+              <a href="/tags/Microservices/" rel="tag"># Microservices</a>
+              <a href="/tags/System-Design/" rel="tag"># System Design</a>
+              <a href="/tags/Management/" rel="tag"># Management</a>
+              <a href="/tags/Communication/" rel="tag"># Communication</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/mental-models/goodharts-law/" rel="prev" title="Goodhart&#39;s Law: Why the Metric You Optimize Turns Against You">
+                  <i class="fa fa-angle-left"></i> Goodhart's Law: Why the Metric You Optimize Turns Against You
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/mental-models/conways-law/" rel="next" title="康威定律：你的系统架构，是团队结构的镜像">
+                  康威定律：你的系统架构，是团队结构的镜像 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d355049986737353d06fbd0c9f39aecf"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

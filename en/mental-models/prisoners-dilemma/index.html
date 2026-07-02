@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Prisoner’s DilemmaEN: Everyone picks the move that’s best for themselves, and together they all lose.中文：每个人都选对自己最好的那一步，最后所有人一起输。  Here’s a structure that never stops being infuriating: a room full of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Prisoner&#39;s Dilemma: Why Rational Agents Choose a Worse Outcome Together">
+<meta property="og:url" content="https://liang7878.github.io/en/mental-models/prisoners-dilemma/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="Prisoner’s DilemmaEN: Everyone picks the move that’s best for themselves, and together they all lose.中文：每个人都选对自己最好的那一步，最后所有人一起输。  Here’s a structure that never stops being infuriating: a room full of">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Game Theory">
+<meta property="article:tag" content="Mechanism Design">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta property="article:tag" content="Economics">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="Cooperation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/en/mental-models/prisoners-dilemma/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://liang7878.github.io/en/mental-models/prisoners-dilemma/","path":"/en/mental-models/prisoners-dilemma/","title":"The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Game Theory, Mechanism Design, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Cooperation">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/prisoners-dilemma/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/en/mental-models/prisoners-dilemma/"
+    },
+    "headline": "The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together",
+    
+    "description": "Prisoner’s DilemmaEN: Everyone picks the move that’s best for themselves, and together they all lose.中文：每个人都选对自己最好的那一步，最后所有人一起输。 Here’s a structure that never s...",
+    
+    "inLanguage": "en",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T12:00:00+08:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Game Theory, Mechanism Design, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Cooperation"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Agents",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Agents/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together",
+        "item": "https://liang7878.github.io/en/mental-models/prisoners-dilemma/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ask-this"><span class="nav-number">1.</span> <span class="nav-text">Why ask this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-it-comes-from"><span class="nav-number">2.</span> <span class="nav-text">Where it comes from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-core-intuition"><span class="nav-number">3.</span> <span class="nav-text">The core intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-real-world-example"><span class="nav-number">4.</span> <span class="nav-text">A real-world example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-to-AI-multiple-agents-will-betray-each-other-by-default"><span class="nav-number">5.</span> <span class="nav-text">Mapping to AI: multiple agents will betray each other by default</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-engineer%E2%80%99s-view-assume-defection-then-change-the-game"><span class="nav-number">6.</span> <span class="nav-text">The engineer’s view: assume defection, then change the game</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-investment-view-the-race-nobody-wants-to-run-and-nobody-can-stop"><span class="nav-number">7.</span> <span class="nav-text">The investment view: the race nobody wants to run and nobody can stop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-life-view-you%E2%80%99ve-played-this-round-before"><span class="nav-number">8.</span> <span class="nav-text">The life view: you’ve played this round before</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-misconceptions"><span class="nav-number">9.</span> <span class="nav-text">Common misconceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-it-doesn%E2%80%99t-apply"><span class="nav-number">10.</span> <span class="nav-text">When it doesn’t apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-models"><span class="nav-number">11.</span> <span class="nav-text">Related models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-one-line-to-remember"><span class="nav-number">12.</span> <span class="nav-text">The one line to remember</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    Related Posts
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/mechanism-design/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/tragedy-of-the-commons/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Tragedy of the Commons: How Rational Use Destroys a Shared Resource
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      纳什均衡：没人想动，不代表结局是好的
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/en/mental-models/prisoners-dilemma/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="The Prisoner&#39;s Dilemma: Why Rational Agents Choose a Worse Outcome Together | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-01 12:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T12:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Agents/" itemprop="url" rel="index"><span itemprop="name">Agents</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/mental-models/prisoners-dilemma/" rel="alternate" hreflang="zh-CN">中文</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>Prisoner’s Dilemma</strong><br>EN: Everyone picks the move that’s best for themselves, and together they all lose.<br>中文：每个人都选对自己最好的那一步，最后所有人一起输。</p>
+</blockquote>
+<p>Here’s a structure that never stops being infuriating: <strong>a room full of smart, rational agents—each one genuinely trying to do well—can walk, step by careful step, straight into an outcome not one of them wanted. And at every step, each of them did the right thing.</strong></p>
+<span id="more"></span>
+
+<h2 id="Why-ask-this"><a href="#Why-ask-this" class="headerlink" title="Why ask this"></a>Why ask this</h2><p>Two scenes you’ve probably lived through.</p>
+<p>First: a handful of teams share a rate-limited API quota, or a single GPU cluster. In principle everyone knows that if each team throttles a little and staggers its load, everyone gets a steady slice. In practice, every team runs the same math: “If the others hold back, I can grab a bit more and be fine. If they don’t hold back, I’d better grab now or I’m the sucker.” So everyone grabs, the quota is exhausted in minutes, 429s everywhere, the cluster thrashing—and every team is worse off than in the world where everyone throttled.</p>
+<p>Second: you wire up a multi-agent system and expect the agents to cooperate. Instead a buyer-agent and a seller-agent negotiate, both refuse to budge, and the deal collapses; or you stand up a multi-agent debate to squeeze out the truth, and every agent digs into the position it started with and won’t move—because “conceding” looks, locally, like losing. You wanted teamwork. You got mutual sabotage.</p>
+<p>Both stories are the same story: <strong>every participant made the choice that was best for itself, and stacked together, those choices left everyone worse off.</strong> Nobody was dumb, nobody was malicious, and the collective result was a mess.</p>
+<p>None of this is new, and none of it is unique to AI. Two mathematicians laid it bare in 1950—writing not about chips, but about nuclear bombs.</p>
+<h2 id="Where-it-comes-from"><a href="#Where-it-comes-from" class="headerlink" title="Where it comes from"></a>Where it comes from</h2><p>1950, the RAND Corporation. The Cold War is at its coldest, and a group of mathematicians, funded by the military, is chewing on a terrifying question: two superpowers, each reasoning perfectly rationally, why do they both sprint into a nuclear arms race?</p>
+<p>Merrill Flood and Melvin Dresher built a small game-theory model that exposed the skeleton of it. A little later the mathematician Albert Tucker, trying to explain the thing to a room of psychologists, dressed it up in a story that stuck—and the name “prisoner’s dilemma” was born.</p>
+<p>The story: two accomplices are arrested and interrogated in separate rooms, no way to coordinate. The prosecutor offers each of them the same deal:</p>
+<ul>
+<li>Both stay silent (cooperate): not enough evidence, one year each.</li>
+<li>You talk, your partner stays silent (you betray him): you walk free, he gets ten years.</li>
+<li>Both talk (mutual betrayal): five years each.</li>
+</ul>
+<p>The whole thing lives in the next step of reasoning. Put yourself in one prisoner’s chair:</p>
+<ul>
+<li>If he stays silent: staying silent gets you one year, talking gets you zero—talking is better.</li>
+<li>If he talks: staying silent gets you ten years, talking gets you five—talking is still better.</li>
+</ul>
+<p>See it? <strong>No matter what he does, talking is better for you.</strong> A move that beats every alternative regardless of what the other side chooses has a name in game theory: a <strong>dominant strategy</strong>. Talking—betraying—is your dominant strategy.</p>
+<p>The catch is that he’s exactly as smart as you, and he runs the identical math, so talking is his dominant strategy too. Two rational people both talk, five years each. Yet if they’d both kept their mouths shut, it was one year each. <strong>Two individually correct choices stack into an outcome worse for both.</strong> That’s the dilemma.</p>
+<h2 id="The-core-intuition"><a href="#The-core-intuition" class="headerlink" title="The core intuition"></a>The core intuition</h2><p>To see the whole thing, watch just two facts:</p>
+<ol>
+<li><strong>In a single round, defection is the dominant strategy.</strong> Whether the other side cooperates or defects, you come out ahead by defecting. So on pure rationality, everyone should defect.</li>
+<li><strong>Yet when both defect, the result is worse than if both had cooperated.</strong> Five years each versus one year each. Individual rationality, added up, becomes collective stupidity.</li>
+</ol>
+<p>Buried in there is a gap that’s both deeply counterintuitive and deeply important: <strong>the choice that’s best for the individual and the choice that’s best for the group are not the same choice.</strong> Mutual defection is this game’s <a href="/en/mental-models/nash-equilibrium/">Nash equilibrium</a>—“equilibrium” meaning nobody can make themselves better off by unilaterally changing their move (switch to cooperating on your own and you go from five years to ten, worse). But that rock-solid equilibrium is precisely not the optimum. The optimum is mutual cooperation, and it’s unstable: the moment either side can profit by defecting, it can’t hold.</p>
+<pre>
+<code class="mermaid">
+
+graph TD
+  A[You choose once cooperate or defect] --&gt; B[If they cooperate defecting grabs a free win]
+  A --&gt; C[If they defect defecting loses a bit less]
+  B --&gt; D[So whatever they do defecting pays more]
+  C --&gt; D
+  D --&gt; E[Both reason the same way so both defect]
+  E --&gt; F[Together they land in a worse spot than mutual cooperation]
+  F -.stable equilibrium but not the optimum.-&gt; E
+</code>
+</pre>
+
+<p>Notice that dashed line: the bad outcome is <strong>self-locking</strong>. Both players are pinned on “both defect,” and neither dares let go first, because whoever cooperates first gets eaten. That’s what makes the prisoner’s dilemma so nasty—it isn’t caused by anyone being foolish. It’s caused by <strong>everyone being too smart.</strong></p>
+<p>Keep this key handy, because we’ll use it over and over: <strong>in a one-shot game, you can’t talk people into cooperating—because defecting is rational for every one of them. To change the outcome, don’t change the people. Change the game.</strong></p>
+<h2 id="A-real-world-example"><a href="#A-real-world-example" class="headerlink" title="A real-world example"></a>A real-world example</h2><p>Two gas stations across the street from each other run a prisoner’s dilemma every single day.</p>
+<p>Both post high prices and both make money (that’s “both cooperate”). But station A thinks: “If I quietly drop my price a few cents, I pull all of B’s customers over to me.” So A cuts. B watches its customers vanish and has to cut too. The two race each other down to almost no margin, neither ends up with more customers than before, and their profits get shaved flat together. Cutting is rational for each station alone (don’t cut and you get poached), but both cutting means both bleed. The customers cheer; the owners cry.</p>
+<p>(There’s a version that stings more: doping in professional sport. If nobody dopes, everyone competes fairly and stays healthy. But every athlete reasons: “If the others stay clean and I dope, I win; if the others dope and I stay clean, I lose.” So whatever everyone else does, doping “pays.” The result is everyone dopes, the final rankings come out about the same as if no one had, and they’ve wrecked their bodies for nothing—everyone sprinting together into the outcome none of them wanted.)</p>
+<p>These sound a long way from a server room, but swap “two gas stations” for “two AI labs” and “athletes” for “agents,” and the script doesn’t change a word.</p>
+<h2 id="Mapping-to-AI-multiple-agents-will-betray-each-other-by-default"><a href="#Mapping-to-AI-multiple-agents-will-betray-each-other-by-default" class="headerlink" title="Mapping to AI: multiple agents will betray each other by default"></a>Mapping to AI: multiple agents will betray each other by default</h2><p>In a single-model world, the prisoner’s dilemma is asleep. The moment you start building <strong>multi-agent systems</strong>—or let several teams and jobs fight over one shared resource—it wakes up, because now each agent is making rational choices for its own local objective.</p>
+<p><strong>Multi-agent systems sabotage each other.</strong> You put two agents together to negotiate, collaborate, or debate, expecting them to pull in the same direction. But as long as each agent optimizes its own slice of the payoff, defection surfaces: negotiators both hold firm until the deal dies, debaters each defend their opening position and refuse to update, collaborators each try to shove the ugliest subtask onto someone else. No agent intends to misbehave; it’s just optimizing the local objective you handed it—which is exactly the trouble.</p>
+<p><strong>Fighting over a shared resource is the most literal version.</strong> A pile of jobs share one cluster; a swarm of agents share one token budget or tool-call quota. Each grabs as hard as it can, because the one that holds back merely donates its throughput to the rest. The result is a stampede: everyone maxes out, everyone gets 429’d, everyone slows down together. This is really the many-player version of the dilemma, and it has a louder name—the <a href="/en/mental-models/tragedy-of-the-commons/">Tragedy of the Commons</a>: n herders share one pasture, each rationally grazes one more sheep, and the grass is stripped bare.</p>
+<p>Is there a way out? Yes. The key is turning “a one-time deal” into “dealing with each other again and again.”</p>
+<p><strong>One shot defects; a repeated game can grow cooperation.</strong> All the reasoning above rests on playing exactly once. But most real interactions are <strong>repeated</strong>—betray me today and I’ll remember tomorrow. In 1980 the political scientist Robert Axelrod ran a famous experiment: a tournament where strategies fought each other in the <strong>iterated</strong> prisoner’s dilemma. The winner wasn’t some intricate scheme; it was the simplest entrant, Tit-for-Tat: cooperate on the first move, then do whatever your opponent did last time. Its temperament is what makes it work—<strong>it opens with goodwill, retaliates the instant you defect, and forgives the instant you cooperate again.</strong> Nice, tough, and not one to hold a grudge.</p>
+<p>The lesson for multi-agent design is blunt: <strong>if you want a group of agents to cooperate, stop making them do anonymous one-shot deals.</strong> Give them identity, memory, reputation—make today’s betrayal cost something tomorrow. A marketplace of agents that remembers who burned whom can sustain cooperation that anonymous, one-shot agents never could.</p>
+<p><strong>But the deepest fix is to change the payoff matrix itself.</strong> Repetition treats the symptom; the real cure is <a href="/en/mental-models/mechanism-design/">mechanism design</a>. You cannot prompt an agent into cooperating by adding “please be friendly and share fairly”—as long as defecting still pays, that line is a fig leaf, and the moment the stakes rise the agent defects anyway. You have to change the game: put hard quotas on the shared resource so grabbing stops paying; appoint a coordinator with the authority to allocate the budget and punish hoarding; align the rewards so a sub-agent’s local optimum is the system’s global optimum. <strong>Whether cooperation happens has never depended on how sincerely you asked—only on what you shaped the payoff matrix into.</strong></p>
+<p>So those two opening scenes collapse into one sentence: <strong>your agents and your teams aren’t bad; they’re just rationally defecting—because in the game you set up, defection is what pays.</strong></p>
+<h2 id="The-engineer’s-view-assume-defection-then-change-the-game"><a href="#The-engineer’s-view-assume-defection-then-change-the-game" class="headerlink" title="The engineer’s view: assume defection, then change the game"></a>The engineer’s view: assume defection, then change the game</h2><p>Enough principle—down to moves you can make today.</p>
+<p><strong>Assume every agent, every team, every job in your system will defect the moment defecting pays.</strong> Not because it’s evil—because it’s rational. When you design a multi-agent or shared-resource system, don’t assume the participants “will be reasonable and considerate.” Ask, for each participant: <strong>under my rules, is cooperating individually rational for it?</strong> If not, defection is coming, and your system had better survive it rather than pray it won’t happen. (This is the same stance as Goodhart’s “assume every metric will be gamed.”)</p>
+<p><strong>Turn one-shot into repeated.</strong> Anonymous plus single-transaction equals guaranteed defection. Give agents stable identities, give interactions memory, give behavior a reputation—make “burned someone last time” cast a shadow this time. Repetition is the soil cooperation grows out of on its own.</p>
+<p><strong>Change the payoff, not the prompt.</strong> You can stuff a prompt full of “please be fair, please cooperate,” but while defecting still pays, that’s empty talk that folds the instant the stakes rise. What actually works is welding the constraint into the structure: hard quotas, budget caps, the penalty for defection written straight into the reward function. One line of prompt won’t stop a rational optimizer; one rewired payoff matrix will.</p>
+<p><strong>Add a referee.</strong> A lot of prisoner’s dilemmas dissolve the moment there’s a third party that can enforce a punishment. Drop an orchestrator with real authority into a multi-agent system—one that allocates the shared budget and fines hoarding—and “everyone grabs” becomes “everyone gets a fair share.” The price is that you spent some autonomy to buy coordination; whether that trade is worth it is yours to judge.</p>
+<p>The stance for this whole section in one line: <strong>don’t preach morals at your agents—change the game they’re playing.</strong></p>
+<h2 id="The-investment-view-the-race-nobody-wants-to-run-and-nobody-can-stop"><a href="#The-investment-view-the-race-nobody-wants-to-run-and-nobody-can-stop" class="headerlink" title="The investment view: the race nobody wants to run and nobody can stop"></a>The investment view: the race nobody wants to run and nobody can stop</h2><p>Pull the lens back to the whole industry, and the prisoner’s dilemma shows up again in a new outfit—the most dangerous version in AI today.</p>
+<p>Nearly every AI lab knows perfectly well that racing to ship ever-more-capable models while squeezing safety testing thinner and thinner isn’t good for the industry, maybe not for anyone. Yet each one runs the same math: “If I hit the brakes for safety and my rivals don’t, they take the market, the talent, the funding. If they brake and I don’t, I win. So whatever they do, I have to keep sprinting.” So <strong>everyone sprints</strong>, and the whole field races together into a pace that even insiders privately think is too fast. No lab is the villain; each is just making the locally rational choice—a textbook, industry-scale prisoner’s dilemma.</p>
+<p>It also explains why those “let’s all slow down” voluntary pledges are so structurally fragile: they ask everyone to play the dominated strategy (cooperate), and as long as any one lab can quietly defect (keep sprinting) and scoop the winnings, the pact won’t hold. What actually changes the pace of a race is never a moral appeal; it’s an external change to the payoff matrix—regulation, say, or the market starting to pay for “reliable” instead of “fastest.” Which loops right back to mechanism design.</p>
+<p>Back to building AI, the lesson for engineers is direct: <strong>don’t treat “we’ll be responsible” as a company’s moat, or as a system’s safety guarantee.</strong> Competitive pressure grinds goodwill into dust. When you size up an AI company—or design your own team’s incentives and your product’s guardrails—assume the structure of the dilemma, not anyone’s good intentions. Ask: under real competitive pressure, is doing the right thing also rational for each participant? If not, willpower alone won’t hold the line.</p>
+<h2 id="The-life-view-you’ve-played-this-round-before"><a href="#The-life-view-you’ve-played-this-round-before" class="headerlink" title="The life view: you’ve played this round before"></a>The life view: you’ve played this round before</h2><p>This structure doesn’t stay in the server room.</p>
+<p>Group projects always have someone coasting—because “if the others work and I don’t, I still get the grade,” so everyone angles to free-ride and the project rots. Merging in traffic, everyone tries to nose in ahead, and nobody moves faster while the whole road jams tighter. Nobody in the shared flat wants to wipe the counter one extra time, because “why should it be me?” Same skeleton every time: <strong>local best, stacked into collective worst.</strong></p>
+<p>Think it through, because it’s lethal for AI product design: <strong>the instant you drop multiple agents (or multiple users) into a game where defecting pays more, no amount of “please cooperate nicely” in the prompt or the terms of service will stop them from defecting.</strong> What you can do isn’t to reform them—it’s to change the game itself, so cooperation becomes the move they’d pick on their own. Get that right, and you’ve usually decided whether your multi-agent feature actually collaborates or just performs collaboration.</p>
+<h2 id="Common-misconceptions"><a href="#Common-misconceptions" class="headerlink" title="Common misconceptions"></a>Common misconceptions</h2><p><strong>First, and most common: thinking the prisoner’s dilemma is about people being selfish or wicked.</strong> It isn’t. Both prisoners can be perfectly rational, even sincerely want to cooperate—but while the payoff matrix looks the way it does, the structure forces them to defect. Just as gradient descent has no morals and reward-hacks anyway, <strong>a room full of honest, well-meaning people (or agents) still walks into the bad outcome together.</strong> It’s structural, not a character flaw. Get it backwards and you’ll go hunting for “bad actors” instead of fixing the game that’s actually broken.</p>
+<p><strong>Second, more dangerous: thinking that because defection is rational, cooperation is naive or impossible.</strong> Exactly backwards. The one-shot pessimism is an artifact of the “played once” assumption. Once the game repeats and the players have memory, cooperation isn’t just possible—it’s often the rational equilibrium (Axelrod’s tournament proved it). Don’t mistake the despair of a one-shot game for a universal truth about cooperation.</p>
+<p><strong>Third: thinking a quick conversation or a promise fixes it.</strong> As long as defecting still pays, an unenforceable promise is empty (game theory calls it cheap talk). What actually resolves the dilemma isn’t the conversation—it’s changing the underlying payoffs: an enforceable contract, a repeated game, reputation on the line. Sweet words don’t stop the hand that defects.</p>
+<h2 id="When-it-doesn’t-apply"><a href="#When-it-doesn’t-apply" class="headerlink" title="When it doesn’t apply"></a>When it doesn’t apply</h2><p>Knowing when a model <strong>fails</strong> is worth more than memorizing the model. The prisoner’s dilemma needs two things at once: defection has to be a dominant strategy, and the game has to be effectively one-shot with no way to punish betrayal afterward. Flip those, and you get where it doesn’t hold:</p>
+<p><strong>It isn’t actually a prisoner’s dilemma.</strong> Plenty of situations we fear are dilemmas have a payoff matrix that simply isn’t shaped that way—if cooperating is individually best for you (no tempting profit from defecting), it’s just an ordinary <a href="/en/mental-models/nash-equilibrium/">coordination game</a> or a plain win-win, not a dilemma. Before you panic, actually lay out the payoff ordering and look.</p>
+<p><strong>The game is clearly repeated with no fixed endpoint.</strong> When players interact again and again and remember each other, the “shadow of the future” turns cooperation into the rational choice. Don’t apply one-shot pessimism to a repeated game.</p>
+<p><strong>There’s an enforceable contract or an outside authority.</strong> A referee who can punish defection rewrites the payoff matrix into something that’s no longer a prisoner’s dilemma. Building coordinators, imposing quotas, designing mechanisms—that’s all this same move: dismantling the dilemma at the structural level.</p>
+<p>The test is that same key, run backwards: <strong>“for each participant, no matter what the others do, does defecting pay more? And is this a one-shot deal where nobody can punish betrayal afterward?”</strong> Two yeses → you’re in a real dilemma, so stop preaching and change the matrix; even one no → it may not be a prisoner’s dilemma at all, or you’ve got room to fix it.</p>
+<h2 id="Related-models"><a href="#Related-models" class="headerlink" title="Related models"></a>Related models</h2><p>The prisoner’s dilemma isn’t an island; it hangs in a web. Here are some neighbors on that web (articles coming as I write them):</p>
+<ul>
+<li><a href="/en/mental-models/nash-equilibrium/">Nash Equilibrium</a>: mutual defection is the prisoner’s dilemma’s Nash equilibrium. The dilemma is the most famous case of “the equilibrium is not the optimum.”</li>
+<li><a href="/en/mental-models/tragedy-of-the-commons/">Tragedy of the Commons</a>: swap the two prisoners for n people sharing one common resource and you get this. Shared clusters and rate-limited APIs are this version.</li>
+<li><a href="/en/mental-models/mechanism-design/">Mechanism Design</a>: the proper antidote. Since you can’t change the players, change the rules and payoffs of the game so cooperation becomes the rational choice.</li>
+<li><a href="/en/mental-models/goodharts-law/">Goodhart’s Law</a>: hand each sub-agent the wrong local metric and you manufacture a prisoner’s dilemma inside your own system—each one optimizes its own number, and the system as a whole loses.</li>
+</ul>
+<h2 id="The-one-line-to-remember"><a href="#The-one-line-to-remember" class="headerlink" title="The one line to remember"></a>The one line to remember</h2><blockquote>
+<p>EN: Cooperation isn’t a matter of character; it’s a matter of structure. In a one-shot game defection always pays, so either make the game repeated so betrayal gets punished later, or change the payoff matrix outright—otherwise a room full of rational agents will march, precisely, into an outcome none of them wanted.<br>中文：合作不是靠人品，是靠结构。单局里背叛永远划算，所以要么把游戏变成重复的、让背叛在未来挨罚，要么直接改掉收益矩阵——否则一群理性的人，会分毫不差地走进一个谁都不想要的结局。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+              <a href="/tags/Mechanism-Design/" rel="tag"># Mechanism Design</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+              <a href="/tags/Multi-Agent/" rel="tag"># Multi-Agent</a>
+              <a href="/tags/Cooperation/" rel="tag"># Cooperation</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/mental-models/prisoners-dilemma/" rel="prev" title="囚徒困境：为什么理性的个体，会一起走向糟糕的结局">
+                  <i class="fa fa-angle-left"></i> 囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/mental-models/nash-equilibrium/" rel="next" title="纳什均衡：没人想动，不代表结局是好的">
+                  纳什均衡：没人想动，不代表结局是好的 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8c61a0ba852d9cce98e61d36e9a38198"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

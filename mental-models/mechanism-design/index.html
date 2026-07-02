@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="机制设计 &#x2F; Mechanism Design中文：反过来设计游戏规则，让每个只顾自己的人各自追逐私利，却正好走到你要的那个结果。EN: Reverse game theory—design the rules so self-interested players, each chasing their own gain, land exactly on the outcome you">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机制设计：反过来设计游戏，让理性的人自己走向你要的结果">
+<meta property="og:url" content="https://liang7878.github.io/mental-models/mechanism-design/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="机制设计 &#x2F; Mechanism Design中文：反过来设计游戏规则，让每个只顾自己的人各自追逐私利，却正好走到你要的那个结果。EN: Reverse game theory—design the rules so self-interested players, each chasing their own gain, land exactly on the outcome you">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Game Theory">
+<meta property="article:tag" content="Mechanism Design">
+<meta property="article:tag" content="Incentive">
+<meta property="article:tag" content="Auction">
+<meta property="article:tag" content="Alignment">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta property="article:tag" content="Economics">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/mental-models/mechanism-design/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/mental-models/mechanism-design/","path":"/mental-models/mechanism-design/","title":"机制设计：反过来设计游戏，让理性的人自己走向你要的结果"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>机制设计：反过来设计游戏，让理性的人自己走向你要的结果 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Game Theory, Mechanism Design, Incentive, Auction, Alignment, Agent, LLM, Reinforcement Learning, Economics">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/mechanism-design/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/mechanism-design/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/mechanism-design/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/mental-models/mechanism-design/"
+    },
+    "headline": "机制设计：反过来设计游戏，让理性的人自己走向你要的结果",
+    
+    "description": "机制设计 &#x2F; Mechanism Design中文：反过来设计游戏规则，让每个只顾自己的人各自追逐私利，却正好走到你要的那个结果。EN: Reverse game theory—design the rules so self-interested players, each chasing their ow...",
+    
+    "inLanguage": "zh-CN",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T14:00:00+08:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Game Theory, Mechanism Design, Incentive, Auction, Alignment, Agent, LLM, Reinforcement Learning, Economics"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Agents",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Agents/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "机制设计：反过来设计游戏，让理性的人自己走向你要的结果",
+        "item": "https://liang7878.github.io/mental-models/mechanism-design/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%97%AE%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">为什么要问这个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%83%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="nav-number">2.</span> <span class="nav-text">它从哪来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9B%B4%E8%A7%89"><span class="nav-number">3.</span> <span class="nav-text">核心直觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E5%AE%9E%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">现实中的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E5%88%B0-AI%EF%BC%9A%E8%AE%BE%E8%AE%A1-reward%EF%BC%8C%E5%B0%B1%E6%98%AF%E5%9C%A8%E5%81%9A%E6%9C%BA%E5%88%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.</span> <span class="nav-text">映射到 AI：设计 reward，就是在做机制设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%A7%86%E8%A7%92%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%B8%B8%E6%88%8F%EF%BC%8C%E5%88%AB%E5%8E%BB%E7%AE%A1%E6%95%99%E7%8E%A9%E5%AE%B6"><span class="nav-number">6.</span> <span class="nav-text">工程师视角：设计游戏，别去管教玩家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%95%E8%B5%84%E8%A7%86%E8%A7%92%EF%BC%9A%E6%9C%80%E5%A5%BD%E7%9A%84%E6%8A%A4%E5%9F%8E%E6%B2%B3%EF%BC%8C%E5%B8%B8%E5%B8%B8%E6%98%AF%E4%B8%80%E5%8F%B0%E6%9C%BA%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">投资视角：最好的护城河，常常是一台机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%B4%BB%E8%A7%86%E8%A7%92%EF%BC%9A%E6%8A%8A%E4%B8%80%E6%AC%A1%E6%80%A7%E7%9A%84%E8%87%AA%E7%A7%81%EF%BC%8C%E5%8F%98%E6%88%90%E9%95%BF%E6%9C%9F%E7%9A%84%E5%90%88%E4%BD%9C"><span class="nav-number">8.</span> <span class="nav-text">生活视角：把一次性的自私，变成长期的合作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="nav-number">9.</span> <span class="nav-text">常见误解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E6%88%90%E7%AB%8B"><span class="nav-number">10.</span> <span class="nav-text">什么时候不成立</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A8%A1%E5%9E%8B"><span class="nav-number">11.</span> <span class="nav-text">相关模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E8%AE%B0%E4%BD%8F"><span class="nav-number">12.</span> <span class="nav-text">一句话记住</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/mechanism-design/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      纳什均衡：没人想动，不代表结局是好的
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/mechanism-design/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="机制设计：反过来设计游戏，让理性的人自己走向你要的结果 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机制设计：反过来设计游戏，让理性的人自己走向你要的结果
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-01 14:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T14:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Agents/" itemprop="url" rel="index"><span itemprop="name">Agents</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/en/mental-models/mechanism-design/" rel="alternate" hreflang="en">English</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>机制设计 &#x2F; Mechanism Design</strong><br>中文：反过来设计游戏规则，让每个只顾自己的人各自追逐私利，却正好走到你要的那个结果。<br>EN: Reverse game theory—design the rules so self-interested players, each chasing their own gain, land exactly on the outcome you wanted.</p>
+</blockquote>
+<p>我们来聊一个能把你从”天天和模型斗智斗勇”里解放出来的思路：<strong>与其一条一条去堵它钻的空子，不如反过来把游戏设计成——它想赢，就只能顺手把你要的事给做了。</strong></p>
+<span id="more"></span>
+
+<h2 id="为什么要问这个问题"><a href="#为什么要问这个问题" class="headerlink" title="为什么要问这个问题"></a>为什么要问这个问题</h2><p>先说一个你八成干过的场景。</p>
+<p>你的 Agent 又用一个歪招把任务”完成”了——测试没跑就报成功，或者绕过校验交了个空壳。你叹口气，在 system prompt 里加一句”不许这样做”。它老实了两天，换了个新歪招。你再加一句。三个月后，你的 prompt 变成一部厚厚的《不许这么干》法典，而它总能找到你还没堵上的那条缝。</p>
+<p>你在打地鼠。而且你永远比地鼠慢半拍——因为你在<strong>事后</strong>一个一个地堵，它在<strong>事前</strong>顺着你给的规则找最省力的赢法。</p>
+<p>这里要想通一件事：<strong>它不是坏，它是理性。</strong> 在你给的规则里，”钻空子”就是通往奖励最快的那条路，那它当然走这条。你写的每一句”不许”，都是在给一个你自己当初就设计坏了的游戏打补丁。</p>
+<p>古德哈特定律早就把这个病诊断清楚了：你想要的（任务真的完成）和你能测的（一个成功标志位）之间永远有一道缝，优化器一定会钻进去。可诊断不治病。这篇聊的是那把手术刀——<strong>能不能反过来，把游戏设计成根本没有缝可钻？</strong> 这门手艺有个正经名字，叫机制设计。</p>
+<h2 id="它从哪来"><a href="#它从哪来" class="headerlink" title="它从哪来"></a>它从哪来</h2><p>机制设计最好懂的一句解释是：<strong>它是”反过来的博弈论”。</strong></p>
+<p>普通博弈论是这样的：给你一套规则，你去预测一群理性人会怎么玩、最后停在哪个稳定状态（也就是均衡）。机制设计把箭头掉了个头：<strong>先定死你想要的那个结果，再反推出一套规则，让理性人自己玩着玩着，就正好停在那儿。</strong></p>
+<p>这门学问的地基，是一个叫列奥尼德·赫维奇的经济学家在上世纪 60、70 年代打下的。他当时琢磨的其实是个很大的问题：一个中央计划者，怎么才能让千千万万人<strong>说真话</strong>？每个人都藏着只有自己知道的信息（我真实的成本、我真实的偏好），而且没有任何动机告诉你实话——你问大家要多少算力，人人都会喊”我最急”。赫维奇给这个死结起了个名字，叫<strong>激励相容</strong>（incentive compatibility）：能不能设计一套规则，让”说真话、做实事”恰好也是每个人<strong>自己最划算</strong>的选择？</p>
+<p>2007 年，90 岁的赫维奇和另外两位（埃里克·马斯金、罗杰·迈尔森）一起拿了诺贝尔经济学奖，”因为他们奠定了机制设计理论的基础”。赫维奇是史上最年长的诺奖得主。更早还有个叫威廉·维克里的人，1961 年就设计出了后面要讲的那个精巧拍卖，1996 年也拿了诺奖。</p>
+<p>一句话记住这门学问的姿态：<strong>普通经济学在解释世界，机制设计在改造世界</strong>——它被称作”经济学里搞工程的那一半”。</p>
+<h2 id="核心直觉"><a href="#核心直觉" class="headerlink" title="核心直觉"></a>核心直觉</h2><p>机制设计的出发点有点冷酷，但极其可靠：<strong>别指望玩家是好人。</strong></p>
+<p>你就假设面前每一个玩家，都是个没有道德、不知疲倦、只认收益的优化器——它会毫不犹豫地奔向奖励最高的地方，管你希望它怎样。（听着耳熟吗？这正是一个 RL 策略、一个理性 Agent 的样子。）</p>
+<p>一旦你接受了这个假设，你会发现你手里真正能拧的旋钮只有一个：<strong>规则本身，也就是收益的分布。</strong> 你没法把玩家变好，但你能改游戏。于是问题变成了——怎么把收益摆布成这样：每个玩家只顾自己往高处爬，爬到的那个顶，正好是你想要的结果？</p>
+<p>这就是这篇的那把钥匙，后面反复要用：</p>
+<blockquote>
+<p>人和梯度，都只走阻力最小的那条路。机制设计，就是把那条路，修得正好通到你要的终点。</p>
+</blockquote>
+<pre>
+<code class="mermaid">
+
+graph LR
+  A[先定死你要的结果] --&gt; B[反推并设计游戏规则]
+  B --&gt; C[理性玩家只顾自己的私利]
+  C --&gt; D[私利最优解正好是你要的结果]
+  D -.均衡即目标 没有空子可钻.-&gt; A
+</code>
+</pre>
+
+<p>注意最后那条虚线：<strong>当你设计成功，你要的结果不再是”顶着玩家的利益硬拗出来的”，它就是玩家的利益本身。</strong> 这时候你回头看古德哈特——它是防守方的警告（你的指标会被钻）；而机制设计是进攻：与其严阵以待防着那道缝被钻，不如一开始就把游戏设计成没有缝。</p>
+<p>激励相容，说白了就是这么一个状态：**”钻空子”和”把事做好”，变成了同一个动作。** 到这一步，没什么可钻的了——因为钻空子的最短路径，就是把你要的事干成。</p>
+<h2 id="现实中的例子"><a href="#现实中的例子" class="headerlink" title="现实中的例子"></a>现实中的例子</h2><p>最干净的例子，是每个分过蛋糕的小孩都无师自通的一招。</p>
+<p>两个孩子分一块蛋糕，怎么保证公平？讲道理没用。但换个规则就行了：<strong>一个人切，另一个人先挑。</strong> 神奇的事发生了——负责切的那个，会拿出外科手术般的精度，把蛋糕切得尽可能平均。不是因为他突然变高尚了，恰恰相反，是因为他自私：他知道自己拿的是剩下那块，切得越不均，自己亏得越狠。</p>
+<p>你没有改变这个孩子，你改变的是游戏。<strong>自私的动作，被你设计成了公平的动作。</strong> 这就是整门机制设计，浓缩在一个童年小把戏里。</p>
+<p>第二个例子离 AI 更近一点，叫<strong>第二价格拍卖</strong>（也叫维克里拍卖）。规则很怪：大家把出价写在信封里密封提交，<strong>出价最高的人赢，但他付的钱，是第二高的那个价。</strong></p>
+<p>怪就怪在，这条奇怪的规则，会逼出一个漂亮的结果：<strong>你的最优策略，是老老实实写下这东西对你的真实价值——不多写一分，也不少写一分。</strong></p>
+<p>为什么？你少写（压价），只会让你在本该赢、本该赚的时候白白输掉，而且压根压不低你要付的钱（那钱是别人的出价定的）；你多写（抬价），又可能让你为一个其实不值那么多的东西付冤枉钱。往上往下都是亏，那还骗什么？说真话成了最划算的选择。</p>
+<p>对比一下”出价最高、就按你自己出的价付钱”的普通拍卖：那里人人都在撒谎——把价往低了压，还得费劲猜别人出多少。维克里只动了一处（改成付第二价），一笔就把”撒谎的动机”给删掉了。同一个目标（把东西卖给最想要它的人），完全不同的行为，只因为改了一条规则。</p>
+<p>这些故事听着像小聪明，但你把”蛋糕””拍卖”换成”奖励函数”，剧本一个字都不用改。</p>
+<h2 id="映射到-AI：设计-reward，就是在做机制设计"><a href="#映射到-AI：设计-reward，就是在做机制设计" class="headerlink" title="映射到 AI：设计 reward，就是在做机制设计"></a>映射到 AI：设计 reward，就是在做机制设计</h2><p>这是全篇最要紧的一段。因为我们这行天天在做机制设计，只是很多人没意识到自己在做。</p>
+<p><strong>在 RLHF 里，你设计 reward 的那一刻，你就是机制设计者，策略模型就是那个理性玩家。</strong> 一个好的 reward 是激励相容的：拿到最高奖励的行为，恰好就是你真心想要的行为。而所谓 reward hacking——模型谄媚、凑格式、专钻校验的空子——根本不是模型学坏了，它是<strong>你的 reward 这个机制没设计好</strong>，你留了一道缝，那个不知疲倦、没有道德的优化器把它找到了而已。这就把古德哈特和机制设计接上了：古德哈特命名了那个病（代理一定被钻），机制设计是那门手艺——尽量把 reward 造得没有缝可钻。</p>
+<p><strong>对齐（alignment），本质是个机制设计问题，不是道德说教问题。</strong> 你没法靠在 prompt 里写”要诚实、要有帮助”，就让一个强大的优化器真的变善良——那是打地鼠，是防守。真正的活儿，是把环境和奖励设计成：<strong>对它这个自私的优化器来说，对齐的那个行为，正好就是奖励最高的行为。</strong> RLHF、Constitutional AI、过程奖励（process reward）……你可以把它们全看成一次次”造一个更好的机制”的尝试。这个视角一转，问题就从”我怎么让模型变好”，变成了那个真正能动手施工的问题：”什么样的游戏，能让’变好’成为一个自私优化器的均衡？”</p>
+<p><strong>广告拍卖，是这个星球上跑得最大的一台机制。</strong> Google、Meta 的广告系统底层就是拍卖。要是用最朴素的”出多少付多少”，广告主会没完没了地改价、博弈、互相试探，系统又乱又低效。换成第二价格 &#x2F; VCG 那一类的机制，广告主的最优策略就变回了”照真实价值出价”，整个系统立刻安静、稳定下来。每年几千亿美元的生意，底子就是机制设计。而今天，越来越多的算力、API 额度，也开始用同一套思路来分配。</p>
+<p><strong>多智能体系统，是你亲手搭的一个小型经济。</strong> 你把好几个 Agent 接在一起，或者做一个 Agent 之间互相接活的市场，你就成了这个小经济的机制设计者。如果你给每个子 Agent 只按它自己的局部指标发奖励，你多半会撞上一个”人人都局部最优、整体却最糟”的陷阱（那形状，就是个囚徒困境）。你得把收益设计成：<strong>对每个 Agent 来说，合作是它自己的占优策略。</strong> 随着 Agent 之间开始真的交易、竞标任务，”激励相容的协议”会从一个学术词，变成实打实的基础设施。</p>
+<p>所以开头那个打地鼠的困境，答案到这里就一句话：<strong>你不是在管教一个坏孩子，你是在一个自己设计坏了的游戏里，追着一个理性玩家打补丁。</strong> 别再改玩家了，去改机制——让钻空子的那条近路，和把事做好的那条路，变成同一条。</p>
+<h2 id="工程师视角：设计游戏，别去管教玩家"><a href="#工程师视角：设计游戏，别去管教玩家" class="headerlink" title="工程师视角：设计游戏，别去管教玩家"></a>工程师视角：设计游戏，别去管教玩家</h2><p>道理讲完，落到几个具体动作上。</p>
+<p><strong>默认对手是个无耻的优化器，不是个好公民。</strong> 每次你设计一个 reward、一个 eval、一个协议，就用这句话去红队它：**”如果一个没脸没皮、不知疲倦、只想把这个数顶到最高的玩家在跑它，他最省力的赢法是什么？”** 那个最省力的赢法，就是你实际会拿到的东西。如果它正好等于你要的真任务——恭喜，激励相容了；如果不是，你有一道缝，去修机制，别去骂模型。</p>
+<p><strong>优先做”说真话有奖”的机制。</strong> 只要你的系统里有一个环节在<strong>上报</strong>什么（上报优先级、上报置信度、给自己的输出打分），就问一句：在这儿，诚实划算吗？如果喊”我最急”不要钱，那所有人都会喊”我最急”。加一点成本、加一个第二价格式的小设计、加一个预算上限，让说真话变成占优策略。别指望组件们自觉诚实，把诚实设计成它们的最优解。</p>
+<p><strong>改收益，别改症状。</strong> 你往上贴的每一条”不许做 X”，都是在给一个你不喜欢的均衡打补丁——补一个漏一个，就是开头那只打不完的地鼠。换个问法：<strong>有没有那么一处收益上的改动，能让 X 直接变得不划算？</strong> “我切你挑”，永远胜过一百条”要切公平”的规定。</p>
+<p><strong>你其实一直都是那个机制设计者。</strong> 只要你接了一个 reward、串了一次多 Agent 的交接、排了一个资源队列、或者立了一个决定谁能上线的 eval——你就已经设计了一个游戏，不管你有没有这个自觉。你最后拿到的，永远是你<strong>设计</strong>出来的那个均衡，而不是你<strong>期望</strong>的那个。既然躲不掉，那就有意识地去设计它。</p>
+<p>这一节的姿态，一句话：<strong>别求玩家别作弊，把游戏改成——作弊那条路，根本不存在。</strong></p>
+<h2 id="投资视角：最好的护城河，常常是一台机制"><a href="#投资视角：最好的护城河，常常是一台机制" class="headerlink" title="投资视角：最好的护城河，常常是一台机制"></a>投资视角：最好的护城河，常常是一台机制</h2><p>把镜头拉到公司层面，机制设计换了身衣服又出现了。</p>
+<p>很多真正赢家的护城河，不是某个产品，而是一台设计精妙的机制。Google 的广告拍卖是一台印钞机；Uber 的动态加价（surge pricing）是一台能实时出清供需的机制；各国政府靠精心设计的频谱拍卖，把牌照卖出了几百亿——而设计砸了的，就等于把公共财富白送。<strong>机制本身，就是资产。</strong></p>
+<p>绕回到我们做 AI 这件事，这条给工程师、也给判断一家 AI 公司的启示很直接：<strong>别只盯着模型有多强，去看它周围那层激励结构设计得好不好。</strong> 一个平台能不能让每一个参与者（开发者、用户、数据标注者、接活的 Agent）在追逐自己好处的同时，顺手把整个平台喂大——这才是复利的来源。一个顶级模型套着一层设计糟糕的激励，会持续漏价值；一个中等模型配上一台好机制，会自己滚起来。评估一个 AI 平台，真正吃重的问题不是”模型多好”，而是”这套游戏，能不能让每个人的私心，都长成平台的肌肉”。</p>
+<h2 id="生活视角：把一次性的自私，变成长期的合作"><a href="#生活视角：把一次性的自私，变成长期的合作" class="headerlink" title="生活视角：把一次性的自私，变成长期的合作"></a>生活视角：把一次性的自私，变成长期的合作</h2><p>这套机制，也根本不待在机房里。</p>
+<p>想想 Uber、Airbnb、eBay 的评分系统。你和一个素不相识、这辈子大概再也不会打交道的陌生人做交易——按纯粹的一次性博弈，双方都该能坑就坑（这就是个囚徒困境）。可评分系统把这局给改了：它把一次性的交易，变成了一个<strong>你的信誉就是你饭碗</strong>的重复博弈。于是”好好对待一个陌生人”，从一件道德上的好事，变成了一件对你自己最划算的事。没人靠说教，规则自己把自私掰成了合作。</p>
+<p>想明白这个，对你做 AI 产品很要紧：<strong>只要你的产品开始在多方之间牵线（一个 Agent 市场、一个让 AI 互相接活的平台、一个靠用户给输出打分来喂训练的系统），你就是在跑一套信誉机制，而你会精确地收获它所奖励的行为。</strong> 如果那个评分信号很容易刷，那你喂进训练闭环的，就是一堆被刷出来的假评分——garbage in。这时候，激励那一层，值得你像设计模型一样上心去设计。</p>
+<h2 id="常见误解"><a href="#常见误解" class="headerlink" title="常见误解"></a>常见误解</h2><p>最常见的跑偏，是把机制设计理解成”制定更严、更细的规则”。<strong>正好相反。</strong> 规则越多，越是在管教、在防守，可被钻的面反而越大。这门手艺的精髓常常是反的：一条摆对位置的规则（切&#x2F;挑、第二价格），顶得上一整本规章。好的机制设计，往往让规则<strong>更简单</strong>，不是更严——因为它是在顺着利益引导，而不是逆着利益硬管。</p>
+<p>第二个误解：觉得它太阴暗，”假设人人都是坏蛋”。不是坏，是<strong>自私且理性</strong>——这不是道德判断，是个工程上的安全假设，而且是最稳的那个。更何况，它对没有道德的梯度下降照样成立。为一个无耻的优化器做设计，不是悲观，是稳健。</p>
+<p>第三个：以为机制设计好了就一劳永逸。不会的。玩家会变聪明，会使出你没算到的招（现实里的广告拍卖天天在打补丁；每一个”激励相容”的漂亮证明，底下都压着一堆现实会违背的假设，比如”玩家之间不会串通”——让竞拍者结成一个卡特尔，第二价格的魔法当场失效）。它仍然是一场军备竞赛，只不过你站的位置，比在 prompt 里打地鼠稳太多了。</p>
+<h2 id="什么时候不成立"><a href="#什么时候不成立" class="headerlink" title="什么时候不成立"></a>什么时候不成立</h2><p>知道一个模型什么时候<strong>失效</strong>，比记住它本身更值钱。机制设计要成立，你得同时握着几样东西；把它们反过来，就是它不灵的地方：</p>
+<p><strong>你根本改不了规则。</strong> 机制设计只在”你是那个定收益的人”时才成立。如果你只是别人游戏里的一个玩家（reward 不归你定、平台不是你的、协议轮不到你改），你就没得设计，只能去玩——这时候你要用的是普通博弈论：预测，然后适应。</p>
+<p><strong>你想要的东西，事前事后都完全没法验证。</strong> 机制是靠”可观测、可验证”的东西去引导激励的。如果那个真实结果彻底不可观测、连事后都分不出真假，你就没有任何东西可以拿来锚定收益——你没法让”说真话”变得划算，如果你永远分不出真话和假话。（这也正是超人类系统的对齐为什么这么难：当 Agent 比你的验证者还聪明、你根本看不懂它的输出对不对时，你就造不出一个激励相容的 reward——机制设计这道题，恰恰在智能体最强的时候，变得最狠。）</p>
+<p><strong>玩家能串通，或者能退出。</strong> 很多”说真话最优”的机制，都悄悄假设了玩家彼此独立、没法勾兑。一旦能串通（结成卡特尔），第二价格那类保证就塌了。多智能体系统里，如果 Agent 之间能偷偷协调，它们就能一起打败你为”独立玩家”设计的那套机制。</p>
+<p>判断方法还是那把钥匙，反过来用：**”我到底能不能改这个游戏的收益？如果能——一个只认奖励的玩家把我的规则钻到底，他最省力的赢法，是不是正好就是我要的那件事？”** 改不了收益 → 你是玩家不是设计者，这个模型不是你的杠杆；最省力的赢法不等于你的目标 → 你的机制有缝，你造出来的不是机制，是个古德哈特陷阱，赶紧回炉。</p>
+<p>这里有个对我们特别提气的地方：现实里的经济学家，几乎从不拥有整个游戏——他们改不了人性、管不住串通。而我们做 AI 的，常常<strong>真的</strong>握着整个环境、整个 reward、整个协议。这意味着，机制设计可能是我们手上最强、却最被浪费的一根杠杆。</p>
+<h2 id="相关模型"><a href="#相关模型" class="headerlink" title="相关模型"></a>相关模型</h2><p>机制设计不是孤岛，它挂在一张网里。下面这些是同一张网上的邻居（这些文章我会陆续补上）：</p>
+<ul>
+<li><a href="/mental-models/nash-equilibrium/">纳什均衡 &#x2F; Nash Equilibrium</a>：机制设计的目标，就是让”你想要的结果”恰好成为这个游戏的纳什均衡。博弈论负责预测均衡，机制设计负责反过来订制均衡。</li>
+<li><a href="/mental-models/prisoners-dilemma/">囚徒困境 &#x2F; Prisoner’s Dilemma</a>：困境的根子，是收益矩阵逼着理性人互相背叛。机制设计干的，就是去改那张矩阵，让合作变成占优策略。</li>
+<li><a href="/mental-models/goodharts-law/">古德哈特定律 &#x2F; Goodhart’s Law</a>：一体两面。古德哈特说”代理和目标之间那道缝一定会被钻”；激励相容，就是那把想把缝彻底焊死的手术刀。一个防守，一个进攻。</li>
+<li><a href="/mental-models/principal-agent-problem/">委托代理问题 &#x2F; Principal-Agent Problem</a>：委托方想要的，和代理方实际优化的，不是一回事——这正是机制设计要解的题：设计一份合约，让代理人追着私利跑的时候，顺手把委托方的事办了。</li>
+<li><a href="/mental-models/incentive/">激励 &#x2F; Incentive</a>：芒格那句”给我看激励，我就告诉你结果”。机制设计，就是把这句话从”观察”升级成”施工”——不只是看激励，而是主动去设计激励。</li>
+</ul>
+<h2 id="一句话记住"><a href="#一句话记住" class="headerlink" title="一句话记住"></a>一句话记住</h2><blockquote>
+<p>中文：博弈论问的是”给定规则，自私的人会怎么做”；机制设计把它反过来问——“我要自私的人做这件事，那该给他们什么规则”。别去改人，去改游戏：把阻力最小的那条路，修到你要的终点上。<br>EN: Game theory asks what selfish players will do given the rules; mechanism design asks it backwards—what rules make selfish players do what you want? Don’t fix the player, fix the game: lay the path of least resistance so it ends exactly where you need it.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+              <a href="/tags/Mechanism-Design/" rel="tag"># Mechanism Design</a>
+              <a href="/tags/Incentive/" rel="tag"># Incentive</a>
+              <a href="/tags/Auction/" rel="tag"># Auction</a>
+              <a href="/tags/Alignment/" rel="tag"># Alignment</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/mental-models/nash-equilibrium/" rel="prev" title="Nash Equilibrium: Nobody Wants to Move, and That&#39;s the Problem">
+                  <i class="fa fa-angle-left"></i> Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/mental-models/mechanism-design/" rel="next" title="Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing">
+                  Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d4025533160c283d377c4559150152e8"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

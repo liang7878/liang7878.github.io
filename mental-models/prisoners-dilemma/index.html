@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="囚徒困境 &#x2F; Prisoner’s Dilemma中文：每个人都选对自己最好的那一步，最后所有人一起输。EN: Everyone picks the move that’s best for themselves, and together they all lose.  我们来聊一个让人很不甘心的结构：一屋子聪明、理性、各自都想把事做好的人（或 Agent），可以精准地、一步不错地，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="囚徒困境：为什么理性的个体，会一起走向糟糕的结局">
+<meta property="og:url" content="https://liang7878.github.io/mental-models/prisoners-dilemma/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="囚徒困境 &#x2F; Prisoner’s Dilemma中文：每个人都选对自己最好的那一步，最后所有人一起输。EN: Everyone picks the move that’s best for themselves, and together they all lose.  我们来聊一个让人很不甘心的结构：一屋子聪明、理性、各自都想把事做好的人（或 Agent），可以精准地、一步不错地，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Game Theory">
+<meta property="article:tag" content="Mechanism Design">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta property="article:tag" content="Economics">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="Cooperation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/mental-models/prisoners-dilemma/","path":"/mental-models/prisoners-dilemma/","title":"囚徒困境：为什么理性的个体，会一起走向糟糕的结局"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>囚徒困境：为什么理性的个体，会一起走向糟糕的结局 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Game Theory, Mechanism Design, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Cooperation">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/prisoners-dilemma/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/mental-models/prisoners-dilemma/"
+    },
+    "headline": "囚徒困境：为什么理性的个体，会一起走向糟糕的结局",
+    
+    "description": "囚徒困境 &#x2F; Prisoner’s Dilemma中文：每个人都选对自己最好的那一步，最后所有人一起输。EN: Everyone picks the move that’s best for themselves, and together they all lose. 我们来聊一个让人很不甘心的结构：一屋子...",
+    
+    "inLanguage": "zh-CN",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T12:00:00+08:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Game Theory, Mechanism Design, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Cooperation"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Agents",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Agents/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "囚徒困境：为什么理性的个体，会一起走向糟糕的结局",
+        "item": "https://liang7878.github.io/mental-models/prisoners-dilemma/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%97%AE%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">为什么要问这个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%83%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="nav-number">2.</span> <span class="nav-text">它从哪来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9B%B4%E8%A7%89"><span class="nav-number">3.</span> <span class="nav-text">核心直觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E5%AE%9E%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">现实中的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E5%88%B0-AI%EF%BC%9A%E5%A4%9A%E4%B8%AA-Agent-%E5%A4%A9%E7%94%9F%E4%BC%9A%E4%BA%92%E7%9B%B8%E8%83%8C%E5%8F%9B"><span class="nav-number">5.</span> <span class="nav-text">映射到 AI：多个 Agent 天生会互相背叛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%A7%86%E8%A7%92%EF%BC%9A%E9%BB%98%E8%AE%A4%E8%83%8C%E5%8F%9B%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8A%A8%E6%89%8B%E6%94%B9%E6%B8%B8%E6%88%8F"><span class="nav-number">6.</span> <span class="nav-text">工程师视角：默认背叛，然后动手改游戏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%95%E8%B5%84%E8%A7%86%E8%A7%92%EF%BC%9A%E9%82%A3%E5%9C%BA%E8%B0%81%E9%83%BD%E6%83%B3%E5%81%9C%E3%80%81%E5%8F%88%E8%B0%81%E4%B9%9F%E5%81%9C%E4%B8%8D%E4%B8%8B%E6%9D%A5%E7%9A%84%E7%AB%9E%E8%B5%9B"><span class="nav-number">7.</span> <span class="nav-text">投资视角：那场谁都想停、又谁也停不下来的竞赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%B4%BB%E8%A7%86%E8%A7%92%EF%BC%9A%E4%BD%A0%E6%97%A9%E5%B0%B1%E7%8E%A9%E8%BF%87%E8%BF%99%E5%B1%80%E4%BA%86"><span class="nav-number">8.</span> <span class="nav-text">生活视角：你早就玩过这局了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="nav-number">9.</span> <span class="nav-text">常见误解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E6%88%90%E7%AB%8B"><span class="nav-number">10.</span> <span class="nav-text">什么时候不成立</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A8%A1%E5%9E%8B"><span class="nav-number">11.</span> <span class="nav-text">相关模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E8%AE%B0%E4%BD%8F"><span class="nav-number">12.</span> <span class="nav-text">一句话记住</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      纳什均衡：没人想动，不代表结局是好的
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/mechanism-design/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/mechanism-design/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      机制设计：反过来设计游戏，让理性的人自己走向你要的结果
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/prisoners-dilemma/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="囚徒困境：为什么理性的个体，会一起走向糟糕的结局 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-01 12:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T12:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Agents/" itemprop="url" rel="index"><span itemprop="name">Agents</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/en/mental-models/prisoners-dilemma/" rel="alternate" hreflang="en">English</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>19 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>囚徒困境 &#x2F; Prisoner’s Dilemma</strong><br>中文：每个人都选对自己最好的那一步，最后所有人一起输。<br>EN: Everyone picks the move that’s best for themselves, and together they all lose.</p>
+</blockquote>
+<p>我们来聊一个让人很不甘心的结构：<strong>一屋子聪明、理性、各自都想把事做好的人（或 Agent），可以精准地、一步不错地，一起滑向一个谁都不想要的坏结局——而且每一步，他们都做对了。</strong></p>
+<span id="more"></span>
+
+<h2 id="为什么要问这个问题"><a href="#为什么要问这个问题" class="headerlink" title="为什么要问这个问题"></a>为什么要问这个问题</h2><p>先说两个你大概率碰过的场景。</p>
+<p>第一个：你们几个团队共用一份限流的 API 配额，或者共用一个 GPU 集群。道理上大家都清楚，只要各自克制一点、错峰用，谁都有稳定的份额。可现实是，每个团队心里都在打同一个算盘：”别人要是也克制，那我多抢一点也没事；别人要是不克制，那我更得赶紧抢，不然吃亏的就是我。”于是每个团队都在拼命抢，配额几分钟被打满，429 糊一脸，集群抖成筛子——所有人都比”大家都克制”的时候过得更差。</p>
+<p>第二个：你搭了个多 Agent 系统，指望它们协作。结果一个买方 Agent 和一个卖方 Agent 谈判，两边都寸步不让，谈崩收场；或者你搞了个多 Agent 辩论想逼出真相，结果每个 Agent 都死守自己一开始的立场，谁也不肯让步——因为”让步”在局部看就是”我输了”。你想要的是合力，拿到的是互相拆台。</p>
+<p>这两件事，其实是同一件事：<strong>每个参与者都做了对自己最划算的选择，可这些选择叠在一起，结果对所有人都更糟。</strong> 没有人犯蠢，没有人使坏，但集体的结局烂得一塌糊涂。</p>
+<p>这个结构不新鲜，也根本不是 AI 独有的。两个数学家在 1950 年就把它拆得明明白白，讲的还不是芯片，是核弹。</p>
+<h2 id="它从哪来"><a href="#它从哪来" class="headerlink" title="它从哪来"></a>它从哪来</h2><p>1950 年，兰德公司（RAND）。那是冷战最紧张的年头，一群数学家拿着军方的钱，研究一件要命的事：美苏两个超级大国，各自理性地算计，为什么会一起冲进核军备竞赛？</p>
+<p>梅里尔·弗勒德和梅尔文·德雷舍两个人，用博弈论搭了个小模型，把这件事的骨架露了出来。后来数学家阿尔伯特·塔克为了给一群心理学家讲清楚，套了个好记的故事上去，”囚徒困境”这个名字就这么定了。</p>
+<p>故事是这样的：两个同伙被抓，分开审，彼此不能通气。检察官给每个人开同一个价：</p>
+<ul>
+<li>两人都不招（合作）：证据不足，各判 1 年。</li>
+<li>你招了、他没招（你背叛他）：你当场释放，他判 10 年。</li>
+<li>两人都招（互相背叛）：各判 5 年。</li>
+</ul>
+<p>关键的是接下来这步推理。站在你的角度想：</p>
+<ul>
+<li>如果他不招，你不招判 1 年，你招直接走人（0 年）——招更好。</li>
+<li>如果他招了，你不招判 10 年，你招判 5 年——还是招更好。</li>
+</ul>
+<p>看出来了吗？<strong>不管他怎么选，你招都更划算。</strong> 这种”无论对方怎么做，你都有一个更好的选择”的招法，博弈论里叫<strong>占优策略（dominant strategy）</strong>。招（背叛），就是你的占优策略。</p>
+<p>问题在于，他和你一模一样地聪明，也会算出”招”是他的占优策略。于是两个理性的人都招了，各判 5 年。可要是他俩都咬牙闭嘴，本来只用各判 1 年。<strong>两个各自正确的选择，叠出了一个对两人都更糟的结局。</strong> 这就是囚徒困境。</p>
+<h2 id="核心直觉"><a href="#核心直觉" class="headerlink" title="核心直觉"></a>核心直觉</h2><p>把它讲透，只需要盯住两件事：</p>
+<ol>
+<li><strong>在单局里，背叛是占优策略。</strong> 不管对方合作还是背叛，你背叛都不吃亏、还占便宜。所以纯讲理性，每个人都该背叛。</li>
+<li><strong>可当两人都背叛，结果比两人都合作更差。</strong> 各判 5 年 vs 各判 1 年。个体的理性，加起来变成了集体的愚蠢。</li>
+</ol>
+<p>这里藏着一个特别反直觉、又特别要命的裂缝：<strong>对个体最优的选择，和对集体最优的选择，不是同一个。</strong> 双方都背叛，是这局的<a href="/mental-models/nash-equilibrium/">纳什均衡 &#x2F; Nash Equilibrium</a>——所谓均衡，意思是没人能靠单方面改变选择让自己变好（你单方面改成合作，只会从 5 年变 10 年，更惨）。可这个稳稳当当的均衡，偏偏不是最优。最优是双方合作，但那个点不稳：只要有一方能靠背叛占便宜，它就守不住。</p>
+<pre>
+<code class="mermaid">
+
+graph TD
+  A[你只能选一次 合作还是背叛] --&gt; B[对方合作时 你背叛能白拿好处]
+  A --&gt; C[对方背叛时 你背叛能少亏一点]
+  B --&gt; D[所以不管对方怎么选 背叛都更划算]
+  C --&gt; D
+  D --&gt; E[双方各自都这么算 于是都背叛]
+  E --&gt; F[两人一起掉进比互相合作更差的结局]
+  F -.这是稳定的均衡 却不是最优.-&gt; E
+</code>
+</pre>
+
+<p>注意最后那条虚线：坏结局是<strong>自锁</strong>的。两个人都被卡在”都背叛”上，谁也不敢先松手，因为先合作的那个会被对方白吃一口。这就是为什么囚徒困境这么难缠——它不是因为谁不懂事，而是因为<strong>每个人都太懂事了</strong>。</p>
+<p>记住这把钥匙，后面反复要用：<strong>在单局博弈里，合作是劝不出来的——因为背叛对每个人都是理性的。想改结局，别改人，改游戏。</strong></p>
+<h2 id="现实中的例子"><a href="#现实中的例子" class="headerlink" title="现实中的例子"></a>现实中的例子</h2><p>街角对着开的两家加油站，就是一场每天上演的囚徒困境。</p>
+<p>两家都定高价，各自都赚钱（这是”都合作”）。可 A 家会想：”我要是偷偷降两毛，对面的客人全被我抢过来。”于是 A 降价。B 一看客人跑光，只能跟着降。两家一路降到几乎不赚钱为止，谁也没多抢到客人，利润却一起被削平了。降价对每一家单独看都是理性的（不降就等着被抢），可两家都降，结果两败俱伤。顾客乐了，老板哭了。</p>
+<p>（还有个更扎心的版本：职业体育里的兴奋剂。如果没人用药，大家公平竞争，都健康。可每个运动员都会算：”别人不用我用，我就赢；别人用我不用，我就输。”于是不管别人用不用，自己用都”更划算”。结果全都用药，名次排下来跟没人用药时几乎一样，白白把身体搞垮——所有人一起冲进了那个谁都不想要的结局。）</p>
+<p>这些故事听着离机房很远，但你把”两家加油站”换成”两个 AI 实验室”、把”运动员”换成”Agent”，剧本一个字都不用改。</p>
+<h2 id="映射到-AI：多个-Agent-天生会互相背叛"><a href="#映射到-AI：多个-Agent-天生会互相背叛" class="headerlink" title="映射到 AI：多个 Agent 天生会互相背叛"></a>映射到 AI：多个 Agent 天生会互相背叛</h2><p>单个模型的世界里，囚徒困境还睡着。可一旦你开始搭<strong>多智能体系统</strong>、或者让多个团队和任务抢同一份资源，它立刻醒过来——因为这时候，每个 Agent 都在为自己的局部目标做理性选择。</p>
+<p><strong>多 Agent 系统会互相拆台。</strong> 你让两个 Agent 谈判、协作、辩论，期望它们合力。但只要每个 Agent 优化的是自己那一份局部收益，背叛就会冒出来：谈判里双方都硬扛到谈崩，辩论里各自死守立场不肯更新，协作里每个子 Agent 都想把最脏最难的活推给别人。没有哪个 Agent 有”使坏”的意图，它只是在优化你给它的那个局部目标——而这，恰恰是最麻烦的地方。</p>
+<p><strong>抢共享资源，是最直接的一版。</strong> 一堆 job 共用一个集群、一群 Agent 共用一份 token 预算或工具调用额度，每个都拼命多抢，因为克制的那个只会把吞吐白让给别人。结果就是踩踏：一起打满、一起 429、一起变慢。这其实是囚徒困境的多人版，它有个更响的名字，叫<a href="/mental-models/tragedy-of-the-commons/">公地悲剧 &#x2F; Tragedy of the Commons</a>——n 个人共用一块草地，每个人都理性地多放一头羊，草地很快被啃秃。</p>
+<p>那有救吗？有。救命的关键，是把”一锤子买卖”变成”反复打交道”。</p>
+<p><strong>单局会背叛，重复博弈能长出合作。</strong> 上面所有的推理，都建立在”只玩一次”上。可现实里的大多数互动是<strong>重复的</strong>——今天你背叛我，明天我就记着。政治学家罗伯特·阿克塞尔罗德在 1980 年做过一个著名实验：他办了个比赛，让各路策略在<strong>反复进行</strong>的囚徒困境里捉对厮杀。赢家不是什么精巧的算计，而是最简单的一个，叫”针锋相对（Tit-for-Tat）”：第一步先合作，之后对方上一步怎么对我，我这一步就怎么对他。它的性格特别好使——<strong>上来先释放善意，你一背叛我立刻回敬，可你一回头合作我马上既往不咎。</strong> 善良、强硬、又不记仇。</p>
+<p>这条给多 Agent 设计的启示是硬核的：<strong>想让一群 Agent 合作，就别让它们做”匿名的一次性交易”。</strong> 给它们身份、记忆、声誉——让今天的背叛在明天有代价。一个能记住”谁上次坑过我”的 Agent 市场，能撑起匿名 Agent 撑不起的合作。</p>
+<p><strong>但最彻底的解法，是改收益矩阵本身。</strong> 重复博弈治标，真正治本的是<a href="/mental-models/mechanism-design/">机制设计 &#x2F; Mechanism Design</a>：你没法靠给 Agent 写一句”请友好合作、公平共享”的 prompt 就让它合作——只要背叛还划算，那句 prompt 就是张遮羞布，压力一大它照样背叛。你得动手把游戏本身改了：给共享资源上硬配额，让抢占不再占便宜；派一个有权威的协调者来分预算、惩罚囤积；把奖励对齐，让某个子 Agent 的局部最优，正好等于系统的全局最优。<strong>合作合不合得成，从来不取决于你劝得多真诚，而取决于你把收益矩阵设成了什么样。</strong></p>
+<p>所以开头那两个场景，答案到这里就一句话：<strong>你的 Agent 和你的团队都没坏，它们只是在各自理性地背叛——因为在你设的那个游戏里，背叛就是划算。</strong></p>
+<h2 id="工程师视角：默认背叛，然后动手改游戏"><a href="#工程师视角：默认背叛，然后动手改游戏" class="headerlink" title="工程师视角：默认背叛，然后动手改游戏"></a>工程师视角：默认背叛，然后动手改游戏</h2><p>道理讲完，落到几个能直接上手的动作。</p>
+<p><strong>默认你系统里的每个 Agent、每个团队、每个 job，都会在背叛划算的那一刻背叛。</strong> 不是因为它坏，是因为它理性。设计多 Agent 或共享资源系统时，别假设参与者”会讲道理、会互相体谅”。对着每个参与者问一句：<strong>在我这套规则下，合作对它个人是不是理性的？</strong> 如果不是，那背叛迟早发生，你的系统得扛得住，而不是指望它别发生。（这和古德哈特那条”默认每个指标都会被钻空子”是同一个姿势。）</p>
+<p><strong>把一次性变成重复的。</strong> 匿名 + 只交易一次 &#x3D; 必然背叛。给 Agent 稳定的身份、给交互留记忆、给行为记声誉——让”上次坑过人”这件事在这次留下影子。重复，是合作能自己长出来的土壤。</p>
+<p><strong>改收益，别改 prompt。</strong> 你可以在 prompt 里写满”请公平、请合作”，但只要背叛还划算，那都是空话，赌注一抬它就露馅。真正管用的是把约束焊进结构里：硬配额、预算上限、把背叛的惩罚直接写进奖励函数。一句 prompt 挡不住一个理性的优化器，一个改好的收益矩阵可以。</p>
+<p><strong>加一个裁判。</strong> 很多囚徒困境，只要有一个能执行惩罚的第三方就当场瓦解。多 Agent 系统里放一个有权威的协调者（orchestrator）来分配共享预算、对囤积开罚单，”人人抢”就变成了”人人拿到公平的一份”。代价是你用一部分自治，换来了协调——这笔账值不值，得自己算。</p>
+<p>这一节的姿势一句话：<strong>别对着你的 Agent 讲道德，去改它们所处的那个游戏。</strong></p>
+<h2 id="投资视角：那场谁都想停、又谁也停不下来的竞赛"><a href="#投资视角：那场谁都想停、又谁也停不下来的竞赛" class="headerlink" title="投资视角：那场谁都想停、又谁也停不下来的竞赛"></a>投资视角：那场谁都想停、又谁也停不下来的竞赛</h2><p>把镜头拉到整个行业，囚徒困境换身衣服又出现了——而且是今天 AI 圈最要命的那一版。</p>
+<p>几乎每个 AI 实验室都心知肚明：这么疯狂地抢着发布能力越来越强的模型、把安全测试一压再压，对整个行业、甚至对人类，都不是好事。可每一家都在算同一笔账：”我要是为了安全踩刹车，对手不踩，市场、人才、融资全被他抢走；对手要是踩了我不踩，我就赢。所以不管对手踩不踩，我都得往前冲。”于是<strong>每一家都在往前冲</strong>，整个行业一起冲进了一个连业内人自己都觉得太快的节奏里。没有哪家是坏人，每一家都只是在做局部理性的选择——这是一场教科书级的、行业规模的囚徒困境。</p>
+<p>这也解释了为什么那些”我们一起慢下来吧”的自愿承诺，结构上如此脆弱：它等于请所有人去打那个被占优的策略（合作），而只要有一家偷偷背叛（继续狂奔）就能占大便宜，这个约定就守不住。真正能改变竞赛节奏的，从来不是道德呼吁，而是从外部改掉收益矩阵——比如监管，比如市场开始为”可靠”而不是”最快”买单。这又绕回了机制设计。</p>
+<p>绕回到我们做 AI 这件事，这条给工程师的启示其实很直接：<strong>别把”我们会负责任”当成一家公司的护城河，也别当成一个系统的安全保证。</strong> 竞赛的压力会碾过善意。你评估一家 AI 公司、或者设计自己团队的激励和产品的护栏时，该假设的是那个囚徒困境的结构，而不是谁的好心。问自己一句：在真实的竞争压力下，做正确的事对每个参与者是不是也理性的？如果不是，光靠自觉，撑不住。</p>
+<h2 id="生活视角：你早就玩过这局了"><a href="#生活视角：你早就玩过这局了" class="headerlink" title="生活视角：你早就玩过这局了"></a>生活视角：你早就玩过这局了</h2><p>这套结构，根本不待在机房里。</p>
+<p>小组作业里总有人摸鱼——因为”别人干我不干，我照样拿分”，于是大家都想搭便车，项目烂尾。堵车时匝道汇入，每个人都想加塞插一脚，结果谁也快不了，整条路更堵。合租的公共厨房没人愿意多擦一次，因为”凭什么是我”。这些都是同一个骨架：<strong>个体最优，叠成集体最差。</strong></p>
+<p>把它想透，对你设计 AI 产品其实很要命：<strong>只要你把多个 Agent（或多个用户）放进一个”背叛更划算”的局里，再怎么在 prompt 或用户协议里写”请友善合作”，都拦不住他们背叛。</strong> 你能做的，不是感化他们，而是把那个局本身改掉——让合作变成他们自己也愿意选的那一步。想明白这一点，往往就决定了你那个多 Agent 功能，是真能协作，还是只在表演协作。</p>
+<h2 id="常见误解"><a href="#常见误解" class="headerlink" title="常见误解"></a>常见误解</h2><p><strong>第一个，也是最常见的：以为囚徒困境说的是”人自私、人性坏”。</strong> 不是。两个囚徒可以都非常理性、甚至都真心想合作，但只要收益矩阵长成那样，结构就逼着他们背叛。就像梯度下降没有道德也照样 reward hacking——<strong>一屋子诚实善良的人（或 Agent），照样会一起走进那个坏结局。</strong> 这是结构问题，不是人品问题。想反了，你会去抓”坏人”，而真正该改的是那个游戏。</p>
+<p><strong>第二个，更危险：以为”既然背叛是理性的，那合作就是天真、就是不可能”。</strong> 恰恰相反。单局的悲观结论，是”只玩一次”这个假设的产物。一旦博弈重复、参与者有记忆，合作不但可能，还常常就是理性的均衡（阿克塞尔罗德那场比赛证过了）。别把一次性博弈的绝望，错当成关于合作的普遍真理。</p>
+<p><strong>第三个：以为大家沟通一下、承诺一下就能解决。</strong> 只要背叛还划算，一句没有约束力的承诺就是空话（博弈论里管这叫 cheap talk，廉价信号）。真正解决问题的，不是那场对话，而是改掉背后的收益——可执行的合约、重复的博弈、留下声誉。嘴上说好，挡不住手上背叛。</p>
+<h2 id="什么时候不成立"><a href="#什么时候不成立" class="headerlink" title="什么时候不成立"></a>什么时候不成立</h2><p>知道一个模型什么时候<strong>失效</strong>，比记住它本身更值钱。囚徒困境要成立，得同时满足两条：”背叛是占优策略”＋”这基本是一锤子买卖、没人能事后惩罚背叛”。把这两条反过来，就是它不成立的地方：</p>
+<p><strong>它其实压根不是囚徒困境。</strong> 很多我们以为是困境的场景，收益矩阵根本不长那样——如果合作对你个人就是最优的（不存在”背叛能占便宜”的诱惑），那它只是个普通的<a href="/mental-models/nash-equilibrium/">协调博弈</a>、甚至干脆是双赢，不是困境。惊慌之前，先老老实实把收益顺序摆出来看看。</p>
+<p><strong>博弈明显是重复的、而且没有明确的终点。</strong> 只要参与者会反复打交道、还记得彼此，”未来的阴影”就会把合作变成理性选择。别把重复博弈当成单局来悲观。</p>
+<p><strong>存在能执行的合约或外部权威。</strong> 一个能惩罚背叛的裁判，会直接把收益矩阵改得不再是囚徒困境。我们建协调者、上配额、做机制，本质都是在干这件事——把困境从结构上拆掉。</p>
+<p>判断方法还是那把钥匙，反过来用：**”对每个参与者，不管别人怎么做，背叛是不是都更划算？而且这是不是一锤子买卖、没人能在事后惩罚背叛？”** 两个都”是”→ 你面对的是真困境，别指望说教，去改矩阵；有一个”不是”→ 它可能根本不是囚徒困境，或者你有的是办法救。</p>
+<h2 id="相关模型"><a href="#相关模型" class="headerlink" title="相关模型"></a>相关模型</h2><p>囚徒困境不是孤岛，它挂在一张网里。下面这些是同一张网上的邻居（这些文章我会陆续补上）：</p>
+<ul>
+<li><a href="/mental-models/nash-equilibrium/">纳什均衡 &#x2F; Nash Equilibrium</a>：双方都背叛，就是囚徒困境的纳什均衡。囚徒困境是”均衡不等于最优”这件事最出名的一个例子。</li>
+<li><a href="/mental-models/tragedy-of-the-commons/">公地悲剧 &#x2F; Tragedy of the Commons</a>：把两个囚徒换成 n 个人抢一块公共资源，就是它。共享集群、限流 API，都是这一版。</li>
+<li><a href="/mental-models/mechanism-design/">机制设计 &#x2F; Mechanism Design</a>：囚徒困境的正经解药。既然改不了人，那就改游戏的规则和收益，让合作变成理性选择。</li>
+<li><a href="/mental-models/goodharts-law/">古德哈特定律 &#x2F; Goodhart’s Law</a>：给每个子 Agent 定错了局部指标，你就亲手在系统里造出一个囚徒困境——每个都去优化自己那个数，系统整体反而输。</li>
+</ul>
+<h2 id="一句话记住"><a href="#一句话记住" class="headerlink" title="一句话记住"></a>一句话记住</h2><blockquote>
+<p>中文：合作不是靠人品，是靠结构。单局里背叛永远划算，所以要么把游戏变成重复的、让背叛在未来挨罚，要么直接改掉收益矩阵——否则一群理性的人，会分毫不差地走进一个谁都不想要的结局。<br>EN: Cooperation isn’t a matter of character; it’s a matter of structure. In a one-shot game defection always pays, so either make the game repeated so betrayal gets punished later, or change the payoff matrix outright—otherwise a room full of rational agents will march, precisely, into an outcome none of them wanted.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+              <a href="/tags/Mechanism-Design/" rel="tag"># Mechanism Design</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+              <a href="/tags/Multi-Agent/" rel="tag"># Multi-Agent</a>
+              <a href="/tags/Cooperation/" rel="tag"># Cooperation</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/mental-models/principal-agent-problem/" rel="prev" title="The Principal-Agent Problem: When Your Agent Has Its Own Agenda">
+                  <i class="fa fa-angle-left"></i> The Principal-Agent Problem: When Your Agent Has Its Own Agenda
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/mental-models/prisoners-dilemma/" rel="next" title="The Prisoner&#39;s Dilemma: Why Rational Agents Choose a Worse Outcome Together">
+                  The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"47131f11c12623386fadfac30e990b5d"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>

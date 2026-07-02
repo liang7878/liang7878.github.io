@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="DqFVpW-sXc5a1F2AHeTAoLIp09EzdJwFVDByAFr6wI0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"liang7878.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="纳什均衡 &#x2F; Nash Equilibrium中文：一组选择，在别人都不变的前提下，没有任何一个人能靠单方面改变让自己变得更好。EN: A set of choices where, given what everyone else is doing, no single player can switch and make themselves better off.  我们来聊一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纳什均衡：没人想动，不代表结局是好的">
+<meta property="og:url" content="https://liang7878.github.io/mental-models/nash-equilibrium/index.html">
+<meta property="og:site_name" content="小良的分布式之路">
+<meta property="og:description" content="纳什均衡 &#x2F; Nash Equilibrium中文：一组选择，在别人都不变的前提下，没有任何一个人能靠单方面改变让自己变得更好。EN: A set of choices where, given what everyone else is doing, no single player can switch and make themselves better off.  我们来聊一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liang7878.github.io/images/logo.png">
+<meta property="article:published_time" content="2026-07-01T05:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T07:15:04.302Z">
+<meta property="article:author" content="Chengliang">
+<meta property="article:tag" content="Game Theory">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta property="article:tag" content="Economics">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="Equilibrium">
+<meta property="article:tag" content="GAN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liang7878.github.io/images/logo.png">
+
+
+<link rel="canonical" href="https://liang7878.github.io/mental-models/nash-equilibrium/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://liang7878.github.io/mental-models/nash-equilibrium/","path":"/mental-models/nash-equilibrium/","title":"纳什均衡：没人想动，不代表结局是好的"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>纳什均衡：没人想动，不代表结局是好的 | 小良的分布式之路</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-40LT88K3J5"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-40LT88K3J5","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <meta name="keywords" content="Game Theory, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Equilibrium, GAN">
+
+<meta name="author" content="Chengliang">
+<meta name="publisher" content="小良的分布式之路">
+<meta name="application-name" content="小良的分布式之路">
+<meta name="apple-mobile-web-app-title" content="小良的分布式之路">
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+    
+    
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://liang7878.github.io/mental-models/nash-equilibrium/">
+  <link rel="alternate" hreflang="en" href="https://liang7878.github.io/en/mental-models/nash-equilibrium/">
+  <link rel="alternate" hreflang="x-default" href="https://liang7878.github.io/mental-models/nash-equilibrium/">
+
+
+
+  
+  
+    
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://liang7878.github.io/mental-models/nash-equilibrium/"
+    },
+    "headline": "纳什均衡：没人想动，不代表结局是好的",
+    
+    "description": "纳什均衡 &#x2F; Nash Equilibrium中文：一组选择，在别人都不变的前提下，没有任何一个人能靠单方面改变让自己变得更好。EN: A set of choices where, given what everyone else is doing, no single player can switch ...",
+    
+    "inLanguage": "zh-CN",
+    "image": {
+      "@type": "ImageObject",
+      "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+    },
+    "datePublished": "2026-07-01T13:00:00+08:00",
+    "dateModified": "2026-07-02T07:15:04+00:00",
+    "author": {
+      "@type": "Person",
+      "name": "Chengliang",
+      "url": "https://liang7878.github.io"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "小良的分布式之路",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "
+  
+  
+    https://liang7878.github.io//images/logo.png
+  
+"
+      },
+      "sameAs": ["https://github.com/liang7878"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "mailto:liang7878@hotmail.com"
+        
+      
+    
+      
+        
+          
+        
+        
+          
+        
+        
+          , "https://www.zhihu.com/people/shi-cheng-liang-35"]
+    },
+    "articleSection": "Mental Models",
+    "keywords": "Game Theory, Agent, LLM, Reinforcement Learning, Economics, Multi-Agent, Equilibrium, GAN"
+  }
+  </script>
+
+  
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "小良的分布式之路",
+        "item": "
+  
+  
+    https://liang7878.github.io//
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Mental Models",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Agents",
+        "item": "
+  
+  
+    https://liang7878.github.io/categories/Mental-Models/Agents/
+  
+"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "纳什均衡：没人想动，不代表结局是好的",
+        "item": "https://liang7878.github.io/mental-models/nash-equilibrium/"
+      }
+    ]
+  }
+  </script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小良的分布式之路" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="小良的分布式之路" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小良的分布式之路</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">事业常成于坚忍，毁于浮躁</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%97%AE%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">为什么要问这个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%83%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="nav-number">2.</span> <span class="nav-text">它从哪来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9B%B4%E8%A7%89"><span class="nav-number">3.</span> <span class="nav-text">核心直觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E5%AE%9E%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">现实中的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E5%88%B0-AI%EF%BC%9A%E4%BD%A0%E4%B8%8D%E6%98%AF%E5%9C%A8%E6%89%BE%E6%9C%80%E4%BC%98%E8%A7%A3%EF%BC%8C%E4%BD%A0%E6%98%AF%E5%9C%A8%E6%89%BE%E5%9D%87%E8%A1%A1%E7%82%B9"><span class="nav-number">5.</span> <span class="nav-text">映射到 AI：你不是在找最优解，你是在找均衡点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%A7%86%E8%A7%92%EF%BC%9A%E5%85%88%E7%9C%8B%E6%B8%85%E7%B3%BB%E7%BB%9F%E4%BC%9A%E7%A8%B3%E5%9C%A8%E5%93%AA"><span class="nav-number">6.</span> <span class="nav-text">工程师视角：先看清系统会稳在哪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%95%E8%B5%84%E8%A7%86%E8%A7%92%EF%BC%9A%E6%9C%80%E9%9A%BE%E6%89%93%E8%B4%A5%E7%9A%84%E6%8A%A4%E5%9F%8E%E6%B2%B3%EF%BC%8C%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9D%8F%E5%9D%87%E8%A1%A1"><span class="nav-number">7.</span> <span class="nav-text">投资视角：最难打败的护城河，是一个坏均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="nav-number">8.</span> <span class="nav-text">常见误解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E6%88%90%E7%AB%8B"><span class="nav-number">9.</span> <span class="nav-text">什么时候不成立</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A8%A1%E5%9E%8B"><span class="nav-number">10.</span> <span class="nav-text">相关模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E8%AE%B0%E4%BD%8F"><span class="nav-number">11.</span> <span class="nav-text">一句话记住</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chengliang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Chengliang</p>
+  <div class="site-description" itemprop="description">一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">94</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liang7878" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liang7878" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liang7878@hotmail.com" title="E-Mail → mailto:liang7878@hotmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/shi-cheng-liang-35" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-cheng-liang-35" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/nash-equilibrium/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Nash Equilibrium: Nobody Wants to Move, and That's the Problem
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/mental-models/prisoners-dilemma/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      囚徒困境：为什么理性的个体，会一起走向糟糕的结局
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/mechanism-design/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      Mechanism Design: Engineering the Game So Self-Interest Does the Right Thing
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/en/mental-models/tragedy-of-the-commons/" rel="bookmark">
+        <time class="popular-posts-time">2026-07-01</time>
+        <br>
+      The Tragedy of the Commons: How Rational Use Destroys a Shared Resource
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liang7878.github.io/mental-models/nash-equilibrium/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Chengliang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良的分布式之路">
+      <meta itemprop="description" content="一个外企后端程序员的分布式之路，分享 VLDB、OSDI、ICDE、SIGMOD、KDD等各类会议期刊的学习笔记，分享各类技术书籍、工具书籍的读书笔记，分享各类开源源码的源码分析笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="纳什均衡：没人想动，不代表结局是好的 | 小良的分布式之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          纳什均衡：没人想动，不代表结局是好的
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-01 13:00:00" itemprop="dateCreated datePublished" datetime="2026-07-01T13:00:00+08:00">2026-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-02 15:15:04" itemprop="dateModified" datetime="2026-07-02T15:15:04+08:00">2026-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/" itemprop="url" rel="index"><span itemprop="name">Mental Models</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Mental-Models/Agents/" itemprop="url" rel="index"><span itemprop="name">Agents</span></a>
+        </span>
+    </span>
+
+  
+<div class="post-lang-switch">
+    <i class="fa fa-language" aria-hidden="true"></i>
+    <a href="/en/mental-models/nash-equilibrium/" rel="alternate" hreflang="en">English</a>
+  </div>
+
+
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><strong>纳什均衡 &#x2F; Nash Equilibrium</strong><br>中文：一组选择，在别人都不变的前提下，没有任何一个人能靠单方面改变让自己变得更好。<br>EN: A set of choices where, given what everyone else is doing, no single player can switch and make themselves better off.</p>
+</blockquote>
+<p>我们来聊一个让人很不甘心的结构：<strong>一群聪明、理性的人（或 Agent），会一起停在一个谁都不满意的点上——不是因为谁不肯努力，而是因为在那个点上，谁先动一下，谁就更惨。</strong></p>
+<span id="more"></span>
+
+<h2 id="为什么要问这个问题"><a href="#为什么要问这个问题" class="headerlink" title="为什么要问这个问题"></a>为什么要问这个问题</h2><p>先说两个你大概率碰过的场景。</p>
+<p>第一个：你在训一个 GAN。loss 曲线不往下走，反而来回荡秋千——生成器好一阵、判别器又扳回来，你追我赶就是不收敛。要么干脆塌成 mode collapse，生成器发现只要死磕一种能骗过判别器的图就行，再也不肯多样化。你以为是学习率没调好，翻来覆去调参，可它就是不肯乖乖降到底。</p>
+<p>第二个：你们团队都知道某个技术选型很烂——那个老框架、那套祖传流程，人人吐槽。可谁也不肯第一个换。因为你单方面换，就得和所有还在用旧东西的人对接不上、自己扛迁移成本、短期只会更痛。于是所有人一边骂，一边稳稳地留在原地，一年又一年。</p>
+<p>这两件事，看着风马牛不相及，其实是同一件事：<strong>系统停在了一个”没人能靠自己动一下变得更好”的点上——而这个点，偏偏不是对大家最好的那个。</strong> GAN 找的不是某个 loss 的谷底，是两个对手之间的一个平衡；你们团队卡的也不是能力，是一个谁先动谁吃亏的僵局。</p>
+<p>这个结构不新鲜，也根本不是 AI 独有的。一个数学家在 1950 年，用一篇薄薄的博士论文，把它钉死了。</p>
+<h2 id="它从哪来"><a href="#它从哪来" class="headerlink" title="它从哪来"></a>它从哪来</h2><p>1950 年，普林斯顿。一个 22 岁的研究生约翰·纳什，交上来一篇只有二十多页的博士论文，叫《非合作博弈》。</p>
+<p>在他之前，博弈论主要能算清楚的是”零和博弈”——你多赢一分我就多输一分那种。纳什的贡献狠在哪？他证明了：<strong>几乎任何博弈——不管是不是零和、有几个玩家——都至少存在一个这样的稳定点，在这个点上，没有任何一个玩家能靠单方面改变策略让自己变得更好。</strong> 这个点，后来就叫纳什均衡。他用的工具是一个拓扑学里的不动点定理，把”存在一个谁都不想偏离的策略组合”变成了一件数学上必然成立的事。</p>
+<p>有个流传很广的段子：纳什拿这个想法去见冯·诺依曼——博弈论的祖师爷——冯·诺依曼听完淡淡一句”这不就是个不动点定理嘛”，不太当回事。可恰恰是这个”不就是个不动点定理”，成了整个现代经济学、演化生物学、乃至今天多智能体 AI 的地基。1994 年，纳什拿了诺贝尔经济学奖。那部叫《美丽心灵》的电影，讲的就是他。</p>
+<h2 id="核心直觉"><a href="#核心直觉" class="headerlink" title="核心直觉"></a>核心直觉</h2><p>纳什均衡的核心，一句话能说清：<strong>它是一个”单方面偏离没好处”的稳定点——注意，是”没人想单独动”，不是”这里最好”。</strong></p>
+<p>拆开看，关键就两层：</p>
+<ol>
+<li><strong>它是个不动点。</strong> 在一个纳什均衡上，每个人的选择都是对其他人当前选择的”最优反应”。也就是说，只要别人不变，你自己换个策略只会更差或者打平——所以你没动机动。人人如此，于是整个系统就稳稳地停在这里，谁也不肯先迈脚。</li>
+<li><strong>稳定，跟好不好，是两回事。</strong> “均衡”只保证一件事：没人想单方面偏离。它<strong>完全没保证</strong>这个点对大家是好的。一个博弈可以有好几个纳什均衡，有好有坏，而你完全可能被卡在最烂的那个上。</li>
+</ol>
+<p>这里藏着一道特别反直觉、又特别要命的裂缝：<strong>稳定 ≠ 最优。</strong> 一个坏透了的结局，只要满足”谁单独改都更惨”，它就能稳如泰山。想离开它，光靠一个人的觉悟没用——你得让所有人同时动；单独一个先动的，注定当那个被牺牲的冤大头。</p>
+<pre>
+<code class="mermaid">
+
+graph TD
+  A[每个人都在对别人的选择做最优反应] --&gt; B[没有人能靠单方面改变让自己更好]
+  B --&gt; C[系统停在这个不动点 这就是纳什均衡]
+  C --&gt; D[但这个稳定点未必对大家最好]
+  D -.要离开得所有人一起动 单独一个先动只会更惨.-&gt; C
+</code>
+</pre>
+
+<p>注意最后那条虚线：坏均衡是<strong>自锁</strong>的。它锁住你，靠的不是墙，是”你先动你先亏”。这就是为什么很多明摆着不好的现状能拖那么久——不是没人看出来它烂，而是没人敢当第一个动的。</p>
+<p>记住这把钥匙，后面反复要用：<strong>没人能靠单方面改变让自己变好，不代表这里就是个好地方。</strong></p>
+<h2 id="现实中的例子"><a href="#现实中的例子" class="headerlink" title="现实中的例子"></a>现实中的例子</h2><p>演唱会全体起立，就是一场标准的纳什均衡。</p>
+<p>一开始大家都坐着，看得挺好。前排有人为了看得更清站了起来，他后面的人被挡住，只能也站起来，一排排传下去，最后全场都站着。现在的局面是：所有人都站着，累，视野和大家都坐着时其实差不多——可你没法自己先坐下，因为你一坐下就啥也看不见了。**”全体起立”是个稳稳的纳什均衡（谁单独坐下都更惨），但它明显比”全体坐下”更差。** 谁也没法凭一己之力把大家拽回那个更舒服的点。</p>
+<p>（还有个更绕的版本：你手底下这块 QWERTY 键盘。它当年是为了让机械打字机的字锤别卡在一起，故意设计得别扭、慢。可今天全世界都用它——不是因为它好，是因为在一个所有人都用 QWERTY 的世界里，你单独换成更快的键盘布局，只会让自己跟所有键盘、所有习惯格格不入。一个次优的标准，被稳稳地锁死在均衡里，一百多年动不了。）</p>
+<p>这些故事听着离机房很远，但你把”观众”换成”你的 Agent”、把”键盘标准”换成”你系统里的某个协议或惯例”，剧本一个字都不用改。</p>
+<h2 id="映射到-AI：你不是在找最优解，你是在找均衡点"><a href="#映射到-AI：你不是在找最优解，你是在找均衡点" class="headerlink" title="映射到 AI：你不是在找最优解，你是在找均衡点"></a>映射到 AI：你不是在找最优解，你是在找均衡点</h2><p>单个模型自个儿跑的时候，纳什均衡还睡着。可一旦出现<strong>两个及以上互相博弈的角色</strong>——对抗训练、自我博弈、多 Agent——它立刻醒来，而且直接决定你的系统收不收敛、稳在哪。</p>
+<p><strong>GAN 训练，本质就是在找一个纳什均衡。</strong> 生成器想骗过判别器，判别器想识破生成器，这俩是一对死对头。训练的目标，根本不是把某一个 loss 降到最低——而是找到两者之间谁也不想再单方面改变策略的那个平衡点，一个纳什均衡。这一下就解释了 GAN 为什么这么难伺候：你不是在”下山”（最小化一个 loss），你是在两个对手中间”找平衡”，像要让一个跷跷板两头同时停平。稍微偏一点就来回震荡、谁也压不服谁；压过头就塌进 mode collapse。<strong>你跟 loss 曲线较劲较得那么苦，是因为你要的压根不是一个最小值，而是一个均衡——而均衡天生就比最小值难稳。</strong></p>
+<p><strong>自我博弈（self-play），是让模型自己朝更好的均衡爬。</strong> AlphaGo、AlphaZero 左右手互搏，本质是在博弈里一轮轮逼近越来越强的均衡策略——最后收敛到一个连它自己都很难打赢的打法。多智能体强化学习里，最核心的难题也全是均衡的事：能不能收敛到均衡？会收敛到哪一个？会不会干脆永远不收敛、几个 Agent 追着彼此的尾巴转圈？</p>
+<p><strong>均衡不等于最优——这是最要命、也最有用的一条。</strong> 一堆 Agent 各自优化自己的目标，系统一定会滑向某个纳什均衡，但<strong>没有任何力量</strong>保证那个均衡对整个系统是好的。<a href="/mental-models/prisoners-dilemma/">囚徒困境 &#x2F; Prisoner’s Dilemma</a> 里”双方都背叛”就是个铁打的纳什均衡——稳，且烂。你的多 Agent 系统，完全可能稳稳地卡在一个所有人都不满意、却谁也不肯单方面改的坏状态里，然后你还纳闷它怎么”收敛”到这么个鬼样子。</p>
+<p><strong>想要好均衡，就得亲手设计这个游戏。</strong> 既然系统必然滑向均衡、而均衡未必好，那工程师真正能使的劲，就是把游戏的规则和收益设计成——<strong>让你想要的好结果，恰好就是那个均衡。</strong> 这正是<a href="/mental-models/mechanism-design/">机制设计 &#x2F; Mechanism Design</a> 的活儿：不是求 Agent 向善，是让向善变成它的最优反应。</p>
+<p>所以开头那两个场景，答案到这儿就一句话：<strong>你不是在找一个最优解，你是在找一个均衡点——它可能不收敛，可能不止一个，还可能稳稳地卡在一个对谁都不好的地方。</strong></p>
+<h2 id="工程师视角：先看清系统会稳在哪"><a href="#工程师视角：先看清系统会稳在哪" class="headerlink" title="工程师视角：先看清系统会稳在哪"></a>工程师视角：先看清系统会稳在哪</h2><p>道理讲完，落到几个能直接上手的动作。</p>
+<p><strong>训对抗式、自我博弈、多 Agent 系统时，别拿单调下降的 loss 当心理预期。</strong> 你在找均衡，不是在下山，震荡和拉锯是常态。判断它健不健康，看的是长期的动态稳没稳、有没有塌缩，而不是某一步 loss 好不好看。盯着单步 loss 调 GAN，很容易越调越崩。</p>
+<p><strong>默认多 Agent 系统会滑向某个均衡，而且未必是你要的那个。</strong> 上线前先问一句：在我这套规则和收益下，系统的稳定点在哪？那个点对我好吗？把”它会稳在哪”想在前面，比事后惊讶”它怎么变成这样”值钱得多。</p>
+<p><strong>想让系统离开一个坏均衡，别指望某个 Agent 自己跳出来。</strong> 它跳出来只会更惨，这是坏均衡的定义。你得同时改所有参与者的收益，或者塞一个有权威的协调者带着大家一起搬——单点的觉悟撬不动一个自锁的均衡。</p>
+<p><strong>认真对待”均衡不止一个”这件事。</strong> 很多博弈有多个纳什均衡，有好有坏，落到哪个取决于初始化、历史、谁先动。这叫均衡选择（equilibrium selection），而它本身就是个设计杠杆：你可以用初始条件、通信、规则，把系统往那个好均衡上推。</p>
+<p>这一节的姿势一句话：<strong>别问”我的系统能不能到最优”，先问”我的系统会稳在哪，那个地方值不值得停”。</strong></p>
+<h2 id="投资视角：最难打败的护城河，是一个坏均衡"><a href="#投资视角：最难打败的护城河，是一个坏均衡" class="headerlink" title="投资视角：最难打败的护城河，是一个坏均衡"></a>投资视角：最难打败的护城河，是一个坏均衡</h2><p>把镜头拉到市场层面，纳什均衡是一把很多人没意识到自己在用的尺子。</p>
+<p>为什么一个技术上明显更烂的标准、平台、生态，能常年屹立不倒？因为它是个均衡：所有人用它，只是因为别人都在用它。你想换到那个更好的，得赌所有人跟你一起换——单方面跳出去的先驱，往往先成先烈。这种”大家都用所以大家都用”的锁定，比技术优劣更能决定生死。你评估一个平台或标准值不值得押，别只看它好不好，要看它是不是坐在一个稳固的均衡上——那种由所有人相互绑定撑起来的稳，比任何单点技术优势都难撼动。</p>
+<p>绕回到我们做 AI 这件事，这条给工程师的启示很直接：<strong>当你评估一个生态、或者设计自己产品的策略时，别高估”更好”的力量，别低估”均衡”的力量。</strong> 更好的东西输给锁定的均衡，是科技史上反复上演的剧本。要么你有本事协调一大批人一起跳，要么你就得从收益上给出足够大的落差，大到值得别人当第一个动的人——否则光靠”我们技术更强”，撼不动一个坐稳了的坏均衡。</p>
+<h2 id="常见误解"><a href="#常见误解" class="headerlink" title="常见误解"></a>常见误解</h2><p><strong>最常见、也最危险的：以为”纳什均衡”就是”最优解”、就是皆大欢喜的好结果。</strong> 不是。均衡只保证一件事——没人想单方面偏离。它对”这个点好不好”一个字都没说。囚徒困境的双输就是最硬的反例：它是个完美的纳什均衡，也是个糟糕的结局。把均衡默认成最优，你会对着一个烂结果傻等它自己变好。</p>
+<p><strong>第二个：以为均衡只有一个。</strong> 很多博弈有好几个纳什均衡，有好有坏。”系统会走向均衡”绝不等于”系统会走向那个好均衡”——落到哪个，取决于起点、历史、谁先迈步。这恰恰是你能设计、能干预的地方，别把它当成宿命。</p>
+<p><strong>第三个：以为均衡意味着大家都静止不动、一片祥和。</strong> 均衡也可以是”混合策略”的——每个人都在随机化、都在动作，但那个概率分布稳定到谁也不想改（石头剪刀布各 1&#x2F;3 就是个纳什均衡）。均衡说的是<strong>策略稳</strong>，不是画面静。一个打得热火朝天的系统，照样可以卡在均衡里。</p>
+<h2 id="什么时候不成立"><a href="#什么时候不成立" class="headerlink" title="什么时候不成立"></a>什么时候不成立</h2><p>知道一个模型什么时候<strong>失效</strong>，比记住它本身更值钱。纳什均衡的成立，靠的是”每个参与者都在做理性的最优反应”＋”博弈已经稳定下来了”。把这两条动一动，就是它松动的地方：</p>
+<p><strong>参与者并不理性、或还在学。</strong> 纳什均衡假设人人都能算出并选择最优反应。可现实里的参与者——包括训练早期的 Agent、会系统性犯错的人——常常做不到。这时候真实系统未必会停在纳什均衡上，行为经济学和有限理性讲的就是这一块。</p>
+<p><strong>博弈本身还在变、还没稳。</strong> 均衡是个静态快照。如果规则、参与者、收益一直在变（大多数多 Agent 训练的早期正是如此），系统还在半道上晃，你拿”均衡”去套它，容易得出错误的判断。均衡描述的是终点，不是沿途。</p>
+<p><strong>有外部力量能改收益。</strong> 一旦出现一个能改收益矩阵的裁判、监管或机制，原来那个均衡就不作数了——这正是机制设计存在的意义：<strong>通过改游戏，把系统从一个坏均衡里撬出来，送进一个好均衡。</strong></p>
+<p>判断方法还是那把钥匙，反过来用：**”在别人都不变的前提下，还有没有哪个参与者，能靠自己单方面换个策略就变得更好？”** 没有 → 你正停在一个纳什均衡上（接着要追问的是：它好不好？是不是唯一？）；还有 → 系统没停稳，它还会动，别急着用均衡下结论。</p>
+<h2 id="相关模型"><a href="#相关模型" class="headerlink" title="相关模型"></a>相关模型</h2><p>纳什均衡不是孤岛，它挂在一张网里。下面这些是同一张网上的邻居（这些文章我会陆续补上）：</p>
+<ul>
+<li><a href="/mental-models/prisoners-dilemma/">囚徒困境 &#x2F; Prisoner’s Dilemma</a>：双方都背叛，就是最有名的那个”坏纳什均衡”。囚徒困境是”均衡不等于最优”这件事的招牌案例。</li>
+<li><a href="/mental-models/mechanism-design/">机制设计 &#x2F; Mechanism Design</a>：既然系统会滑向均衡、均衡又未必好，那就反过来设计游戏，让你要的好结果恰好成为均衡。它是坏均衡的正经解药。</li>
+<li><a href="/mental-models/tragedy-of-the-commons/">公地悲剧 &#x2F; Tragedy of the Commons</a>：n 个人过度使用公共资源，也是稳稳地卡在一个人人受损的均衡上——纳什均衡的多人、多资源版。</li>
+<li><a href="/mental-models/goodharts-law/">古德哈特定律 &#x2F; Goodhart’s Law</a>：给每个子 Agent 定错了局部指标，你就等于亲手把系统的均衡挪到了一个整体很差的位置——坏指标和坏均衡，常常是同一枚硬币的两面。</li>
+</ul>
+<h2 id="一句话记住"><a href="#一句话记住" class="headerlink" title="一句话记住"></a>一句话记住</h2><blockquote>
+<p>中文：纳什均衡是个”没人想单方面动”的稳定点——但稳定从来不等于最好。一群理性的人，能稳稳地卡在一个谁都不满意的地方，谁先动谁吃亏。所以别追最优解，先看清你的系统会稳在哪，再动手把那个点设计得值得停。<br>EN: A Nash equilibrium is a stable point where nobody wants to move alone—but stable never means best. A room full of rational players can sit, perfectly still, in a place none of them likes, where whoever moves first loses. So don’t chase the optimum; first see where your system will settle, then design that spot to be worth settling in.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+              <a href="/tags/Economics/" rel="tag"># Economics</a>
+              <a href="/tags/Multi-Agent/" rel="tag"># Multi-Agent</a>
+              <a href="/tags/Equilibrium/" rel="tag"># Equilibrium</a>
+              <a href="/tags/GAN/" rel="tag"># GAN</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/mental-models/prisoners-dilemma/" rel="prev" title="The Prisoner&#39;s Dilemma: Why Rational Agents Choose a Worse Outcome Together">
+                  <i class="fa fa-angle-left"></i> The Prisoner's Dilemma: Why Rational Agents Choose a Worse Outcome Together
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/mental-models/nash-equilibrium/" rel="next" title="Nash Equilibrium: Nobody Wants to Move, and That&#39;s the Problem">
+                  Nash Equilibrium: Nobody Wants to Move, and That's the Problem <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Chengliang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">197k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:55</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/liang7878" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"liang7878","repo":"liang7878.github.io","client_id":"a09e18d02cda9a45a3c3","client_secret":"9133125810407c3fb73ec70450c79ef6c72efcce","admin_user":"liang7878","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"584ca7dc71531d01b4cb0eae3a5cb611"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+</body>
+</html>
